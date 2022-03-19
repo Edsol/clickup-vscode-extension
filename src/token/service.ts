@@ -1,6 +1,19 @@
+import { LocalStorageService } from '../localStorageService';
+
 export class TokenService {
-    async setToken(token: String | undefined): Promise<void>{
-        console.log('setToken func',token)
+    storageManager?: LocalStorageService;
+
+    init(storageManager: LocalStorageService): void {
+        this.storageManager = storageManager;
+    }
+
+    async setToken(token: String | undefined): Promise<boolean> {
+        this.storageManager?.setValue('token', token);
+        return true;
+    }
+
+    async getToken() {
+        return this.storageManager?.getValue('token');
     }
 }
 
