@@ -1,0 +1,1 @@
+export const CLICKUP_COM_URL = 'https://clickup.com';
