@@ -12,6 +12,7 @@ export class LocalStorageService {
 
     public async setValue<T>(key: string, value: T) {
         await this.storage.update(key, value);
+        //TODO: check response of update
         return true;
     }
 }

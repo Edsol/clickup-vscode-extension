@@ -12,7 +12,7 @@
 	"activationEvents": [
 		"onCommand:clickup.helloWorld",
 		"onCommand:clickup.setToken",
-		"onCommand:clickup.getToken"
+		"onCommand:clickup.getTasks"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -28,6 +28,10 @@
 			{
 				"command": "clickup.getToken",
 				"title": "ClickUp: Get personal token"
+			},
+			{
+				"command": "clickup.getTasks",
+				"title": "ClickUp: get all tasks"
 			}
 		],
 		"viewsContainers": {

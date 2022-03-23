@@ -1,11 +1,15 @@
 import * as vscode from 'vscode';
+import { ApiWrapper } from './api_wrapper';
 import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 	let storageManager = new LocalStorageService(context.workspaceState);
 	tokenService.init(storageManager);
+
+	var token: any = await storageManager.getValue('token');
+
 
 	console.log('Congratulations, your extension "clickup" is now active!');
 
@@ -26,6 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Your token is: ' + token);
 	});
 
+	vscode.commands.registerCommand('clickup.getTasks', async () => {
+		var wrapper = new ApiWrapper(token);
+		var tasks = await wrapper.getAllTasks();
+		console.log(tasks);
+	});
 
 }
 
