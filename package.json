@@ -12,7 +12,8 @@
 	"activationEvents": [
 		"onCommand:clickup.helloWorld",
 		"onCommand:clickup.setToken",
-		"onCommand:clickup.getTasks"
+		"onCommand:clickup.getTasks",
+		"onView:clickup-tasks"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -46,7 +47,7 @@
 		"views": {
 			"clickup": [
 				{
-					"id": "clickup-tab",
+					"id": "clickup-tasks",
 					"name": "Tasks"
 				}
 			]
