@@ -13,10 +13,20 @@
 		"onCommand:clickup.helloWorld",
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.getTasks",
-		"onView:clickup-tasks"
+		"onCommand:clickup.deleteTasks",
+		"onView:clickupTasksView"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "clickup",
+					"title": "ClickUp",
+					"icon": "./media/logo.png"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "clickup.helloWorld",
@@ -33,25 +43,54 @@
 			{
 				"command": "clickup.getTasks",
 				"title": "ClickUp: get all tasks"
+			},
+			{
+				"command": "refreshTasksList",
+				"title": "ClickUp: refresh trasks list"
+			},
+			{
+				"command": "editTask",
+				"title": "ClickUp: edit task"
+			},
+			{
+				"command": "deleteTasks",
+				"title": "ClickUp: delete trask"
 			}
 		],
-		"viewsContainers": {
-			"activitybar": [
+		"menus": {
+			"view/title": [
 				{
-					"id": "clickup",
-					"title": "ClickUp",
-					"icon": "./media/logo.png"
+					"command": "clickup.refreshTasksList",
+					"when": "view == clickupTasksView",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "clickup.editTask",
+					"when": "view == clickupTasksViews",
+					"group": "inline"
+				},
+				{
+					"command": "clickup.deleteTask",
+					"when": "view == clickupTasksView"
 				}
 			]
 		},
 		"views": {
 			"clickup": [
 				{
-					"id": "clickup-tasks",
-					"name": "Tasks"
+					"id": "clickupTasksView",
+					"name": "Tasks list"
 				}
 			]
-		}
+		},
+		"viewsWelcome": [
+			{
+				"view": "clickupTasksView",
+				"contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

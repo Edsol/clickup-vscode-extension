@@ -1,3 +1,4 @@
+import * as constants from './constants';
 import * as vscode from 'vscode';
 import { ApiWrapper } from './api_wrapper';
 import { LocalStorageService } from './localStorageService';
@@ -15,12 +16,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 	var wrapper = new ApiWrapper(token);
-	var storedTasks: StoredTasksT = await storageManager.getValue('tasks');
+	var storedTasks: StoredTasksT = await storageManager.getValue(constants.TASKS_STORED_KEY);
 
 	if (storedTasks === undefined) {
 		console.log('no tasks found');
 		var tasks = await wrapper.getAllTasks();
-		storageManager.setValue('tasks', {
+		storageManager.setValue(constants.TASKS_STORED_KEY, {
 			time: Date.now(),
 			tasks: tasks
 		});
@@ -30,15 +31,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	var wrapper = new ApiWrapper(token);
 
 	vscode.window.registerTreeDataProvider(
-		'clickup-tasks',
+		'clickupTasksView',
 		new TasksDataProvider(storedTasks.tasks)
 	);
-
-	let disposable = vscode.commands.registerCommand('clickup.helloWorld', () => {
-		vscode.window.showInformationMessage('Hello World from clickup!');
-	});
-
-	context.subscriptions.push(disposable);
 
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {
@@ -51,10 +46,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Your token is: ' + token);
 	});
 
-	vscode.commands.registerCommand('clickup.getTasks', async () => {
-		// var wrapper = new ApiWrapper(token);
-		// var tasks = await wrapper.getAllTasks();
-		console.log(tasks);
+	vscode.commands.registerCommand('deleteTasks', async () => {
+		storageManager.setValue(constants.TASKS_STORED_KEY, []);
+		vscode.window.showInformationMessage('Command was executed');
 	});
 
 }
