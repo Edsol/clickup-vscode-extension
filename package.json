@@ -68,12 +68,12 @@
 			"view/item/context": [
 				{
 					"command": "clickup.editTask",
-					"when": "view == clickupTasksViews",
+					"when": "view == clickupTasksViews  && viewItem == TaskItem",
 					"group": "inline"
 				},
 				{
 					"command": "clickup.deleteTask",
-					"when": "view == clickupTasksView"
+					"when": "view == clickupTasksView && viewItem == TaskItem"
 				}
 			]
 		},
@@ -88,7 +88,7 @@
 		"viewsWelcome": [
 			{
 				"view": "clickupTasksView",
-				"contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+				"contents": "Generate a token to load tasks, [learn more](https://www.clickup.com).\n[Set token](command:clickup.setToken)"
 			}
 		]
 	},
