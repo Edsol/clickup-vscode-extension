@@ -6,7 +6,7 @@ export class LocalStorageService {
 
     constructor(private storage: Memento) { }
 
-    public async getValue(key: string) {
+    public async getValue(key: string): Promise<any> {
         return await this.storage.get(key);
     }
 

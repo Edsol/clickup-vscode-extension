@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { TaskItem } from './items/task_item';
 import { ApiWrapper } from '../api_wrapper';
 
 export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vscode.TreeItem> {
-    apiWrapper: ApiWrapper;
+    // apiWrapper: ApiWrapper;
+    tasks: any;
 
-    constructor(apiWrapper: ApiWrapper) {
-        this.apiWrapper = apiWrapper;
+    constructor(tasks: any) {
+        // this.apiWrapper = apiWrapper;
+        this.tasks = tasks;
     }
 
     getTreeItem(element: TaskItem): vscode.TreeItem {
@@ -16,12 +17,11 @@ export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vsc
 
     async getChildren(element?: TaskItem): Promise<(TaskItem | vscode.TreeItem)[]> {
         if (element) {
-            console.log(element);
-            // return Promise.resolve(element);
             return Promise.resolve([]);
         } else {
-            var tasks = await this.apiWrapper.getAllTasks();
-            var taskList = await this.extractDescription(tasks);
+
+            // var tasks = await this.apiWrapper.getAllTasks();
+            var taskList = await this.extractDescription(this.tasks);
             console.log(taskList);
             return Promise.resolve(taskList);
         }
@@ -30,7 +30,7 @@ export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vsc
     async extractDescription(tasks: any) {
         const taskList = Object.keys(tasks).map(taskId => {
             var task = tasks[taskId];
-            return new TaskItem(task.id, task.name, vscode.TreeItemCollapsibleState.None);
+            return new TaskItem(task.id, task.name, vscode.TreeItemCollapsibleState.Collapsed);
         });
         return taskList;
     }

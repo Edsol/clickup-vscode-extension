@@ -40,7 +40,7 @@
 				{
 					"id": "clickup",
 					"title": "ClickUp",
-					"icon": "media/logo.svg"
+					"icon": "./media/logo.png"
 				}
 			]
 		},

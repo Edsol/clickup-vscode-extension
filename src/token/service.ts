@@ -15,6 +15,15 @@ export class TokenService {
     async getToken() {
         return this.storageManager?.getValue('token');
     }
+
+    async hasToken() {
+        var token = await this.getToken();
+        if (token) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 export const tokenService: TokenService = new TokenService();
