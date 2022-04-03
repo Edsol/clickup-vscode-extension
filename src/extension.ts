@@ -16,7 +16,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 	var wrapper = new ApiWrapper(token);
-	var storedTasks: StoredTasksT = await storageManager.getValue(constants.TASKS_STORED_KEY);
+	var storedTasks: any = await storageManager.getValue(constants.TASKS_STORED_KEY);
 
 	if (storedTasks === undefined) {
 		console.log('no tasks found');
