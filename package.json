@@ -23,7 +23,7 @@
 				{
 					"id": "clickup",
 					"title": "ClickUp",
-					"icon": "./media/logo.png"
+					"icon": "./resources/bar/logo.png"
 				}
 			]
 		},
@@ -45,16 +45,23 @@
 				"title": "ClickUp: get all tasks"
 			},
 			{
-				"command": "refreshTasksList",
-				"title": "ClickUp: refresh trasks list"
+				"command": "clickup.refreshTasksList",
+				"title": "Reload",
+				"icon": "$(refresh)"
 			},
 			{
-				"command": "editTask",
-				"title": "ClickUp: edit task"
+				"command": "clickup.clearTasksList",
+				"title": "Clear"
 			},
 			{
-				"command": "deleteTasks",
-				"title": "ClickUp: delete trask"
+				"command": "clickup.deleteTask",
+				"title": "delete",
+				"icon": "$(gear)"
+			},
+			{
+				"command": "clickup.editTask",
+				"title": "Edit",
+				"icon": "$(trash)"
 			}
 		],
 		"menus": {
@@ -63,17 +70,21 @@
 					"command": "clickup.refreshTasksList",
 					"when": "view == clickupTasksView",
 					"group": "navigation"
+				},
+				{
+					"command": "clickup.clearList",
+					"when": "view == clickupTasksView"
 				}
 			],
 			"view/item/context": [
 				{
 					"command": "clickup.editTask",
-					"when": "view == clickupTasksViews  && viewItem == TaskItem",
+					"when": "viewItem == taskItem",
 					"group": "inline"
 				},
 				{
 					"command": "clickup.deleteTask",
-					"when": "view == clickupTasksView && viewItem == TaskItem"
+					"when": "viewItem == taskItem"
 				}
 			]
 		},

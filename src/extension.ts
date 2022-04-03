@@ -29,11 +29,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		console.log('tasks founds:', storedTasks);
 	}
 	var wrapper = new ApiWrapper(token);
-
-	vscode.window.registerTreeDataProvider(
-		'clickupTasksView',
-		new TasksDataProvider(storedTasks.tasks)
-	);
+	vscode.window.createTreeView('clickupTasksView', {
+		treeDataProvider: new TasksDataProvider(storedTasks.tasks)
+	});
 
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {
