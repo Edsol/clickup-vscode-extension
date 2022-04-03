@@ -29,25 +29,30 @@ export async function activate(context: vscode.ExtensionContext) {
 		console.log('tasks founds:', storedTasks);
 	}
 	var wrapper = new ApiWrapper(token);
-	vscode.window.createTreeView('clickupTasksView', {
-		treeDataProvider: new TasksDataProvider(storedTasks.tasks)
-	});
 
-	vscode.commands.registerCommand('clickup.setToken', async () => {
+
+	var tasksDataProvider = new TasksDataProvider(storedTasks.tasks);
+	vscode.window.createTreeView('clickupTasksView', { treeDataProvider: tasksDataProvider });
+
+	async function setToken() {
 		if (await tokenInput.setToken()) {
 			vscode.window.showInformationMessage('Your token has been successfully saved');
 		}
-	});
+	}
 
-	vscode.commands.registerCommand('clickup.getToken', async () => {
+	async function getToken() {
 		var token = await tokenInput.getToken();
 		vscode.window.showInformationMessage('Your token is: ' + token);
-	});
+	}
 
-	vscode.commands.registerCommand('deleteTasks', async () => {
+	async function deleteTasks() {
 		storageManager.setValue(constants.TASKS_STORED_KEY, []);
 		vscode.window.showInformationMessage('Command was executed');
-	});
+	}
+
+	vscode.commands.registerCommand('clickup.setToken', await setToken);
+	vscode.commands.registerCommand('clickup.getToken', await getToken);
+	vscode.commands.registerCommand('deleteTasks', await deleteTasks);
 
 }
 

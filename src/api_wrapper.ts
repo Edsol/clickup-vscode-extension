@@ -39,4 +39,10 @@ export class ApiWrapper {
         var { body } = await this.clickup.lists.getTasks(lists[0].id);
         return body.tasks;
     }
+
+    async extractStatus(tasks: any) {
+        tasks.map((task: any) => {
+            console.log(task);
+        });
+    }
 }
