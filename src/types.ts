@@ -15,7 +15,8 @@ export type Task = {
     list: List,
     creator: Creator,
     folder: Folder,
-    status: Status
+    status: Status,
+    priority?: Priority[]
 };
 
 export type Status = {
@@ -44,4 +45,11 @@ export type Creator = {
     color: string,
     email: string,
     profilePicture: string
+};
+
+export type Priority = {
+    id: number,
+    priority: string,
+    color: string,
+    orderindex: string
 };

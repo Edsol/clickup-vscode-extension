@@ -17,7 +17,7 @@ export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vsc
         return element;
     }
 
-    async getChildren(element?: (StatusItem | TaskItem)): Promise<(vscode.TreeItem)[]> {
+    async getChildren(element?: (StatusItem)): Promise<(vscode.TreeItem)[]> {
         var resolve: any = [];
 
         if (element === undefined) {
@@ -32,7 +32,12 @@ export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vsc
         } else {
             var statusName = element.label.toLowerCase();
             var resolve = this.tasksByStatus[statusName].map((task: any) => {
-                return new TaskItem(task.id, task.name, vscode.TreeItemCollapsibleState.None);
+                return new TaskItem(
+                    task.id,
+                    task.name,
+                    vscode.TreeItemCollapsibleState.None,
+                    task.priority
+                );
             });
         }
         return Promise.resolve(resolve);
