@@ -18,7 +18,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	var wrapper = new ApiWrapper(token);
 	var storedTasks: any = await storageManager.getValue(constants.TASKS_STORED_KEY);
 
-	if (storedTasks === undefined) {
+	if (storedTasks === undefined || storedTasks.length === 0) {
 		console.log('no tasks found');
 		var tasks = await wrapper.getAllTasks();
 		storageManager.setValue(constants.TASKS_STORED_KEY, {
@@ -31,7 +31,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	var wrapper = new ApiWrapper(token);
 
 
-	var tasksDataProvider = new TasksDataProvider(storedTasks.tasks);
+	var tasksDataProvider = new TasksDataProvider(storedTasks.tasks, [
+		'id', 'name', 'description', 'url'
+	]);
 	vscode.window.createTreeView('clickupTasksView', { treeDataProvider: tasksDataProvider });
 
 	async function setToken() {
@@ -52,7 +54,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('clickup.setToken', await setToken);
 	vscode.commands.registerCommand('clickup.getToken', await getToken);
-	vscode.commands.registerCommand('deleteTasks', await deleteTasks);
+	vscode.commands.registerCommand('clickup.deleteTasks', await deleteTasks);
 
 }
 

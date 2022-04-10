@@ -1,15 +1,18 @@
 import * as vscode from 'vscode';
 import { TaskItem } from './items/task_item';
 import { StatusItem } from './items/status_item';
+import { TaskDetail } from './items/task_detail';
 import * as types from '../types';
 
 export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vscode.TreeItem> {
     tasks: any;
     statusList: any = [];
     tasksByStatus: any = [];
+    propertyToShow: Array<string> = [];
 
-    constructor(tasks: any) {
+    constructor(tasks: any, propertyToShow: Array<string>) {
         this.tasks = tasks;
+        this.propertyToShow = propertyToShow;
         this.tasksByStatus = this.filterByStatus(tasks);
     }
 
@@ -29,17 +32,25 @@ export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vsc
                     this.tasksByStatus[status.status]
                 );
             });
-        } else {
+        }
+
+        if (element instanceof StatusItem) {
             var statusName = element.label.toLowerCase();
             var resolve = this.tasksByStatus[statusName].map((task: any) => {
-                return new TaskItem(
-                    task.id,
-                    task.name,
-                    vscode.TreeItemCollapsibleState.None,
-                    task.priority
-                );
+                return new TaskItem(task, vscode.TreeItemCollapsibleState.Collapsed);
             });
         }
+
+        if (element instanceof TaskItem) {
+            Object.entries(element.task).find(([key, value]) => {
+                if (this.propertyToShow.includes(key)) {
+                    var taskDetail = new TaskDetail(key, `${value}`, vscode.TreeItemCollapsibleState.None);
+                    resolve.push(taskDetail);
+                }
+
+            });
+        }
+
         return Promise.resolve(resolve);
     }
 

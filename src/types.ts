@@ -1,23 +1,60 @@
-export type StoredTasksT = {
-    tasks: {
-        id: string,
-        name: string
-    }
-};
-
 export type Task = {
-    id: string,
-    name: string,
+    archived: boolean,
+    assignees: Assignee[],
+    checklists: Checklist[],
+    creator: Creator,
+    customFields: CustomField[],
+    customId: number,
+    dateClosed: string,
+    dateCreated: string,
+    dateUpdated: string,
+    dependecies: Dependecie[],
     description: string,
+    dueDate: null,
+    folder: Folder,
+    id: string,
+    linkedTasks: Task[],
+    list: List,
+    name: string,
+    orderId: string,
+    orderindex: string;
+    parent: Parent,
+    permissionLevel: string,
+    points: null,
+    priority: Priority,
+    project: Project,
+    space: Space,
+    startDate: string,
+    status: Status,
+    tags: Tag[],
     teamId: string,
     textContent: string,
+    timeSpend: number,
     url: string,
-    list: List,
-    creator: Creator,
-    folder: Folder,
-    status: Status,
-    priority?: Priority[]
+    watchers: Watcher[]
 };
+
+export type Assignee = {
+    id: number,
+    username: string,
+    color: string,
+    initials: string,
+    email: string
+};
+
+export type Checklist = {};
+
+export type Creator = {
+    id: number,
+    username: string,
+    color: string,
+    email: string,
+    profilePicture: string
+};
+
+export type CustomField = {};
+export type Dependecie = {};
+export type Parent = {};
 
 export type Status = {
     status: string,
@@ -39,13 +76,7 @@ export type Folder = {
     access: boolean
 };
 
-export type Creator = {
-    id: number,
-    username: string,
-    color: string,
-    email: string,
-    profilePicture: string
-};
+
 
 export type Priority = {
     id: number,
@@ -53,3 +84,23 @@ export type Priority = {
     color: string,
     orderindex: string
 };
+
+export type Project = {
+    id: string,
+    name: string,
+    hidden: boolean,
+    access: boolean
+};
+
+export type Space = {
+    id: string
+};
+
+export type Tag = {
+    name: string,
+    tagFg: string,
+    tagBg: string,
+    creator: number
+};
+
+export type Watcher = {};

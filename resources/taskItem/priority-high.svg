@@ -7,10 +7,10 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 384 512"
+   viewBox="0 0 512 512"
    version="1.1"
    id="svg4"
-   sodipodi:docname="arrow-down.svg"
+   sodipodi:docname="priority-high.svg"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
   <metadata
      id="metadata10">
@@ -35,20 +35,21 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1020"
+     inkscape:window-width="639"
+     inkscape:window-height="464"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="0.4609375"
-     inkscape:cx="198.50847"
-     inkscape:cy="256"
-     inkscape:window-x="0"
-     inkscape:window-y="30"
-     inkscape:window-maximized="1"
+     inkscape:cx="175.34596"
+     inkscape:cy="247.32204"
+     inkscape:window-x="924"
+     inkscape:window-y="339"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg4" />
   <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
   <path
-     d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+     d="m 137.7627,412.47458 c 0,5.81695 -4.79237,10.57627 -10.57627,10.57627 H 106.0339 c -5.7839,0 -10.576277,-4.75932 -10.576277,-10.57627 V 105.76271 c 0,-11.733051 9.419497,-21.152541 21.152547,-21.152541 11.73305,0 21.15253,9.41949 21.15253,21.152541 z M 410.3,84.610169 c -4.20738,0 -8.59983,0.89238 -12.78407,2.79808 -30.20187,13.788821 -52.59051,18.468821 -71.25763,18.468821 -39.63458,0 -62.67102,-21.060001 -108.34068,-21.066611 -16.10237,0.002 -35.47017,3.01688 -59.00237,10.21072 V 326.70763 c 21.15254,-6.5996 39.57508,-9.32034 56.08729,-9.32034 48.67068,0 82.56101,21.00712 131.27796,21.00712 21.09305,0 44.96238,-3.94693 73.43898,-15.26288 8.95679,-3.26543 14.17882,-10.86712 14.17882,-18.99763 V 104.92322 c 0,-12.975761 -11.03898,-20.313051 -23.5983,-20.313051 z"
      id="path2"
-     style="fill:#ffffff" />
+     style="fill:#ffd42a;stroke-width:0.66101694"
+     inkscape:connector-curvature="0" />
 </svg>

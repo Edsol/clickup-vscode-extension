@@ -1,4 +1,5 @@
 var clickup = require('clickup.js');
+import { Task } from './types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -37,7 +38,8 @@ export class ApiWrapper {
         var spaces = await this.getSpaces();
         var lists = await this.getFolderlessLists(spaces[0].id);
         var { body } = await this.clickup.lists.getTasks(lists[0].id);
-        return body.tasks;
+        var tasks: Array<Task> = body.tasks;
+        return tasks;
     }
 
     async extractStatus(tasks: any) {
