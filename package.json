@@ -14,6 +14,8 @@
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTasks",
+		"onCommand:clickup.refreshTasksList",
+		"onCommand:clickup:newTask",
 		"onView:clickupTasksView"
 	],
 	"main": "./out/extension.js",
@@ -54,8 +56,17 @@
 				"icon": "$(refresh)"
 			},
 			{
-				"command": "clickup.clearTasksList",
-				"title": "Clear"
+				"command": "clickup.newTask",
+				"title": "New",
+				"icon": "$(add)"
+			},
+			{
+				"command": "clickup.groupByStatus",
+				"title": "Group by status"
+			},
+			{
+				"command": "clickup.groupByPriority",
+				"title": "Group by priority"
 			},
 			{
 				"command": "clickup.deleteTask",
@@ -76,7 +87,16 @@
 					"group": "navigation"
 				},
 				{
-					"command": "clickup.clearList",
+					"command": "clickup.newTask",
+					"when": "view == clickupTasksView",
+					"group": "navigation"
+				},
+				{
+					"command": "clickup.groupByStatus",
+					"when": "view == clickupTasksView"
+				},
+				{
+					"command": "clickup.groupByPriority",
 					"when": "view == clickupTasksView"
 				}
 			],

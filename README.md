@@ -14,6 +14,10 @@ At the first startup it is necessary to enter the access token
 
 ## Release Notes
 
+### 0.0.3
+
+* reload tasks list button
+
 ### 0.0.2
 
 ![image](./media/0.0.2.png)

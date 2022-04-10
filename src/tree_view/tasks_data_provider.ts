@@ -44,10 +44,26 @@ export class TasksDataProvider implements vscode.TreeDataProvider<TaskItem | vsc
         if (element instanceof TaskItem) {
             Object.entries(element.task).find(([key, value]) => {
                 if (this.propertyToShow.includes(key)) {
-                    var taskDetail = new TaskDetail(key, `${value}`, vscode.TreeItemCollapsibleState.None);
+                    var taskDetail;
+                    if (value instanceof Object) {
+                        taskDetail = new TaskDetail(key, ``, vscode.TreeItemCollapsibleState.Collapsed, value);
+                    } else {
+                        taskDetail = new TaskDetail(key, `${value}`, vscode.TreeItemCollapsibleState.None);
+                    }
                     resolve.push(taskDetail);
                 }
+            });
+        }
 
+        if (element instanceof TaskDetail) {
+            Object.entries(element.details).find(([key, value]) => {
+                var taskDetail;
+                if (value instanceof Object) {
+                    taskDetail = new TaskDetail(key, ``, vscode.TreeItemCollapsibleState.Collapsed, value);
+                } else {
+                    taskDetail = new TaskDetail(key, `${value}`, vscode.TreeItemCollapsibleState.None);
+                }
+                resolve.push(taskDetail);
             });
         }
 

@@ -21,20 +21,32 @@ export async function activate(context: vscode.ExtensionContext) {
 	if (storedTasks === undefined || storedTasks.length === 0) {
 		console.log('no tasks found');
 		var tasks = await wrapper.getAllTasks();
-		storageManager.setValue(constants.TASKS_STORED_KEY, {
-			time: Date.now(),
-			tasks: tasks
-		});
+		storeTasks(tasks);
 	} else {
 		console.log('tasks founds:', storedTasks);
 	}
 	var wrapper = new ApiWrapper(token);
+	var mainProvider;
 
+	buildProvider(storedTasks.tasks);
 
-	var tasksDataProvider = new TasksDataProvider(storedTasks.tasks, [
-		'id', 'name', 'description', 'url'
-	]);
-	vscode.window.createTreeView('clickupTasksView', { treeDataProvider: tasksDataProvider });
+	function buildProvider(tasks: any) {
+		mainProvider = new TasksDataProvider(tasks, constants.DEFAULT_TASK_DETAILS);
+		vscode.window.createTreeView('clickupTasksView', { treeDataProvider: mainProvider });
+	}
+
+	async function reloadTasks() {
+		var tasks = await wrapper.getAllTasks();
+		buildProvider(tasks);
+		storeTasks(tasks);
+	}
+
+	function storeTasks(tasks: any) {
+		storageManager.setValue(constants.TASKS_STORED_KEY, {
+			time: Date.now(),
+			tasks: tasks
+		});
+	}
 
 	async function setToken() {
 		if (await tokenInput.setToken()) {
@@ -52,10 +64,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Command was executed');
 	}
 
-	vscode.commands.registerCommand('clickup.setToken', await setToken);
-	vscode.commands.registerCommand('clickup.getToken', await getToken);
-	vscode.commands.registerCommand('clickup.deleteTasks', await deleteTasks);
-
+	vscode.commands.registerCommand('clickup.setToken', setToken);
+	vscode.commands.registerCommand('clickup.getToken', getToken);
+	vscode.commands.registerCommand('clickup.deleteTasks', deleteTasks);
+	vscode.commands.registerCommand('clickup.refreshTasksList', reloadTasks);
 }
 
 // this method is called when your extension is deactivated
