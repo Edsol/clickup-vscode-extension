@@ -104,3 +104,24 @@ export type Tag = {
 };
 
 export type Watcher = {};
+
+
+export type Member = {
+    id: number,
+    username: string,
+    email: string,
+    color: string,
+    initials: string,
+    profilePicture: string,
+    profileInfo: ProfileInfo
+};
+
+export type ProfileInfo = {
+    displayProfile: boolean,
+    verifiedAmbassador: null,
+    verifiedConsultant: null,
+    topTierUser: null,
+    viewedVerifiedAmbassador: null,
+    viewedVerifiedConsultant: null,
+    viewedTopTierUser: null
+};
