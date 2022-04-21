@@ -14,6 +14,11 @@ At the first startup it is necessary to enter the access token
 
 ## Release Notes
 
+### 0.0.4
+
+* new task page powered by [Vuejs3](https://vuejs.org)
+![image](./media/0.0.4.png) 
+
 ### 0.0.3
 
 * reload tasks list button
