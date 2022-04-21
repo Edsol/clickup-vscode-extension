@@ -34,9 +34,13 @@ export class ApiWrapper {
         return body.lists;
     }
 
-    async getAllTasks() {
+    async getLists() {
         var spaces = await this.getSpaces();
-        var lists = await this.getFolderlessLists(spaces[0].id);
+        return await this.getFolderlessLists(spaces[0].id);
+    }
+
+    async getAllTasks() {
+        var lists = await this.getLists();
         var { body } = await this.clickup.lists.getTasks(lists[0].id);
         var tasks: Array<Task> = body.tasks;
         return tasks;
@@ -49,10 +53,15 @@ export class ApiWrapper {
     }
 
     async getMembers() {
-        var spaces = await this.getSpaces();
-        var lists = await this.getFolderlessLists(spaces[0].id);
+        var lists = await this.getLists();
         var { body } = await this.clickup.lists.getMembers(lists[0].id);
         var members: Array<Member> = body.members;
         return members;
+    }
+
+    async newTask(data: any) {
+        var lists = await this.getLists();
+        var { body } = await this.clickup.lists.createTask(lists[0].id, data);
+        return body;
     }
 }

@@ -66,11 +66,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Command was executed');
 	}
 
-	async function getMembers() {
-		return await wrapper.getMembers();
-	}
-
-
 	function newTask() {
 		// Create and show a new webview
 		const panel = vscode.window.createWebviewPanel(
@@ -97,6 +92,15 @@ export async function activate(context: vscode.ExtensionContext) {
 								data: await wrapper.getMembers()
 							});
 							return;
+						case "error":
+							vscode.window.showErrorMessage(message.args);
+							break;
+						case "newTask":
+							var response = await wrapper.newTask(message.args);
+							vscode.window.showInformationMessage('newTask:' + response.id);
+							panel.dispose();
+							reloadTasks();
+							break;
 					}
 				},
 				undefined,

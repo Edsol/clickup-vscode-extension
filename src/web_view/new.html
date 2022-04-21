@@ -3,24 +3,21 @@
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <div id="app">
-	<form>
-		<div class="form-group">
-			<label for="title">Title</label>
-			<input type="text" class="form-control" id="title" placeholder="Title of task">
-		</div>
-		<div class="form-group">
-			<label for="assignTo">Assign to</label>
-			<select class="form-control" id="assignTo">
-				<option v-for="member in members" v-bind:key="member.id" value="{{member.id}}">{{member.username}}</option>
-			</select>
-		</div>
-		<div class="form-group">
-			<label for="description">Description</label>
-			<textarea class="form-control" id="description" rows="3" placeholder="Description of task"></textarea>
-		</div>
-		<hr>
-		<button type="submit" class="btn btn-primary">Create Task</button>
-	</form>
+	<div class="form-group">
+		<label for="name">Name</label>
+		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="name">
+	</div>
+	<div class="form-group">
+		<label for="assignTo">Assign to</label>
+		<select class="form-control" id="assignTo" v-model="selectedMember">
+			<option v-for="member in members" v-bind:value="member.id">{{member.username}}</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="description">Description</label>
+		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="description"></textarea>
+	</div>
+	<button type="button" class="btn btn-primary" @click="checkForm">Create Task</button>
 </div>
 
 <script>
@@ -29,11 +26,14 @@
 	Vue.createApp({
 		data() {
 			return {
-				members: []
+				members: [],
+				name: null,
+				description: null,
+				selectedMember: null
 			};
 		},
 		mounted(){
-			vscode.postMessage({command: 'getMembers'})
+			this.sendMessageToBackend('getMembers');
 
 			window.addEventListener('message', event => {
 				const data = event.data;
@@ -45,6 +45,25 @@
 				}
 			});
 		},
-		methods: {}
+		methods: {
+			checkForm: function (e) {
+				if (!this.name) {
+					this.sendMessageToBackend('error','Title is required.');
+				}else if (!this.description) {
+					this.sendMessageToBackend('error','Description is required.');
+				}else{
+					this.sendMessageToBackend('newTask',{
+						name: this.name,
+						description: this.description,
+						assignees:[
+							this.selectedMember
+						]
+					});
+				}
+			},
+			sendMessageToBackend(command = null, args = null){
+				vscode.postMessage({command: command,args: args});
+			}
+		}
 	}).mount('#app')
 </script>
