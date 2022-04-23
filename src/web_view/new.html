@@ -9,7 +9,8 @@
 	</div>
 	<div class="form-group">
 		<label for="assignTo">Assign to</label>
-		<select class="form-control" id="assignTo" v-model="selectedMember">
+		<select class="form-select" id="assignTo" v-model="selectedMember">
+			<option value='' disabled>Select one member</option>
 			<option v-for="member in members" v-bind:value="member.id">{{member.username}}</option>
 		</select>
 	</div>
@@ -29,7 +30,7 @@
 				members: [],
 				name: null,
 				description: null,
-				selectedMember: null
+				selectedMember: ''
 			};
 		},
 		mounted(){
