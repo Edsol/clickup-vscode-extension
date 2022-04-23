@@ -98,15 +98,14 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.openTextDocument(uri).then((document) => {
 			newTaskPanel.webview.html = document.getText();
 
+			newTaskPanel.webview.postMessage({
+				command: 'loadMembers',
+				data: storedMembers.members
+			});
+
 			newTaskPanel.webview.onDidReceiveMessage(
 				async message => {
 					switch (message.command) {
-						case 'getMembers':
-							newTaskPanel.webview.postMessage({
-								command: message.command,
-								data: storedMembers.members
-							});
-							return;
 						case "error":
 							vscode.window.showErrorMessage(message.args);
 							break;
@@ -128,7 +127,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		console.log(taskItem);
 		const editTaskPanel = vscode.window.createWebviewPanel(
 			'editTask',
-			'edit Clickup task',
+			'Edit: ' + taskItem.task.name,
 			vscode.ViewColumn.One,
 			{
 				enableScripts: true,
@@ -142,29 +141,31 @@ export async function activate(context: vscode.ExtensionContext) {
 			editTaskPanel.webview.html = document.getText();
 
 			editTaskPanel.webview.postMessage({
+				command: 'loadMembers',
+				data: storedMembers.members
+			});
+
+			editTaskPanel.webview.postMessage({
 				command: 'taskData',
 				data: taskItem.task
 			});
 
 			editTaskPanel.webview.onDidReceiveMessage(
 				async message => {
-					// switch (message.command) {
-					// 	case 'getMembers':
-					// 		editTaskPanel.webview.postMessage({
-					// 			command: message.command,
-					// 			data: storedMembers.members
-					// 		});
-					// 		return;
-					// 	case "error":
-					// 		vscode.window.showErrorMessage(message.args);
-					// 		break;
-					// 	case "newTask":
-					// 		var response = await wrapper.newTask(message.args);
-					// 		vscode.window.showInformationMessage('newTask:' + response.id);
-					// 		editTaskPanel.dispose();
-					// 		reloadTasks();
-					// 		break;
-					// }
+					switch (message.command) {
+						case 'getMembers':
+							editTaskPanel.webview.postMessage({
+								command: message.command,
+								data: storedMembers.members
+							});
+							return;
+						case "error":
+							vscode.window.showErrorMessage(message.args);
+							break;
+						case "updateTask":
+							console.log('updateTask', message.args);
+							break;
+					}
 				},
 				undefined,
 				context.subscriptions

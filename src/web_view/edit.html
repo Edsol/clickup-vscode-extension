@@ -1,25 +1,35 @@
 <script src="https://unpkg.com/vue@3"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
 
 <div id="app">
+	<a v-bind:href="task.url">
+		<span class="badge bg-primary float-end" data-toggle="tooltip" title="open webpage task">
+			{{task.id}}
+		</span>
+	</a>
 	<div class="form-group">
 		<label for="name">Name</label>
-		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="name">
+		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="task.name" />
 	</div>
 	<div class="form-group">
 		<label for="assignTo">Assign to</label>
 		<select class="form-select" id="assignTo" v-model="selectedMember">
-			<option value='' disabled>Select one member</option>
-			<option v-for="member in members" v-bind:value="member.id">{{member.username}}</option>
+			<option value="" disabled>Select one member</option>
+			<option v-for="member in members" v-bind:value="member.id">
+				{{member.username}}
+			</option>
 		</select>
 	</div>
 	<div class="form-group">
 		<label for="description">Description</label>
-		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="description"></textarea>
+		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="task.description">
+		</textarea>
 	</div>
-	<br>
-	<button type="button" class="btn btn-primary" @click="checkForm">Update Task</button>
+	<br />
+	<button type="button" class="btn btn-primary" @click="checkForm">
+		Update Task
+	</button>
 </div>
 
 <script>
@@ -28,51 +38,55 @@
 	Vue.createApp({
 		data() {
 			return {
-                task: null,
+				task: {
+					id: null,
+					url: '#',
+					description: null,
+					name: null
+				},
 				members: [],
-				name: null,
-				description: null,
-				selectedMember: ''
+				selectedMember: "",
 			};
 		},
-		mounted(){
-			this.sendMessageToBackend('getMembers');
+		mounted() {
+			this.sendMessageToBackend("getMembers");
 
-			window.addEventListener('message', event => {
+			window.addEventListener("message", (event) => {
 				const data = event.data;
-				
+
 				switch (data.command) {
-						case 'taskData':
-                            this.popolateFields(data.data);
+					case "loadMembers":
+						this.members = data.data;
+						break;
+					case "taskData":
+						this.popolateFields(data.data);
 						break;
 				}
 			});
 		},
 		methods: {
-            popolateFields(task){
-                this.task = task;
-                console.log('task',task);
-                this.name = task.name;
-                this.description = task.description;
-            },
+			popolateFields(task) {
+				this.task = task;
+				this.selectedMember = task.assignees[0].id;
+			},
 			checkForm: function (e) {
-				if (!this.name) {
-					this.sendMessageToBackend('error','Title is required.');
-				}else if (!this.description) {
-					this.sendMessageToBackend('error','Description is required.');
-				}else{
-					this.sendMessageToBackend('newTask',{
-						name: this.name,
-						description: this.description,
-						assignees:[
-							this.selectedMember
-						]
+				if (!this.task.name) {
+					this.sendMessageToBackend("error", "Title is required.");
+				} else if (!this.task.description) {
+					this.sendMessageToBackend("error", "Description is required.");
+				} else {
+					console.log(this.task);
+					this.sendMessageToBackend("updateTask", {
+						task: this.task
 					});
 				}
 			},
-			sendMessageToBackend(command = null, args = null){
-				vscode.postMessage({command: command,args: args});
-			}
-		}
-	}).mount('#app')
+			sendMessageToBackend(command = null, args = null) {
+				vscode.postMessage({
+					command: command,
+					args: args
+				});
+			},
+		},
+	}).mount("#app");
 </script>

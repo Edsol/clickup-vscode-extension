@@ -41,9 +41,9 @@
 				const data = event.data;
 				
 				switch (data.command) {
-						case 'getMembers':
-							this.members = data.data;
-						break;
+					case 'loadMembers':
+						this.members = data.data;
+					break;
 				}
 			});
 		},
