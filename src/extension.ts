@@ -7,6 +7,7 @@ import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
 import { Member, StoredMembers } from './types';
+import { TaskItem } from './tree_view/items/task_item';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -83,7 +84,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	function newTask() {
 		// Create and show a new webview
-		const panel = vscode.window.createWebviewPanel(
+		const newTaskPanel = vscode.window.createWebviewPanel(
 			'newTask',
 			'new Clickup task',
 			vscode.ViewColumn.One,
@@ -95,13 +96,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		var uri = path.join(context.extensionPath, 'src', 'web_view', 'new.html');
 		vscode.workspace.openTextDocument(uri).then((document) => {
-			panel.webview.html = document.getText();
+			newTaskPanel.webview.html = document.getText();
 
-			panel.webview.onDidReceiveMessage(
+			newTaskPanel.webview.onDidReceiveMessage(
 				async message => {
 					switch (message.command) {
 						case 'getMembers':
-							panel.webview.postMessage({
+							newTaskPanel.webview.postMessage({
 								command: message.command,
 								data: storedMembers.members
 							});
@@ -112,7 +113,7 @@ export async function activate(context: vscode.ExtensionContext) {
 						case "newTask":
 							var response = await wrapper.newTask(message.args);
 							vscode.window.showInformationMessage('newTask:' + response.id);
-							panel.dispose();
+							newTaskPanel.dispose();
 							reloadTasks();
 							break;
 					}
@@ -122,11 +123,61 @@ export async function activate(context: vscode.ExtensionContext) {
 			);
 		});
 	}
+
+	function editTask(taskItem: TaskItem) {
+		console.log(taskItem);
+		const editTaskPanel = vscode.window.createWebviewPanel(
+			'editTask',
+			'edit Clickup task',
+			vscode.ViewColumn.One,
+			{
+				enableScripts: true,
+				localResourceRoots: []
+			}
+		);
+
+		var uri = path.join(context.extensionPath, 'src', 'web_view', 'edit.html');
+
+		vscode.workspace.openTextDocument(uri).then((document) => {
+			editTaskPanel.webview.html = document.getText();
+
+			editTaskPanel.webview.postMessage({
+				command: 'taskData',
+				data: taskItem.task
+			});
+
+			editTaskPanel.webview.onDidReceiveMessage(
+				async message => {
+					// switch (message.command) {
+					// 	case 'getMembers':
+					// 		editTaskPanel.webview.postMessage({
+					// 			command: message.command,
+					// 			data: storedMembers.members
+					// 		});
+					// 		return;
+					// 	case "error":
+					// 		vscode.window.showErrorMessage(message.args);
+					// 		break;
+					// 	case "newTask":
+					// 		var response = await wrapper.newTask(message.args);
+					// 		vscode.window.showInformationMessage('newTask:' + response.id);
+					// 		editTaskPanel.dispose();
+					// 		reloadTasks();
+					// 		break;
+					// }
+				},
+				undefined,
+				context.subscriptions
+			);
+		});
+	}
+
 	vscode.commands.registerCommand('clickup.setToken', setToken);
 	vscode.commands.registerCommand('clickup.getToken', getToken);
 	vscode.commands.registerCommand('clickup.deleteTasks', deleteTasks);
 	vscode.commands.registerCommand('clickup.refreshTasksList', reloadTasks);
 	vscode.commands.registerCommand('clickup.newTask', newTask);
+	vscode.commands.registerCommand('clickup.editTask', editTask);
 }
 
 // this method is called when your extension is deactivated

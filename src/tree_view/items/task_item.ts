@@ -8,7 +8,7 @@ export class TaskItem extends TreeItem {
         public readonly collapsibleState: TreeItemCollapsibleState,
     ) {
         super(task.name, collapsibleState);
-        this.tooltip = 'tooltip';
+        // this.tooltip = 'tooltip';
         var iconName = this.getIcon(task.priority);
         this.iconPath = {
             light: path.join(__filename, '..', '..', '..', '..', 'resources', 'taskItem', iconName),

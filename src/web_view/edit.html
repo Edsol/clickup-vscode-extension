@@ -19,7 +19,7 @@
 		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="description"></textarea>
 	</div>
 	<br>
-	<button type="button" class="btn btn-primary" @click="checkForm">Create Task</button>
+	<button type="button" class="btn btn-primary" @click="checkForm">Update Task</button>
 </div>
 
 <script>
@@ -28,6 +28,7 @@
 	Vue.createApp({
 		data() {
 			return {
+                task: null,
 				members: [],
 				name: null,
 				description: null,
@@ -41,13 +42,19 @@
 				const data = event.data;
 				
 				switch (data.command) {
-						case 'getMembers':
-							this.members = data.data;
+						case 'taskData':
+                            this.popolateFields(data.data);
 						break;
 				}
 			});
 		},
 		methods: {
+            popolateFields(task){
+                this.task = task;
+                console.log('task',task);
+                this.name = task.name;
+                this.description = task.description;
+            },
 			checkForm: function (e) {
 				if (!this.name) {
 					this.sendMessageToBackend('error','Title is required.');
