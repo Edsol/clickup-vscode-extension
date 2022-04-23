@@ -6,6 +6,7 @@ import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
+import { Member, StoredMembers } from './types';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -24,9 +25,16 @@ export async function activate(context: vscode.ExtensionContext) {
 		console.log('no tasks found');
 		var tasks = await wrapper.getAllTasks();
 		storeTasks(tasks);
-	} else {
-		console.log('tasks founds:', storedTasks);
 	}
+
+	var storedMembers: StoredMembers = await storageManager.getValue(constants.MEMBERS_STORED_KEY);
+
+	if (storedMembers === undefined || storedMembers.members.length === 0) {
+		console.log('no members found');
+		var members = await wrapper.getMembers();
+		storeMembers(members);
+	}
+
 	var wrapper = new ApiWrapper(token);
 	var mainProvider;
 
@@ -47,6 +55,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		storageManager.setValue(constants.TASKS_STORED_KEY, {
 			time: Date.now(),
 			tasks: tasks
+		});
+	}
+
+	function storeMembers(members: Array<Member>) {
+		storageManager.setValue(constants.MEMBERS_STORED_KEY, {
+			time: Date.now(),
+			members: members
 		});
 	}
 
@@ -86,10 +101,9 @@ export async function activate(context: vscode.ExtensionContext) {
 				async message => {
 					switch (message.command) {
 						case 'getMembers':
-							//TODO: fetch members and save it at extension startup 
 							panel.webview.postMessage({
 								command: message.command,
-								data: await wrapper.getMembers()
+								data: storedMembers.members
 							});
 							return;
 						case "error":

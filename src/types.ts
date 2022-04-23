@@ -105,6 +105,10 @@ export type Tag = {
 
 export type Watcher = {};
 
+export type StoredMembers = {
+    time: number,
+    members: Member[]
+}
 
 export type Member = {
     id: number,
