@@ -75,10 +75,8 @@
 				} else if (!this.task.description) {
 					this.sendMessageToBackend("error", "Description is required.");
 				} else {
-					console.log(this.task);
-					this.sendMessageToBackend("updateTask", {
-						task: this.task
-					});
+					//TODO: cloned object because can't send it directly,I fix it after
+					this.sendMessageToBackend("updateTask", JSON.parse(JSON.stringify(this.task)));
 				}
 			},
 			sendMessageToBackend(command = null, args = null) {

@@ -64,4 +64,15 @@ export class ApiWrapper {
         var { body } = await this.clickup.lists.createTask(lists[0].id, data);
         return body;
     }
+
+    /**
+     * @param taskId {string}
+     * @param data {Object}
+     * 
+     * @returns object
+     */
+    async updateTask(taskId: string, data: Object): Promise<any> {
+        var { body } = await this.clickup.tasks.update(taskId, data);
+        return body;
+    }
 }

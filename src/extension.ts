@@ -163,7 +163,15 @@ export async function activate(context: vscode.ExtensionContext) {
 							vscode.window.showErrorMessage(message.args);
 							break;
 						case "updateTask":
-							console.log('updateTask', message.args);
+							//TODO: update only edited fields
+							var response = await wrapper.updateTask(message.args.id, {
+								name: message.args.name,
+								description: message.args.description
+							});
+
+							if (response) {
+								vscode.window.showInformationMessage('Task updated');
+							}
 							break;
 					}
 				},
