@@ -8,6 +8,8 @@ import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
 import { Member, StoredMembers } from './types';
 import { TaskItem } from './tree_view/items/task_item';
+import { WebviewHelper } from './webviewHelper';
+import { EditWebview } from './web_view/editWebview';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -123,62 +125,60 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	}
 
-	function editTask(taskItem: TaskItem) {
+	async function editTask(taskItem: TaskItem) {
 		console.log(taskItem);
-		const editTaskPanel = vscode.window.createWebviewPanel(
-			'editTask',
-			'Edit: ' + taskItem.task.name,
-			vscode.ViewColumn.One,
-			{
-				enableScripts: true,
-				localResourceRoots: []
-			}
+
+		new EditWebview(
+			context,
+			taskItem.task.name,
+			path.join(context.extensionPath, 'src', 'web_view', 'edit.html')
 		);
 
-		var uri = path.join(context.extensionPath, 'src', 'web_view', 'edit.html');
+		// vscode.workspace
+		// 	.openTextDocument(path.join(context.extensionPath, 'src', 'web_view', 'edit.html'))
+		// 	.then((document) => {
+		// 		console.log('document.getText()', document.getText())
+		// 		editTaskPanel.webview.html = document.getText();
 
-		vscode.workspace.openTextDocument(uri).then((document) => {
-			editTaskPanel.webview.html = document.getText();
+		// 		editTaskPanel.webview.postMessage({
+		// 			command: 'loadMembers',
+		// 			data: storedMembers.members
+		// 		});
 
-			editTaskPanel.webview.postMessage({
-				command: 'loadMembers',
-				data: storedMembers.members
-			});
+		// 		editTaskPanel.webview.postMessage({
+		// 			command: 'taskData',
+		// 			data: taskItem.task
+		// 		});
 
-			editTaskPanel.webview.postMessage({
-				command: 'taskData',
-				data: taskItem.task
-			});
+		// 		editTaskPanel.webview.onDidReceiveMessage(
+		// 			async message => {
+		// 				switch (message.command) {
+		// 					case 'getMembers':
+		// 						editTaskPanel.webview.postMessage({
+		// 							command: message.command,
+		// 							data: storedMembers.members
+		// 						});
+		// 						return;
+		// 					case "error":
+		// 						vscode.window.showErrorMessage(message.args);
+		// 						break;
+		// 					case "updateTask":
+		// 						//TODO: update only edited fields
+		// 						var response = await wrapper.updateTask(message.args.id, {
+		// 							name: message.args.name,
+		// 							description: message.args.description
+		// 						});
 
-			editTaskPanel.webview.onDidReceiveMessage(
-				async message => {
-					switch (message.command) {
-						case 'getMembers':
-							editTaskPanel.webview.postMessage({
-								command: message.command,
-								data: storedMembers.members
-							});
-							return;
-						case "error":
-							vscode.window.showErrorMessage(message.args);
-							break;
-						case "updateTask":
-							//TODO: update only edited fields
-							var response = await wrapper.updateTask(message.args.id, {
-								name: message.args.name,
-								description: message.args.description
-							});
-
-							if (response) {
-								vscode.window.showInformationMessage('Task updated');
-							}
-							break;
-					}
-				},
-				undefined,
-				context.subscriptions
-			);
-		});
+		// 						if (response) {
+		// 							vscode.window.showInformationMessage('Task updated');
+		// 						}
+		// 						break;
+		// 				}
+		// 			},
+		// 			undefined,
+		// 			context.subscriptions
+		// 		);
+		// 	});
 	}
 
 	vscode.commands.registerCommand('clickup.setToken', setToken);

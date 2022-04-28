@@ -1,10 +1,10 @@
-<script src="https://unpkg.com/vue@3"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+<script src="${tagifySrc}"></script>
 
+<script src="${vueSrc}"></script>
+<link rel="stylesheet" href="${bootstrapSrc}" />
 <div id="app">
 	<a v-bind:href="task.url">
-		<span class="badge bg-primary float-end" data-toggle="tooltip" title="open webpage task">
+		<span class="badge bg-success rounded-pill float-end" data-toggle="tooltip" title="open webpage task">
 			{{task.id}}
 		</span>
 	</a>
@@ -20,6 +20,7 @@
 				{{member.username}}
 			</option>
 		</select>
+		<input id="onlyMarvel" type="text" name="mcu" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="description">Description</label>
@@ -32,7 +33,8 @@
 	</button>
 </div>
 
-<script>
+<script type="module">
+
 	const vscode = acquireVsCodeApi();
 
 	Vue.createApp({
@@ -46,6 +48,13 @@
 				},
 				members: [],
 				selectedMember: "",
+				mcuHeros: [
+					{ value: "ironman", code: "im" },
+					{ value: "antman", code: "am" },
+					{ value: "captain america", code: "ca" },
+					{ value: "thor", code: "th" },
+					{ value: "spiderman", code: "sm" }
+				  ]
 			};
 		},
 		mounted() {
@@ -63,6 +72,8 @@
 						break;
 				}
 			});
+
+			var input = document.getElementById("onlyMarvel");
 		},
 		methods: {
 			popolateFields(task) {
