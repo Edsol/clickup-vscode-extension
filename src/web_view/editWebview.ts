@@ -7,8 +7,17 @@ export class EditWebview {
     panel: vscode.WebviewPanel;
     webviewhelper: WebviewHelper;
 
+    dependecies: any;
+
     constructor(context: vscode.ExtensionContext, title: string, htmlFile: string) {
         this.context = context;
+
+        this.dependecies = {
+            bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
+            vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
+            tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js')
+        };
+
         this.panel = vscode.window.createWebviewPanel(
             'editTask',
             title,
@@ -21,13 +30,10 @@ export class EditWebview {
             }
         );
 
-        this.webviewhelper = new WebviewHelper(context, this.panel, htmlFile);
 
-        this.webviewhelper.getPanel({
-            bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
-            vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
-            tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js')
-        }, true).then((panel) => {
+
+        this.webviewhelper = new WebviewHelper(context, this.panel, htmlFile);
+        this.webviewhelper.getPanel(this.dependecies, true).then((panel) => {
             this.panel = panel as vscode.WebviewPanel;
         });
     }
