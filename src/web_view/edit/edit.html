@@ -1,0 +1,37 @@
+<script src="${tagifySrc}"></script>
+<link href="${tagifyCssSrc}" rel="stylesheet" type="text/css" />
+
+<script src="${vueSrc}"></script>
+<link rel="stylesheet" href="${bootstrapSrc}" />
+<div id="app">
+	<a v-bind:href="task.url">
+		<span class="badge bg-success rounded-pill float-end" data-toggle="tooltip" title="open webpage task">
+			{{task.id}}
+		</span>
+	</a>
+	<div class="form-group">
+		<label for="name">Name</label>
+		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="task.name" />
+	</div>
+	<div class="form-group">
+		<label for="assignTo">Assign to</label>
+		<select class="form-select" id="assignTo" v-model="selectedMember">
+			<option value="" disabled>Select one member</option>
+			<option v-for="member in members" v-bind:value="member.id">
+				{{member.username}}
+			</option>
+		</select>
+		<Tags ref="myRef" :settings="tagifySettings"/>
+	</div>
+	<div class="form-group">
+		<label for="description">Description</label>
+		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="task.description">
+		</textarea>
+	</div>
+	<br />
+	<button type="button" class="btn btn-primary" @click="checkForm">
+		Update Task
+	</button>
+</div>
+
+<script type="module" src="${vueApp}"></script>
