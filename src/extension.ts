@@ -45,8 +45,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		storedStatuses = storeStatuses(statuses);
 	}
 
-	console.log('storedStatuses', storedStatuses);
-
 	buildProvider(storedTasks.tasks);
 
 	function buildProvider(tasks: any) {
@@ -152,6 +150,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			taskItem.task,
 			{
 				members: storedMembers.members,
+				statuses: storedStatuses.statuses,
 				wrapper: wrapper
 			}
 		);

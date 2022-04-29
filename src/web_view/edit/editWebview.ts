@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
-import { Member, Task } from '../../types';
+import { Member, Statuses, Task } from '../../types';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -44,6 +44,7 @@ export class EditWebview {
 					command: 'init',
 					data: {
 						members: this.filterMembers(args.members),
+						statuses: this.filterStatuses(args.statuses),
 						task: task
 					}
 				});
@@ -86,6 +87,19 @@ export class EditWebview {
 				id: member.id,
 				value: member.username,
 				name: member.username
+			});
+		}
+
+		return result;
+	}
+
+	private filterStatuses(statuses: Array<Statuses>) {
+		var result: Array<any> = [];
+		for (var status of statuses) {
+			result.push({
+				id: status.id,
+				value: status.status,
+				name: status.status
 			});
 		}
 

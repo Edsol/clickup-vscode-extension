@@ -1,7 +1,18 @@
 
 const vscode = acquireVsCodeApi();
 
-var tagify;
+var tagifyAssignTo;
+var tagifyStatuses;
+
+const tagifyOptions = {
+    enforceWhitelist: true,
+    userInput: false,
+    dropdown: {
+        maxItems: 10,
+        enabled: 0,
+        closeOnSelect: false
+    }
+};
 
 const appData = {
     data() {
@@ -17,12 +28,15 @@ const appData = {
         };
     },
     mounted() {
-        tagify = new Tagify(document.getElementById("assignTo"), {
+        tagifyAssignTo = new Tagify(document.getElementById("assignTo"), tagifyOptions);
+        tagifyStatuses = new Tagify(document.getElementById("statuses"), {
             enforceWhitelist: true,
+            userInput: false,
+            mode: "select",
             dropdown: {
                 maxItems: 10,
                 enabled: 0,
-                closeOnSelect: false
+                closeOnSelect: true
             }
         });
 
@@ -32,9 +46,15 @@ const appData = {
             switch (message.command) {
                 case "init":
                     this.members = message.data.members;
-                    console.log('members', message.data.members);
-                    tagify.whitelist = message.data.members;
-                    tagify.addTags(message.data.members);
+                    tagifyAssignTo.whitelist = message.data.members;
+                    tagifyAssignTo.addTags(message.data.members);
+
+                    this.statuses = message.data.statuses;
+                    tagifyStatuses.whitelist = message.data.statuses;
+                    console.log('message.data.statuses', message.data.statuses, message.data.task);
+                    tagifyStatuses.addTags(message.data.task.status.status);
+
+
                     this.popolateFields(message.data.task);
                     break;
             }
