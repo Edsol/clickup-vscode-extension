@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { WebviewHelper } from './webviewHelper';
-import { Member, Task } from '../types';
+import { WebviewHelper } from '../webviewHelper';
+import { Member, Task } from '../../types';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -13,14 +13,14 @@ export class EditWebview {
 
 	constructor(context: vscode.ExtensionContext, task: Task, args: any) {
 		this.context = context;
-		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'edit.html');
+		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
 
 		this.dependecies = {
 			bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
 			vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
 			tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js'),
 			tagifyCssSrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.css'),
-			vueApp: path.join(context.extensionPath, 'src', 'web_view', 'edit', 'main.js'),
+			vueApp: path.join(context.extensionPath, 'src', 'web_view', 'edit', 'script.js'),
 		};
 
 		this.panel = vscode.window.createWebviewPanel(

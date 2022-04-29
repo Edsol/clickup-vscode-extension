@@ -14,7 +14,11 @@ export type Task = {
     folder: Folder,
     id: string,
     linkedTasks: Task[],
-    list: List,
+    list: {
+        id: string,
+        name: string,
+        access: boolean
+    }[],
     name: string,
     orderId: string,
     orderindex: string;
@@ -59,14 +63,34 @@ export type Parent = {};
 export type Status = {
     status: string,
     color: string,
+    hide_label: true,
     type: string,
     orderindex: number
 };
 
 export type List = {
+    archived: Boolean,
+    assignee: boolean,
+    deleted: Boolean,
     id: string,
+    inbound_adress: string,
     name: string,
-    access: boolean
+    orderindex: number,
+    override_statuses: boolean,
+    permission_level: string,
+    priority: number,
+    space: Space[],
+    start_date: string,
+    status: Status,
+    statuses: Statuses[]
+};
+
+export type Statuses = {
+    id: string,
+    color: string,
+    orderindex: number,
+    status: string,
+    type: string
 };
 
 export type Folder = {
@@ -93,7 +117,9 @@ export type Project = {
 };
 
 export type Space = {
-    id: string
+    id: string,
+    name: string,
+    access: boolean
 };
 
 export type Tag = {
@@ -108,7 +134,7 @@ export type Watcher = {};
 export type StoredMembers = {
     time: number,
     members: Member[]
-}
+};
 
 export type Member = {
     id: number,
@@ -128,4 +154,10 @@ export type ProfileInfo = {
     viewedVerifiedAmbassador: null,
     viewedVerifiedConsultant: null,
     viewedTopTierUser: null
+};
+
+
+export type StoredStatuses = {
+    time: number,
+    statuses: Statuses[]
 };

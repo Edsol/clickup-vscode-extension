@@ -6,8 +6,9 @@ import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
-import { Member, StoredMembers } from './types';
-import { EditWebview } from './web_view/editWebview';
+import { Member, Status, Statuses, StoredMembers, StoredStatuses } from './types';
+import { EditWebview } from './web_view/edit/editWebview';
+import { exit } from 'process';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -36,13 +37,20 @@ export async function activate(context: vscode.ExtensionContext) {
 		storeMembers(members);
 	}
 
-	var wrapper = new ApiWrapper(token);
-	var mainProvider;
+	var storedStatuses: StoredStatuses = await storageManager.getValue(constants.STATUS_STORED_KEY);
+
+	if (storedStatuses === undefined || storedStatuses.statuses.length === 0) {
+		console.log('no status found');
+		var statuses = await wrapper.getStatus();
+		storedStatuses = storeStatuses(statuses);
+	}
+
+	console.log('storedStatuses', storedStatuses);
 
 	buildProvider(storedTasks.tasks);
 
 	function buildProvider(tasks: any) {
-		mainProvider = new TasksDataProvider(tasks, constants.DEFAULT_TASK_DETAILS);
+		var mainProvider = new TasksDataProvider(tasks, constants.DEFAULT_TASK_DETAILS);
 		vscode.window.createTreeView('clickupTasksView', { treeDataProvider: mainProvider });
 	}
 
@@ -64,6 +72,15 @@ export async function activate(context: vscode.ExtensionContext) {
 			time: Date.now(),
 			members: members
 		});
+	}
+
+	function storeStatuses(statuses: Array<Statuses>) {
+		var data = {
+			time: Date.now(),
+			statuses: statuses
+		};
+		storageManager.setValue(constants.STATUS_STORED_KEY, data);
+		return data;
 	}
 
 	async function setToken() {
