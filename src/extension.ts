@@ -7,7 +7,6 @@ import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
 import { Member, StoredMembers } from './types';
-import { TaskItem } from './tree_view/items/task_item';
 import { EditWebview } from './web_view/editWebview';
 
 

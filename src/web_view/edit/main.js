@@ -1,7 +1,9 @@
 
 const vscode = acquireVsCodeApi();
 
-Vue.createApp({
+var tagify;
+
+const appData = {
     data() {
         return {
             task: {
@@ -12,44 +14,31 @@ Vue.createApp({
             },
             members: [],
             selectedMember: "",
-            mcuHeros: [
-                { value: "ironman", code: "im" },
-                { value: "antman", code: "am" },
-                { value: "captain america", code: "ca" },
-                { value: "thor", code: "th" },
-                { value: "spiderman", code: "sm" }
-            ],
-            tagifySettings: {
-                whitelist: [],
-                dropdown: {
-                    enabled: 0
-                },
-                callbacks: {
-                    add(e) {
-                        // console.log("tag added:", e.detail);
-                    }
-                }
-            },
         };
     },
     mounted() {
-        console.log('mounted');
-        this.sendMessageToBackend("getMembers");
-
-        window.addEventListener("message", (event) => {
-            const data = event.data;
-
-            switch (data.command) {
-                case "loadMembers":
-                    this.members = data.data;
-                    break;
-                case "taskData":
-                    this.popolateFields(data.data);
-                    break;
+        tagify = new Tagify(document.getElementById("assignTo"), {
+            enforceWhitelist: true,
+            dropdown: {
+                maxItems: 10,
+                enabled: 0,
+                closeOnSelect: false
             }
         });
 
-        var input = document.getElementById("onlyMarvel");
+        window.addEventListener("message", (event) => {
+            const message = event.data;
+
+            switch (message.command) {
+                case "init":
+                    this.members = message.data.members;
+                    console.log('members', message.data.members);
+                    tagify.whitelist = message.data.members;
+                    tagify.addTags(message.data.members);
+                    this.popolateFields(message.data.task);
+                    break;
+            }
+        });
     },
     methods: {
         popolateFields(task) {
@@ -72,5 +61,8 @@ Vue.createApp({
                 args: args
             });
         },
-    },
-}).mount("#app");
+    }
+};
+
+
+Vue.createApp(appData).mount("#app");

@@ -3,7 +3,10 @@
 
 <script src="${vueSrc}"></script>
 <link rel="stylesheet" href="${bootstrapSrc}" />
+
+
 <div id="app">
+	
 	<a v-bind:href="task.url">
 		<span class="badge bg-success rounded-pill float-end" data-toggle="tooltip" title="open webpage task">
 			{{task.id}}
@@ -15,13 +18,7 @@
 	</div>
 	<div class="form-group">
 		<label for="assignTo">Assign to</label>
-		<select class="form-select" id="assignTo" v-model="selectedMember">
-			<option value="" disabled>Select one member</option>
-			<option v-for="member in members" v-bind:value="member.id">
-				{{member.username}}
-			</option>
-		</select>
-		<Tags ref="myRef" :settings="tagifySettings"/>
+		<input id="assignTo" type="text" name="assignTo" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="description">Description</label>
