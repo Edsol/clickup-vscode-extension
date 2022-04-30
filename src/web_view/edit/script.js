@@ -3,6 +3,7 @@ const vscode = acquireVsCodeApi();
 
 var tagifyAssignTo;
 var tagifyStatuses;
+var tagifyTags;
 
 const tagifyOptions = {
     enforceWhitelist: true,
@@ -40,20 +41,30 @@ const appData = {
             }
         });
 
+        tagifyTags = new Tagify(document.getElementById("tags"), tagifyOptions);
+
         window.addEventListener("message", (event) => {
             const message = event.data;
 
             switch (message.command) {
                 case "init":
+                    console.log(message.data.task);
                     this.members = message.data.members;
                     tagifyAssignTo.whitelist = message.data.members;
                     tagifyAssignTo.addTags(message.data.members);
 
                     this.statuses = message.data.statuses;
                     tagifyStatuses.whitelist = message.data.statuses;
-                    console.log('message.data.statuses', message.data.statuses, message.data.task);
                     tagifyStatuses.addTags(message.data.task.status.status);
 
+                    this.tags = message.data.tags;
+                    tagifyTags.whitelist = message.data.tags;
+
+                    //TODO: refactoring
+                    message.data.task.tags.forEach((tag) => {
+                        tagifyTags.addTags(tag.name);
+                    });
+                    // tagifyTags.addTags(message.data.task.tags);
 
                     this.popolateFields(message.data.task);
                     break;

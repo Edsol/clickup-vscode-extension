@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
-import { Member, Statuses, Task } from '../../types';
+import { Member, Statuses, Task, Tag } from '../../types';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -43,9 +43,10 @@ export class EditWebview {
 				this.panel.webview.postMessage({
 					command: 'init',
 					data: {
+						task: task,
 						members: this.filterMembers(args.members),
 						statuses: this.filterStatuses(args.statuses),
-						task: task
+						tags: this.filterTags(args.tags),
 					}
 				});
 
@@ -100,6 +101,18 @@ export class EditWebview {
 				id: status.id,
 				value: status.status,
 				name: status.status
+			});
+		}
+
+		return result;
+	}
+
+	private filterTags(tags: Array<Tag>) {
+		var result: Array<any> = [];
+		for (var tag of tags) {
+			result.push({
+				value: tag.name,
+				name: tag.name
 			});
 		}
 

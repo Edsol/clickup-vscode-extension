@@ -122,6 +122,11 @@ export type Space = {
     access: boolean
 };
 
+export type StoredTags = {
+    time: number,
+    tags: Tag[]
+};
+
 export type Tag = {
     name: string,
     tagFg: string,

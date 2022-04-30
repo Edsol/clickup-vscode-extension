@@ -6,9 +6,8 @@ import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
-import { Member, Status, Statuses, StoredMembers, StoredStatuses } from './types';
+import { Member, Statuses, StoredMembers, StoredStatuses, StoredTags, Tag } from './types';
 import { EditWebview } from './web_view/edit/editWebview';
-import { exit } from 'process';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -45,6 +44,19 @@ export async function activate(context: vscode.ExtensionContext) {
 		storedStatuses = storeStatuses(statuses);
 	}
 
+	var storedTags: StoredTags = await storageManager.getValue(constants.TAGS_STORED_KEY);
+	if (storedTags === undefined || storedTags.tags.length === 0) {
+		console.log('no tags found');
+		var tags = await wrapper.getTags();
+		storedTags = storeTags(tags);
+	}
+
+
+
+
+
+
+
 	buildProvider(storedTasks.tasks);
 
 	function buildProvider(tasks: any) {
@@ -78,6 +90,15 @@ export async function activate(context: vscode.ExtensionContext) {
 			statuses: statuses
 		};
 		storageManager.setValue(constants.STATUS_STORED_KEY, data);
+		return data;
+	}
+
+	function storeTags(tags: Array<Tag>) {
+		var data = {
+			time: Date.now(),
+			tags: tags
+		};
+		storageManager.setValue(constants.TAGS_STORED_KEY, data);
 		return data;
 	}
 
@@ -151,6 +172,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			{
 				members: storedMembers.members,
 				statuses: storedStatuses.statuses,
+				tags: storedTags.tags,
 				wrapper: wrapper
 			}
 		);
