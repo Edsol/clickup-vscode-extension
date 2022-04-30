@@ -4,6 +4,7 @@ const vscode = acquireVsCodeApi();
 var tagifyAssignTo;
 var tagifyStatuses;
 var tagifyTags;
+var tagifyPriorities;
 
 const tagifyOptions = {
     enforceWhitelist: true,
@@ -12,6 +13,17 @@ const tagifyOptions = {
         maxItems: 10,
         enabled: 0,
         closeOnSelect: false
+    }
+};
+
+const tagifySelectOptions = {
+    enforceWhitelist: true,
+    userInput: false,
+    mode: "select",
+    dropdown: {
+        maxItems: 10,
+        enabled: 0,
+        closeOnSelect: true
     }
 };
 
@@ -30,18 +42,10 @@ const appData = {
     },
     mounted() {
         tagifyAssignTo = new Tagify(document.getElementById("assignTo"), tagifyOptions);
-        tagifyStatuses = new Tagify(document.getElementById("statuses"), {
-            enforceWhitelist: true,
-            userInput: false,
-            mode: "select",
-            dropdown: {
-                maxItems: 10,
-                enabled: 0,
-                closeOnSelect: true
-            }
-        });
+        tagifyStatuses = new Tagify(document.getElementById("statuses"), tagifySelectOptions);
 
         tagifyTags = new Tagify(document.getElementById("tags"), tagifyOptions);
+        tagifyPriorities = new Tagify(document.getElementById("priority"), tagifySelectOptions);
 
         window.addEventListener("message", (event) => {
             const message = event.data;
@@ -65,6 +69,10 @@ const appData = {
                         tagifyTags.addTags(tag.name);
                     });
                     // tagifyTags.addTags(message.data.task.tags);
+
+                    this.priorities = message.data.priorities;
+                    tagifyPriorities.whitelist = message.data.priorities;
+                    tagifyPriorities.addTags(message.data.task.priority.priority);
 
                     this.popolateFields(message.data.task);
                     break;

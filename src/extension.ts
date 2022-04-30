@@ -6,7 +6,7 @@ import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { TasksDataProvider } from './tree_view/tasks_data_provider';
-import { Member, Statuses, StoredMembers, StoredStatuses, StoredTags, Tag } from './types';
+import { Member, Statuses, StoredMembers, StoredStatuses, StoredTags, StoredPriorities, Tag, Priority } from './types';
 import { EditWebview } from './web_view/edit/editWebview';
 
 
@@ -52,7 +52,12 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 
-
+	var storedPriorities: StoredPriorities = await storageManager.getValue(constants.PRIORITIES_STORED_KEY);
+	if (storedPriorities === undefined || storedPriorities.priorities.length === 0) {
+		console.log('no priorities found');
+		var priorities = await wrapper.getPriorities();
+		storedPriorities = storePriorities(priorities);
+	}
 
 
 
@@ -101,6 +106,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		storageManager.setValue(constants.TAGS_STORED_KEY, data);
 		return data;
 	}
+
+	function storePriorities(priorities: Array<Priority>) {
+		var data = {
+			time: Date.now(),
+			priorities: priorities
+		};
+		storageManager.setValue(constants.PRIORITIES_STORED_KEY, data);
+		return data;
+	}
+
+
 
 	async function setToken() {
 		if (await tokenInput.setToken()) {
@@ -170,10 +186,11 @@ export async function activate(context: vscode.ExtensionContext) {
 			context,
 			taskItem.task,
 			{
+				wrapper: wrapper,
 				members: storedMembers.members,
 				statuses: storedStatuses.statuses,
 				tags: storedTags.tags,
-				wrapper: wrapper
+				priorities: storedPriorities.priorities,
 			}
 		);
 	});

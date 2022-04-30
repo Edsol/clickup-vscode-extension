@@ -100,6 +100,10 @@ export type Folder = {
     access: boolean
 };
 
+export type StoredPriorities = {
+    time: number,
+    priorities: Priority[]
+};
 
 
 export type Priority = {
@@ -119,7 +123,16 @@ export type Project = {
 export type Space = {
     id: string,
     name: string,
-    access: boolean
+    private: boolean,
+    access: boolean,
+    statuses: Status[],
+    multiple_assignees: boolean,
+    features: {
+        priorities: {
+            enabled: boolean,
+            priorities: Priority[]
+        }
+    }
 };
 
 export type StoredTags = {

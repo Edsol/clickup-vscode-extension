@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
-import { Member, Statuses, Task, Tag } from '../../types';
+import { Member, Statuses, Task, Tag, Priority } from '../../types';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -47,6 +47,7 @@ export class EditWebview {
 						members: this.filterMembers(args.members),
 						statuses: this.filterStatuses(args.statuses),
 						tags: this.filterTags(args.tags),
+						priorities: this.filterPriorities(args.priorities)
 					}
 				});
 
@@ -118,5 +119,20 @@ export class EditWebview {
 
 		return result;
 	}
+
+	private filterPriorities(priorities: Array<Priority>) {
+		var result: Array<any> = [];
+		for (var priority of priorities) {
+			result.push({
+				id: priority.id,
+				value: priority.priority,
+				name: priority.priority
+			});
+		}
+
+		return result;
+	}
+
+
 
 }
