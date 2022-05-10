@@ -15,12 +15,6 @@ export class ApiWrapper {
         return body.teams;
     }
 
-    // async getTeamId() {
-    //     var teams = await this.getTeams();
-    //     return teams[0].id;
-    // }
-
-
     async getSpaces() {
         var teams = await this.getTeams();
         var teamId = teams[0].id;
@@ -28,64 +22,81 @@ export class ApiWrapper {
         return body.spaces;
     }
 
-    async getFolderlessLists(spaceId: String) {
+    async getFolderLists(spaceId: string) {
+        console.log('getfolderlist id', spaceId);
         const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
-
         return body.lists;
     }
 
-    async getLists() {
-        var spaces = await this.getSpaces();
-        return await this.getFolderlessLists(spaces[0].id);
-    }
-
-    async getAllTasks() {
-        var lists = await this.getLists();
-        var { body } = await this.clickup.lists.getTasks(lists[0].id);
+    async getTasks(listId: string) {
+        var { body } = await this.clickup.lists.getTasks(listId);
         var tasks: Array<Task> = body.tasks;
         return tasks;
     }
 
-    async extractStatus(tasks: any) {
-        tasks.map((task: any) => {
-            console.log(task);
-        });
-    }
-
-    async getMembers() {
-        var lists = await this.getLists();
-        var { body } = await this.clickup.lists.getMembers(lists[0].id);
-        var members: Array<Member> = body.members;
-        return members;
-    }
-
-    async getStatus() {
-        var lists = await this.getLists();
-        var { body } = await this.clickup.lists.get(lists[0].id);
-        var status: Array<Statuses> = body.statuses;
-        return status;
-    }
-
-    async getTags() {
-        var spaces = await this.getSpaces();
-        var { body } = await this.clickup.spaces.getTags(spaces[0].id);
-        var tags: Array<Tag> = body.tags;
-        return tags;
-    }
-
-    async getPriorities() {
-        var spaces: Array<Space> = await this.getSpaces();
-        var priorities: Array<Priority> = spaces[0].features.priorities.priorities;
-        return priorities;
-    }
+    // async getTeamId() {
+    //     var teams = await this.getTeams();
+    //     return teams[0].id;
+    // }
 
 
 
-    async newTask(data: any) {
-        var lists = await this.getLists();
-        var { body } = await this.clickup.spaces.getTags(lists[0].id, data);
-        return body;
-    }
+
+    // async getFolderlessLists(spaceId: String) {
+    //     const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
+
+    //     return body.lists;
+    // }
+
+
+
+    // async getAllTasks() {
+    //     var lists = await this.getLists();
+    //     var { body } = await this.clickup.lists.getTasks(lists[0].id);
+    //     var tasks: Array<Task> = body.tasks;
+    //     return tasks;
+    // }
+
+    // async extractStatus(tasks: any) {
+    //     tasks.map((task: any) => {
+    //         console.log(task);
+    //     });
+    // }
+
+    // async getMembers() {
+    //     var lists = await this.getLists();
+    //     var { body } = await this.clickup.lists.getMembers(lists[0].id);
+    //     var members: Array<Member> = body.members;
+    //     return members;
+    // }
+
+    // async getStatus() {
+    //     var lists = await this.getLists();
+    //     var { body } = await this.clickup.lists.get(lists[0].id);
+    //     var status: Array<Statuses> = body.statuses;
+    //     return status;
+    // }
+
+    // async getTags() {
+    //     var spaces = await this.getSpaces();
+    //     var { body } = await this.clickup.spaces.getTags(spaces[0].id);
+    //     var tags: Array<Tag> = body.tags;
+    //     return tags;
+    // }
+
+    // async getPriorities() {
+    //     var spaces: Array<Space> = await this.getSpaces();
+    //     var priorities: Array<Priority> = spaces[0].features.priorities.priorities;
+    //     return priorities;
+    // }
+
+
+
+    // async newTask(data: any) {
+    //     var lists = await this.getLists();
+    //     var { body } = await this.clickup.spaces.getTags(lists[0].id, data);
+    //     return body;
+    // }
 
     /**
      * @param taskId {string}
