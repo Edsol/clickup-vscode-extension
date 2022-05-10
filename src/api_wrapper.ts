@@ -94,6 +94,7 @@ export class ApiWrapper {
      * @returns object
      */
     async updateTask(taskId: string, data: Object): Promise<any> {
+        console.log('updateTask data', data);
         var { body } = await this.clickup.tasks.update(taskId, data);
         return body;
     }

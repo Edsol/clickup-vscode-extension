@@ -18,19 +18,19 @@
 	</div>
 	<div class="form-group">
 		<label for="assignTo">Assign to</label>
-		<input id="assignTo" type="text" name="assignTo" autocomplete>
+		<input id="assignTo" type="text" name="assignTo" @onchange="change()" autocomplete>
 	</div>
 	<div class="form-group">
-		<label for="statuses">Status</label>
-		<input id="statuses" type="text" name="statuses" autocomplete>
+		<label for="status">Status</label>
+		<input id="status" type="text" name="status" @change="onChange($event)" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="tags">Tags</label>
-		<input id="tags" type="text" name="tags" autocomplete>
+		<input id="tags" type="text" name="tags" @change="onChange($event)" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="priority">Priority</label>
-		<input id="priority" type="text" name="priority" autocomplete>
+		<input id="priority" type="text" name="priority" @change="onChange($event)" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="description">Description</label>
@@ -38,9 +38,7 @@
 		</textarea>
 	</div>
 	<br />
-	<button type="button" class="btn btn-primary" @click="checkForm">
-		Update Task
-	</button>
+	<button type="button" class="btn btn-primary" @click="save">Save</button>
 </div>
 
 <script type="module" src="${vueApp}"></script>

@@ -6,6 +6,8 @@ var tagifyStatuses;
 var tagifyTags;
 var tagifyPriorities;
 
+var taskCopy;
+
 const tagifyOptions = {
     enforceWhitelist: true,
     userInput: false,
@@ -41,18 +43,24 @@ const appData = {
         };
     },
     mounted() {
-        tagifyAssignTo = new Tagify(document.getElementById("assignTo"), tagifyOptions);
-        tagifyStatuses = new Tagify(document.getElementById("statuses"), tagifySelectOptions);
+        var assignToElement = document.getElementById("assignTo");
+        var statusesElement = document.getElementById("status");
+        var tagsElement = document.getElementById("tags");
+        var priorityElement = document.getElementById("priority");
 
-        tagifyTags = new Tagify(document.getElementById("tags"), tagifyOptions);
-        tagifyPriorities = new Tagify(document.getElementById("priority"), tagifySelectOptions);
+        tagifyAssignTo = new Tagify(assignToElement, tagifyOptions);
+        tagifyStatuses = new Tagify(statusesElement, tagifySelectOptions);
+        tagifyTags = new Tagify(tagsElement, tagifyOptions);
+        tagifyPriorities = new Tagify(priorityElement, tagifySelectOptions);
 
         window.addEventListener("message", (event) => {
             const message = event.data;
 
             switch (message.command) {
                 case "init":
-                    console.log(message.data.task);
+                    this.task = message.data.task;
+                    this.taskCopy = JSON.parse(JSON.stringify(this.task));
+                    console.log(this.taskCopy);
                     this.members = message.data.members;
                     tagifyAssignTo.whitelist = message.data.members;
                     tagifyAssignTo.addTags(message.data.members);
@@ -73,22 +81,28 @@ const appData = {
                     this.priorities = message.data.priorities;
                     tagifyPriorities.whitelist = message.data.priorities;
                     tagifyPriorities.addTags(message.data.task.priority.priority);
-
-                    this.popolateFields(message.data.task);
                     break;
             }
         });
     },
     methods: {
-        popolateFields(task) {
-            this.task = task;
-            this.selectedMember = task.assignees[0].id;
+        onChange(e) {
+            var key = e.currentTarget.id;
+            var value = e.currentTarget.value;
+            switch (key) {
+                case 'status':
+                    var data = JSON.parse(value);
+                    this.task[key] = data[0];
+                    break;
+
+                default:
+                    this.task[key] = JSON.parse(value);
+                    break;
+            }
         },
-        checkForm: function (e) {
-            if (!this.task.name) {
+        save: function (e) {
+            if (!this.task.name === '') {
                 this.sendMessageToBackend("error", "Title is required.");
-            } else if (!this.task.description) {
-                this.sendMessageToBackend("error", "Description is required.");
             } else {
                 //TODO: cloned object because can't send it directly,I fix it after
                 this.sendMessageToBackend("updateTask", JSON.parse(JSON.stringify(this.task)));

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
-import { Member, Statuses, Task, Tag, Priority } from '../../types';
+import { Member, Statuses, Task, Tag, Priority, Status } from '../../types';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -10,10 +10,12 @@ export class EditWebview {
 	htmlFile: string;
 
 	dependecies: any;
+	statuses: Status;
 
 	constructor(context: vscode.ExtensionContext, task: Task, args: any) {
 		this.context = context;
 		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
+		this.statuses = args.statuses;
 
 		this.dependecies = {
 			bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
@@ -67,8 +69,10 @@ export class EditWebview {
 								//TODO: update only edited fields
 								var response = await args.wrapper.updateTask(message.args.id, {
 									name: message.args.name,
-									description: message.args.description
+									description: message.args.description,
+									status: message.args.status.name
 								});
+
 
 								if (response) {
 									vscode.window.showInformationMessage('Task updated');
@@ -106,6 +110,10 @@ export class EditWebview {
 		}
 
 		return result;
+	}
+
+	private findStatuses(id: String) {
+		return Object(this.statuses).find((status: any) => status.id === id);
 	}
 
 	private filterTags(tags: Array<Tag>) {
