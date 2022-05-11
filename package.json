@@ -15,7 +15,7 @@
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTasks",
 		"onCommand:clickup.refreshTasksList",
-		"onCommand:clickup:newTask",
+		"onCommand:clickup:addTask",
 		"onCommand:clickup:editTask",
 		"onView:clickupTasksView"
 	],
@@ -57,11 +57,6 @@
 				"icon": "$(refresh)"
 			},
 			{
-				"command": "clickup.newTask",
-				"title": "New",
-				"icon": "$(add)"
-			},
-			{
 				"command": "clickup.groupByStatus",
 				"title": "Group by status"
 			},
@@ -78,17 +73,17 @@
 				"command": "clickup.editTask",
 				"title": "Edit",
 				"icon": "$(pencil)"
+			},
+			{
+				"command": "clickup.addTask",
+				"title": "addTask",
+				"icon": "$(add)"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
 					"command": "clickup.refreshTasksList",
-					"when": "view == clickupTasksView",
-					"group": "navigation"
-				},
-				{
-					"command": "clickup.newTask",
 					"when": "view == clickupTasksView",
 					"group": "navigation"
 				},
@@ -110,6 +105,11 @@
 				{
 					"command": "clickup.deleteTask",
 					"when": "viewItem == taskItem"
+				},
+				{
+					"command": "clickup.addTask",
+					"when": "viewItem == ListItem",
+					"group": "inline"
 				}
 			]
 		},
@@ -153,6 +153,7 @@
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^6.1.1",
 		"@yaireo/tagify": "^4.11.0",
+		"axios": "^0.27.2",
 		"bootstrap": "^5.1.3",
 		"clickup.js": "^3.0.1",
 		"vue": "^3.2.33"

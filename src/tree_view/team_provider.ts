@@ -3,13 +3,14 @@ import * as types from '../types';
 import { TaskItem } from './items/task_item';
 import { ListItem } from './list_item';
 import { SpaceItem } from './space_item';
+import { TeamItem } from './team_item';
 
-export class SpaceProviderProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-    spaces: Array<types.Space>;
+export class TeamProviderProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+    teams: Array<any>;
     apiwrapper: any;
 
-    constructor(spaces: Array<types.Space>, propertyToShow: Array<string>, apiWrapper: any) {
-        this.spaces = spaces;
+    constructor(teams: Array<any>, propertyToShow: Array<string>, apiWrapper: any) {
+        this.teams = teams;
         this.apiwrapper = apiWrapper;
     }
 
@@ -18,15 +19,22 @@ export class SpaceProviderProvider implements vscode.TreeDataProvider<vscode.Tre
     }
 
     async getChildren(element?: (types.Space)): Promise<(vscode.TreeItem)[]> {
-        console.log('getChildren', element);
         var resolve: any = [];
+
         if (element === undefined) {
-            resolve = Object.values(this.spaces).map((space: types.Space) => {
-                return new SpaceItem(
-                    space.id,
-                    space.name,
+            resolve = Object.values(this.teams).map((team: any) => {
+                return new TeamItem(
+                    team.id,
+                    team.name,
                     vscode.TreeItemCollapsibleState.Collapsed,
                 );
+            });
+        }
+
+        if (element instanceof TeamItem) {
+            var spaces: Array<any> = await this.apiwrapper.getSpaces(element.id);
+            resolve = Object.values(spaces).map((space: any) => {
+                return new SpaceItem(space.id, space.name, vscode.TreeItemCollapsibleState.Collapsed);
             });
         }
 
@@ -38,12 +46,12 @@ export class SpaceProviderProvider implements vscode.TreeDataProvider<vscode.Tre
         }
 
         if (element instanceof ListItem) {
-            console.log('listItem', element);
             var tasks: Array<types.Task> = await this.apiwrapper.getTasks(element.id);
             resolve = Object.values(tasks).map((task: types.Task) => {
                 return new TaskItem(task, vscode.TreeItemCollapsibleState.None);
             });
         }
+
         return Promise.resolve(resolve);
     }
 

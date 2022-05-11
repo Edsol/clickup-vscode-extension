@@ -4,6 +4,9 @@
 
 <div id="app">
 	<div class="form-group">
+		<label>{{listItem.label}}</label>
+	</div>
+	<div class="form-group">
 		<label for="name">Name</label>
 		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="name">
 	</div>
@@ -31,7 +34,8 @@
 				members: [],
 				name: null,
 				description: null,
-				selectedMember: ''
+				selectedMember: '',
+				listItem: {}
 			};
 		},
 		mounted(){
@@ -39,10 +43,10 @@
 
 			window.addEventListener('message', event => {
 				const data = event.data;
-				
+				console.log('data',data);
 				switch (data.command) {
 					case 'loadMembers':
-						this.members = data.data;
+						this.listItem = data.listItem;
 					break;
 				}
 			});

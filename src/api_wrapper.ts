@@ -1,5 +1,5 @@
 var clickup = require('clickup.js');
-import { Task, Member, Status, Statuses, Tag, Priority, Space } from './types';
+import { Task } from './types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -15,15 +15,12 @@ export class ApiWrapper {
         return body.teams;
     }
 
-    async getSpaces() {
-        var teams = await this.getTeams();
-        var teamId = teams[0].id;
+    async getSpaces(teamId: string) {
         const { body } = await this.clickup.teams.getSpaces(teamId);
         return body.spaces;
     }
 
     async getFolderLists(spaceId: string) {
-        console.log('getfolderlist id', spaceId);
         const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
         return body.lists;
     }
@@ -92,11 +89,14 @@ export class ApiWrapper {
 
 
 
-    // async newTask(data: any) {
-    //     var lists = await this.getLists();
-    //     var { body } = await this.clickup.spaces.getTags(lists[0].id, data);
-    //     return body;
-    // }
+    async newTask(data: any) {
+        // var lists = await this.getLists();
+        // var { body } = await this.clickup.spaces.getTags(lists[0].id, data);
+        // return body;
+        return {
+            'id': 1
+        };
+    }
 
     /**
      * @param taskId {string}
