@@ -137,7 +137,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 	function addTask(listItem: any) {
-		console.log('element', listItem);
 		// Create and show a new webview
 		const newTaskPanel = vscode.window.createWebviewPanel(
 			'newTask',
