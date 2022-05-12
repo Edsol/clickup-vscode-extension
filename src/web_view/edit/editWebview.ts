@@ -6,16 +6,32 @@ import { Member, Statuses, Task, Tag, Priority, Status } from '../../types';
 export class EditWebview {
 	context: vscode.ExtensionContext;
 	panel: vscode.WebviewPanel;
-	webviewhelper: WebviewHelper;
 	htmlFile: string;
 
 	dependecies: any;
-	statuses: Status;
+	statuses: any;
+	members: any;
+	tags: any;
+	priorities: any;
 
 	constructor(context: vscode.ExtensionContext, task: Task, args: any) {
 		this.context = context;
 		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
-		this.statuses = args.statuses;
+
+		var promises = [
+			new Promise(async (resolve) => {
+				resolve(await args.wrapper.getMembers(task.list.id));
+			}),
+			new Promise(async (resolve) => {
+				resolve(await args.wrapper.getStatus(task.list.id));
+			}),
+			new Promise(async (resolve) => {
+				resolve(await args.wrapper.getTags(task.space.id));
+			}),
+			new Promise(async (resolve) => {
+				resolve(await args.wrapper.getPriorities(task.space.id));
+			}),
+		];
 
 		this.dependecies = {
 			bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
@@ -38,52 +54,59 @@ export class EditWebview {
 			}
 		);
 
-		this.webviewhelper = new WebviewHelper(context, this.panel, this.htmlFile);
-		this.webviewhelper.getPanel(this.dependecies)
-			.then(async (panel) => {
-				this.panel = panel as vscode.WebviewPanel;
-				this.panel.webview.postMessage({
-					command: 'init',
-					data: {
-						task: task,
-						members: this.filterMembers(args.members),
-						statuses: this.filterStatuses(args.statuses),
-						tags: this.filterTags(args.tags),
-						priorities: this.filterPriorities(args.priorities)
-					}
-				});
-
-				this.panel.webview.onDidReceiveMessage(
-					async message => {
-						switch (message.command) {
-							case 'getMembers':
-								this.panel.webview.postMessage({
-									command: message.command,
-									data: args.members
-								});
-								return;
-							case "error":
-								vscode.window.showErrorMessage(message.args);
-								break;
-							case "updateTask":
-								//TODO: update only edited fields
-								var response = await args.wrapper.updateTask(message.args.id, {
-									name: message.args.name,
-									description: message.args.description,
-									status: message.args.status.name
-								});
+		Promise.all(promises).then((values) => {
+			[this.members, this.statuses, this.tags, this.priorities] = values;
 
 
-								if (response) {
-									vscode.window.showInformationMessage('Task updated');
-								}
-								break;
+			var webviewhelper = new WebviewHelper(context, this.panel, this.htmlFile);
+			webviewhelper.getPanel(this.dependecies)
+				.then(async (panel) => {
+					this.panel = panel as vscode.WebviewPanel;
+
+
+					this.panel.webview.postMessage({
+						command: 'init',
+						data: {
+							task: task,
+							members: this.filterMembers(this.members),
+							statuses: this.filterStatuses(this.statuses),
+							tags: this.filterTags(this.tags),
+							priorities: this.filterPriorities(this.priorities)
 						}
-					},
-					undefined,
-					context.subscriptions
-				);
-			});
+					});
+
+					this.panel.webview.onDidReceiveMessage(
+						async message => {
+							switch (message.command) {
+								case 'getMembers':
+									this.panel.webview.postMessage({
+										command: message.command,
+										data: args.members
+									});
+									return;
+								case "error":
+									vscode.window.showErrorMessage(message.args);
+									break;
+								case "updateTask":
+									//TODO: update only edited fields
+									var response = await args.wrapper.updateTask(message.args.id, {
+										name: message.args.name,
+										description: message.args.description,
+										status: message.args.status.name
+									});
+
+
+									if (response) {
+										vscode.window.showInformationMessage('Task updated');
+									}
+									break;
+							}
+						},
+						undefined,
+						context.subscriptions
+					);
+				});
+		});
 	}
 
 	private filterMembers(members: Array<Member>) {
@@ -112,9 +135,9 @@ export class EditWebview {
 		return result;
 	}
 
-	private findStatuses(id: String) {
-		return Object(this.statuses).find((status: any) => status.id === id);
-	}
+	// private findStatuses(id: String) {
+	// 	return Object(this.statuses).find((status: any) => status.id === id);
+	// }
 
 	private filterTags(tags: Array<Tag>) {
 		var result: Array<any> = [];

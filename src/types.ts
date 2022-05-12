@@ -18,7 +18,7 @@ export type Task = {
         id: string,
         name: string,
         access: boolean
-    }[],
+    },
     name: string,
     orderId: string,
     orderindex: string;

@@ -23,7 +23,6 @@ export class TeamProviderProvider implements vscode.TreeDataProvider<vscode.Tree
 
         if (element === undefined) {
             resolve = Object.values(this.teams).map((team: any) => {
-                console.log('team', team);
                 return new TeamItem(
                     team.id,
                     team.name,
@@ -33,7 +32,6 @@ export class TeamProviderProvider implements vscode.TreeDataProvider<vscode.Tree
         }
 
         if (element instanceof TeamItem) {
-            console.log('element', element);
             var spaces: Array<any> = await this.apiwrapper.getSpaces(element.id);
             resolve = Object.values(spaces).map((space: any) => {
                 return new SpaceItem(space.id, space.name, vscode.TreeItemCollapsibleState.Collapsed);

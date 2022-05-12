@@ -11,7 +11,6 @@ export class TaskItem extends TreeItem {
 
         var priorityName = 'none';
         if (task.priority !== null) {
-            console.log(task.priority);
             priorityName = task.priority.priority;
         }
         this.tooltip = `priority: ${priorityName}`;

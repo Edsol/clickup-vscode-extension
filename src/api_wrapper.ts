@@ -1,5 +1,5 @@
 var clickup = require('clickup.js');
-import { Task } from './types';
+import { Task, Member, Statuses, Tag } from './types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -20,6 +20,11 @@ export class ApiWrapper {
         return body.spaces;
     }
 
+    async getSpace(spaceId: string) {
+        const { body } = await this.clickup.spaces.get(spaceId);
+        return body;
+    }
+
     async getFolderLists(spaceId: string) {
         const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
         return body.lists;
@@ -30,6 +35,37 @@ export class ApiWrapper {
         var tasks: Array<Task> = body.tasks;
         return tasks;
     }
+
+
+    async getMembers(listId: string) {
+        var { body } = await this.clickup.lists.getMembers(listId);
+        var members: Array<Member> = body.members;
+        return members;
+    }
+
+    async getStatus(listId: string) {
+        var { body } = await this.clickup.lists.get(listId);
+        var status: Array<Statuses> = body.statuses;
+        return status;
+    }
+
+    async getTags(spaceId: string) {
+        var { body } = await this.clickup.spaces.getTags(spaceId);
+        var tags: Array<Tag> = body.tags;
+        return tags;
+    }
+
+    async getPriorities(spaceId: string) {
+        var space = await this.getSpace(spaceId);
+        return space.features.priorities.priorities;
+    }
+
+
+
+
+
+
+
 
     // async getTeamId() {
     //     var teams = await this.getTeams();
@@ -60,32 +96,9 @@ export class ApiWrapper {
     //     });
     // }
 
-    // async getMembers() {
-    //     var lists = await this.getLists();
-    //     var { body } = await this.clickup.lists.getMembers(lists[0].id);
-    //     var members: Array<Member> = body.members;
-    //     return members;
-    // }
 
-    // async getStatus() {
-    //     var lists = await this.getLists();
-    //     var { body } = await this.clickup.lists.get(lists[0].id);
-    //     var status: Array<Statuses> = body.statuses;
-    //     return status;
-    // }
 
-    // async getTags() {
-    //     var spaces = await this.getSpaces();
-    //     var { body } = await this.clickup.spaces.getTags(spaces[0].id);
-    //     var tags: Array<Tag> = body.tags;
-    //     return tags;
-    // }
 
-    // async getPriorities() {
-    //     var spaces: Array<Space> = await this.getSpaces();
-    //     var priorities: Array<Priority> = spaces[0].features.priorities.priorities;
-    //     return priorities;
-    // }
 
 
 
