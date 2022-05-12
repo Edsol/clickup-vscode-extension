@@ -9,8 +9,8 @@ export class SpaceItem extends TreeItem {
     ) {
         super(label, collapsibleState);
         this.iconPath = {
-            light: path.join(__filename, '..', '..', '..', 'resources', 'spaceItem', 'layers.png'),
-            dark: path.join(__filename, '..', '..', '..', 'resources', 'spaceItem', 'layers_white.png')
+            light: path.join(__filename, '..', '..', '..', '..', 'resources', 'spaceItem', 'layers.png'),
+            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'spaceItem', 'layers_white.png')
         };
     }
     contextValue = 'spaceItem';

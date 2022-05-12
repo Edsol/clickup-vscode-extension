@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import * as types from '../types';
 import { TaskItem } from './items/task_item';
-import { ListItem } from './list_item';
-import { SpaceItem } from './space_item';
-import { TeamItem } from './team_item';
+import { ListItem } from './items/list_item';
+import { SpaceItem } from './items/space_item';
+import { TeamItem } from './items/team_item';
 
 export class TeamProviderProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     teams: Array<any>;
