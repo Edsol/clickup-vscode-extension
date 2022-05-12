@@ -60,7 +60,7 @@ const appData = {
                 case "init":
                     this.task = message.data.task;
                     this.taskCopy = JSON.parse(JSON.stringify(this.task));
-                    console.log(this.taskCopy);
+
                     this.members = message.data.members;
                     tagifyAssignTo.whitelist = message.data.members;
                     tagifyAssignTo.addTags(message.data.members);

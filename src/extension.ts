@@ -26,105 +26,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	var teamProvider = new TeamProviderProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
 	vscode.window.createTreeView('clickupTasksView', { treeDataProvider: teamProvider });
 
-
-
-
-
-
-
-
-	// var storedTasks: any = await storageManager.getValue(constants.TASKS_STORED_KEY);
-
-	// if (storedTasks === undefined || storedTasks.length === 0) {
-	// 	console.log('no tasks found');
-	// 	var tasks = await wrapper.getAllTasks();
-	// 	storeTasks(tasks);
-	// }
-
-	// var storedMembers: StoredMembers = await storageManager.getValue(constants.MEMBERS_STORED_KEY);
-
-	// if (storedMembers === undefined || storedMembers.members.length === 0) {
-	// 	console.log('no members found');
-	// 	var members = await wrapper.getMembers();
-	// 	storeMembers(members);
-	// }
-
-	// var storedStatuses: StoredStatuses = await storageManager.getValue(constants.STATUS_STORED_KEY);
-
-	// if (storedStatuses === undefined || storedStatuses.statuses.length === 0) {
-	// 	console.log('no status found');
-	// 	var statuses = await wrapper.getStatus();
-	// 	storedStatuses = storeStatuses(statuses);
-	// }
-
-	// var storedTags: StoredTags = await storageManager.getValue(constants.TAGS_STORED_KEY);
-	// if (storedTags === undefined || storedTags.tags.length === 0) {
-	// 	console.log('no tags found');
-	// 	var tags = await wrapper.getTags();
-	// 	storedTags = storeTags(tags);
-	// }
-
-
-	// var storedPriorities: StoredPriorities = await storageManager.getValue(constants.PRIORITIES_STORED_KEY);
-	// if (storedPriorities === undefined || storedPriorities.priorities.length === 0) {
-	// 	console.log('no priorities found');
-	// 	var priorities = await wrapper.getPriorities();
-	// 	storedPriorities = storePriorities(priorities);
-	// }
-
-
-
-
-	// buildProvider(storedTasks.tasks);
-
-	// function buildProvider(tasks: any) {
-	// 	var mainProvider = new TasksDataProvider(tasks, constants.DEFAULT_TASK_DETAILS);
-	// 	vscode.window.createTreeView('clickupTasksView', { treeDataProvider: mainProvider });
-	// }
-
-	// function storeTasks(tasks: any) {
-	// 	storageManager.setValue(constants.TASKS_STORED_KEY, {
-	// 		time: Date.now(),
-	// 		tasks: tasks
-	// 	});
-	// }
-
-	// function storeMembers(members: Array<Member>) {
-	// 	storageManager.setValue(constants.MEMBERS_STORED_KEY, {
-	// 		time: Date.now(),
-	// 		members: members
-	// 	});
-	// }
-
-	// function storeStatuses(statuses: Array<Statuses>) {
-	// 	var data = {
-	// 		time: Date.now(),
-	// 		statuses: statuses
-	// 	};
-	// 	storageManager.setValue(constants.STATUS_STORED_KEY, data);
-	// 	return data;
-	// }
-
-	// function storeTags(tags: Array<Tag>) {
-	// 	var data = {
-	// 		time: Date.now(),
-	// 		tags: tags
-	// 	};
-	// 	storageManager.setValue(constants.TAGS_STORED_KEY, data);
-	// 	return data;
-	// }
-
-	// function storePriorities(priorities: Array<Priority>) {
-	// 	var data = {
-	// 		time: Date.now(),
-	// 		priorities: priorities
-	// 	};
-	// 	storageManager.setValue(constants.PRIORITIES_STORED_KEY, data);
-	// 	return data;
-	// }
-
-
-
 	async function setToken() {
 		if (await tokenInput.setToken()) {
 			vscode.window.showInformationMessage('Your token has been successfully saved');
@@ -184,18 +85,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
-		console.log(taskItem);
-		new EditWebview(
-			context,
-			taskItem.task,
-			{
-				wrapper: wrapper,
-				// members: storedMembers.members,
-				// statuses: storedStatuses.statuses,
-				// tags: storedTags.tags,
-				// priorities: storedPriorities.priorities,
-			}
-		);
+		new EditWebview(context, taskItem.task, wrapper);
 	});
 }
 

@@ -14,7 +14,6 @@
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTasks",
-		"onCommand:clickup.refreshTasksList",
 		"onCommand:clickup:addTask",
 		"onCommand:clickup:editTask",
 		"onView:clickupTasksView"
@@ -52,11 +51,6 @@
 				"title": "ClickUp: delete all tasks"
 			},
 			{
-				"command": "clickup.refreshTasksList",
-				"title": "Reload",
-				"icon": "$(refresh)"
-			},
-			{
 				"command": "clickup.groupByStatus",
 				"title": "Group by status"
 			},
@@ -82,11 +76,6 @@
 		],
 		"menus": {
 			"view/title": [
-				{
-					"command": "clickup.refreshTasksList",
-					"when": "view == clickupTasksView",
-					"group": "navigation"
-				},
 				{
 					"command": "clickup.groupByStatus",
 					"when": "view == clickupTasksView"

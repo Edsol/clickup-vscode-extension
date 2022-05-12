@@ -60,48 +60,6 @@ export class ApiWrapper {
         return space.features.priorities.priorities;
     }
 
-
-
-
-
-
-
-
-    // async getTeamId() {
-    //     var teams = await this.getTeams();
-    //     return teams[0].id;
-    // }
-
-
-
-
-    // async getFolderlessLists(spaceId: String) {
-    //     const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
-
-    //     return body.lists;
-    // }
-
-
-
-    // async getAllTasks() {
-    //     var lists = await this.getLists();
-    //     var { body } = await this.clickup.lists.getTasks(lists[0].id);
-    //     var tasks: Array<Task> = body.tasks;
-    //     return tasks;
-    // }
-
-    // async extractStatus(tasks: any) {
-    //     tasks.map((task: any) => {
-    //         console.log(task);
-    //     });
-    // }
-
-
-
-
-
-
-
     async newTask(data: any) {
         // var lists = await this.getLists();
         // var { body } = await this.clickup.spaces.getTags(lists[0].id, data);
@@ -118,7 +76,6 @@ export class ApiWrapper {
      * @returns object
      */
     async updateTask(taskId: string, data: Object): Promise<any> {
-        console.log('updateTask data', data);
         var { body } = await this.clickup.tasks.update(taskId, data);
         return body;
     }

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
 import { Member, Statuses, Task, Tag, Priority, Status } from '../../types';
+import { ApiWrapper } from '../../api_wrapper';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -14,22 +15,22 @@ export class EditWebview {
 	tags: any;
 	priorities: any;
 
-	constructor(context: vscode.ExtensionContext, task: Task, args: any) {
+	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper) {
 		this.context = context;
 		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
 
 		var promises = [
 			new Promise(async (resolve) => {
-				resolve(await args.wrapper.getMembers(task.list.id));
+				resolve(await wrapper.getMembers(task.list.id));
 			}),
 			new Promise(async (resolve) => {
-				resolve(await args.wrapper.getStatus(task.list.id));
+				resolve(await wrapper.getStatus(task.list.id));
 			}),
 			new Promise(async (resolve) => {
-				resolve(await args.wrapper.getTags(task.space.id));
+				resolve(await wrapper.getTags(task.space.id));
 			}),
 			new Promise(async (resolve) => {
-				resolve(await args.wrapper.getPriorities(task.space.id));
+				resolve(await wrapper.getPriorities(task.space.id));
 			}),
 		];
 
@@ -81,7 +82,7 @@ export class EditWebview {
 								case 'getMembers':
 									this.panel.webview.postMessage({
 										command: message.command,
-										data: args.members
+										data: this.members
 									});
 									return;
 								case "error":
@@ -89,7 +90,7 @@ export class EditWebview {
 									break;
 								case "updateTask":
 									//TODO: update only edited fields
-									var response = await args.wrapper.updateTask(message.args.id, {
+									var response = await wrapper.updateTask(message.args.id, {
 										name: message.args.name,
 										description: message.args.description,
 										status: message.args.status.name
