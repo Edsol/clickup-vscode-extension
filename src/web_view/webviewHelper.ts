@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { Member, Statuses, Tag, Priority } from '../types';
 
 export class WebviewHelper {
     context: vscode.ExtensionContext;
@@ -45,5 +46,77 @@ export class WebviewHelper {
             }
         }
         return this.html;
+    }
+
+    static normalize(data: any) {
+        if (data.assignees) {
+            data.assignees = data.assignees.map((member: any) => {
+                return member.id;
+            });
+        }
+        if (data.status) {
+            data.status = data.status.value;
+        }
+        if (data.priority) {
+            data.priority = parseInt(data.priority.id);
+        }
+        if (data.tags) {
+            data.tags = data.tags.map((tag: any) => {
+                return tag.name;
+            });
+        }
+
+        return data;
+    }
+
+    static filterMembers(members: Array<Member>) {
+        var result: Array<any> = [];
+        for (var member of members) {
+            result.push({
+                id: member.id,
+                value: member.username,
+                name: member.username
+            });
+        }
+
+        return result;
+    }
+
+    static filterStatuses(statuses: Array<Statuses>) {
+        var result: Array<any> = [];
+        for (var status of statuses) {
+            result.push({
+                id: status.id,
+                value: status.status,
+                name: status.status
+            });
+        }
+
+        return result;
+    }
+
+    static filterTags(tags: Array<Tag>) {
+        var result: Array<any> = [];
+        for (var tag of tags) {
+            result.push({
+                value: tag.name,
+                name: tag.name
+            });
+        }
+
+        return result;
+    }
+
+    static filterPriorities(priorities: Array<Priority>) {
+        var result: Array<any> = [];
+        for (var priority of priorities) {
+            result.push({
+                id: priority.id,
+                value: priority.priority,
+                name: priority.priority
+            });
+        }
+
+        return result;
     }
 }

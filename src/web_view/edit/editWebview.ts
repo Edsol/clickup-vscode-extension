@@ -6,7 +6,9 @@ import { ApiWrapper } from '../../api_wrapper';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
+	wrapper: ApiWrapper;
 	panel: vscode.WebviewPanel;
+	webviewhelper: any;
 	htmlFile: string;
 
 	dependecies: any;
@@ -17,6 +19,7 @@ export class EditWebview {
 
 	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper) {
 		this.context = context;
+		this.wrapper = wrapper;
 		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
 
 		var promises = [
@@ -58,21 +61,19 @@ export class EditWebview {
 		Promise.all(promises).then((values) => {
 			[this.members, this.statuses, this.tags, this.priorities] = values;
 
-
-			var webviewhelper = new WebviewHelper(context, this.panel, this.htmlFile);
-			webviewhelper.getPanel(this.dependecies)
-				.then(async (panel) => {
+			this.webviewhelper = new WebviewHelper(context, this.panel, this.htmlFile);
+			this.webviewhelper.getPanel(this.dependecies)
+				.then(async (panel: any) => {
 					this.panel = panel as vscode.WebviewPanel;
-
 
 					this.panel.webview.postMessage({
 						command: 'init',
 						data: {
 							task: task,
-							members: this.filterMembers(this.members),
-							statuses: this.filterStatuses(this.statuses),
-							tags: this.filterTags(this.tags),
-							priorities: this.filterPriorities(this.priorities)
+							members: WebviewHelper.filterMembers(this.members),
+							statuses: WebviewHelper.filterStatuses(this.statuses),
+							tags: WebviewHelper.filterTags(this.tags),
+							priorities: WebviewHelper.filterPriorities(this.priorities)
 						}
 					});
 
@@ -90,16 +91,7 @@ export class EditWebview {
 									break;
 								case "updateTask":
 									//TODO: update only edited fields
-									var response = await wrapper.updateTask(message.args.id, {
-										name: message.args.name,
-										description: message.args.description,
-										status: message.args.status.name
-									});
-
-
-									if (response) {
-										vscode.window.showInformationMessage('Task updated');
-									}
+									this.updateTask(message.args.id, message.args);
 									break;
 							}
 						},
@@ -110,61 +102,12 @@ export class EditWebview {
 		});
 	}
 
-	private filterMembers(members: Array<Member>) {
-		var result: Array<any> = [];
-		for (var member of members) {
-			result.push({
-				id: member.id,
-				value: member.username,
-				name: member.username
-			});
+	private async updateTask(taskId: string, data: any) {
+		var taskData = WebviewHelper.normalize(data);
+		var response = await this.wrapper.updateTask(taskId, taskData);
+
+		if (response) {
+			vscode.window.showInformationMessage('Task updated');
 		}
-
-		return result;
 	}
-
-	private filterStatuses(statuses: Array<Statuses>) {
-		var result: Array<any> = [];
-		for (var status of statuses) {
-			result.push({
-				id: status.id,
-				value: status.status,
-				name: status.status
-			});
-		}
-
-		return result;
-	}
-
-	// private findStatuses(id: String) {
-	// 	return Object(this.statuses).find((status: any) => status.id === id);
-	// }
-
-	private filterTags(tags: Array<Tag>) {
-		var result: Array<any> = [];
-		for (var tag of tags) {
-			result.push({
-				value: tag.name,
-				name: tag.name
-			});
-		}
-
-		return result;
-	}
-
-	private filterPriorities(priorities: Array<Priority>) {
-		var result: Array<any> = [];
-		for (var priority of priorities) {
-			result.push({
-				id: priority.id,
-				value: priority.priority,
-				name: priority.priority
-			});
-		}
-
-		return result;
-	}
-
-
-
 }

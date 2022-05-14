@@ -1,7 +1,7 @@
 
 const vscode = acquireVsCodeApi();
 
-var tagifyAssignTo;
+var tagifyAssignees;
 var tagifyStatuses;
 var tagifyTags;
 var tagifyPriorities;
@@ -43,12 +43,12 @@ const appData = {
         };
     },
     mounted() {
-        var assignToElement = document.getElementById("assignTo");
+        var assigneesElement = document.getElementById("assignees");
         var statusesElement = document.getElementById("status");
         var tagsElement = document.getElementById("tags");
         var priorityElement = document.getElementById("priority");
 
-        tagifyAssignTo = new Tagify(assignToElement, tagifyOptions);
+        tagifyAssignees = new Tagify(assigneesElement, tagifyOptions);
         tagifyStatuses = new Tagify(statusesElement, tagifySelectOptions);
         tagifyTags = new Tagify(tagsElement, tagifyOptions);
         tagifyPriorities = new Tagify(priorityElement, tagifySelectOptions);
@@ -61,12 +61,10 @@ const appData = {
                     this.task = message.data.task;
                     this.taskCopy = JSON.parse(JSON.stringify(this.task));
 
-                    this.members = message.data.members;
-                    tagifyAssignTo.whitelist = message.data.members;
-                    tagifyAssignTo.addTags(message.data.members);
+                    tagifyAssignees.whitelist = this.members = message.data.members;
+                    tagifyAssignees.addTags(message.data.members);
 
-                    this.statuses = message.data.statuses;
-                    tagifyStatuses.whitelist = message.data.statuses;
+                    tagifyStatuses.whitelist = this.statuses = message.data.statuses;
                     tagifyStatuses.addTags(message.data.task.status.status);
 
                     this.tags = message.data.tags;
@@ -78,8 +76,7 @@ const appData = {
                     });
                     // tagifyTags.addTags(message.data.task.tags);
 
-                    this.priorities = message.data.priorities;
-                    tagifyPriorities.whitelist = message.data.priorities;
+                    tagifyPriorities.whitelist = this.priorities = message.data.priorities;
                     tagifyPriorities.addTags(message.data.task.priority.priority);
                     break;
             }

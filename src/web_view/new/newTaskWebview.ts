@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
-import { Member, Statuses, Task, Tag, Priority, Status, List } from '../../types';
 import { ApiWrapper } from '../../api_wrapper';
 import { ListItem } from '../../tree_view/items/list_item';
 import * as constants from './../../constants';
@@ -65,8 +64,6 @@ export class NewTaskWebview {
         Promise.all(promises).then((values) => {
             [this.members, this.statuses, this.tags, this.priorities] = values;
 
-            console.log('members', this.members);
-
             var webviewhelper = new WebviewHelper(context, this.panel, this.htmlFile);
             webviewhelper.getPanel(this.dependecies)
                 .then(async (panel) => {
@@ -76,10 +73,10 @@ export class NewTaskWebview {
                         command: 'init',
                         data: {
                             list: listItem.list,
-                            members: this.filterMembers(this.members),
-                            statuses: this.filterStatuses(this.statuses),
-                            tags: this.filterTags(this.tags),
-                            priorities: this.filterPriorities(this.priorities)
+                            members: WebviewHelper.filterMembers(this.members),
+                            statuses: WebviewHelper.filterStatuses(this.statuses),
+                            tags: WebviewHelper.filterTags(this.tags),
+                            priorities: WebviewHelper.filterPriorities(this.priorities)
                         }
                     });
 
@@ -102,7 +99,7 @@ export class NewTaskWebview {
     }
 
     private async saveTask(listId: string, data: any) {
-        var taskData = this.normalize(data);
+        var taskData = WebviewHelper.normalize(data);
         var response = await this.wrapper.newTask(listId, taskData);
         if (response.id) {
             vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
@@ -113,79 +110,4 @@ export class NewTaskWebview {
             vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
         }
     }
-
-    private normalize(data: any) {
-        if (data.assignees) {
-            data.assignees = data.assignees.map((member: any) => {
-                return member.id;
-            });
-        }
-        if (data.status) {
-            data.status = data.status.value;
-        }
-        if (data.priority) {
-            data.priority = parseInt(data.priority.id);
-        }
-        if (data.tags) {
-            data.tags = data.tags.map((tag: any) => {
-                return tag.name;
-            });
-        }
-
-        return data;
-    }
-
-    private filterMembers(members: Array<Member>) {
-        var result: Array<any> = [];
-        for (var member of members) {
-            result.push({
-                id: member.id,
-                value: member.username,
-                name: member.username
-            });
-        }
-
-        return result;
-    }
-
-    private filterStatuses(statuses: Array<Statuses>) {
-        var result: Array<any> = [];
-        for (var status of statuses) {
-            result.push({
-                id: status.id,
-                value: status.status,
-                name: status.status
-            });
-        }
-
-        return result;
-    }
-
-    private filterTags(tags: Array<Tag>) {
-        var result: Array<any> = [];
-        for (var tag of tags) {
-            result.push({
-                value: tag.name,
-                name: tag.name
-            });
-        }
-
-        return result;
-    }
-
-    private filterPriorities(priorities: Array<Priority>) {
-        var result: Array<any> = [];
-        for (var priority of priorities) {
-            result.push({
-                id: priority.id,
-                value: priority.priority,
-                name: priority.priority
-            });
-        }
-
-        return result;
-    }
-
-
-
 }
