@@ -17,8 +17,8 @@
 		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="task.name" />
 	</div>
 	<div class="form-group">
-		<label for="assignTo">Assign to</label>
-		<input id="assignTo" type="text" name="assignTo" @onchange="change()" autocomplete>
+		<label for="assignes">Assign to</label>
+		<input id="assignes" type="text" name="assignes" @change="onChange($event)" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="status">Status</label>

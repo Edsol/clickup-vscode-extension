@@ -79,7 +79,7 @@ export type List = {
     override_statuses: boolean,
     permission_level: string,
     priority: number,
-    space: Space[],
+    space: Space,
     start_date: string,
     status: Status,
     statuses: Statuses[]

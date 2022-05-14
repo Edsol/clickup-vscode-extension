@@ -60,13 +60,11 @@ export class ApiWrapper {
         return space.features.priorities.priorities;
     }
 
-    async newTask(data: any) {
-        // var lists = await this.getLists();
-        // var { body } = await this.clickup.spaces.getTags(lists[0].id, data);
-        // return body;
-        return {
-            'id': 1
-        };
+    async newTask(listId: string, data: any) {
+        console.log('newTask', listId, data);
+        var { body } = await this.clickup.lists.createTask(listId, data);
+        console.log('newTask response', body);
+        return body;
     }
 
     /**

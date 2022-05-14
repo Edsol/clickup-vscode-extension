@@ -1,74 +1,40 @@
-<script src="https://unpkg.com/vue@3"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="${tagifySrc}"></script>
+<link href="${tagifyCssSrc}" rel="stylesheet" type="text/css" />
+
+<script src="${vueSrc}"></script>
+<link rel="stylesheet" href="${bootstrapSrc}" />
+
 
 <div id="app">
 	<div class="form-group">
-		<label>{{listItem.label}}</label>
+		<label>{{list.label}}</label>
 	</div>
 	<div class="form-group">
 		<label for="name">Name</label>
-		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="name">
+		<input type="text" class="form-control" id="name" placeholder="name of task" v-model="task.name">
 	</div>
 	<div class="form-group">
-		<label for="assignTo">Assign to</label>
-		<select class="form-select" id="assignTo" v-model="selectedMember">
-			<option value='' disabled>Select one member</option>
-			<option v-for="member in members" v-bind:value="member.id">{{member.username}}</option>
-		</select>
+		<label for="assignes">Assign to</label>
+		<input id="assignes" type="text" name="assignes" @change="onChange($event)" autocomplete>
+	</div>
+	<div class="form-group">
+		<label for="status">Status</label>
+		<input id="status" type="text" name="status" @change="onChange($event)" autocomplete>
+	</div>
+	<div class="form-group">
+		<label for="tags">Tags</label>
+		<input id="tags" type="text" name="tags" @change="onChange($event)" autocomplete>
+	</div>
+	<div class="form-group">
+		<label for="priority">Priority</label>
+		<input id="priority" type="text" name="priority" @change="onChange($event)" autocomplete>
 	</div>
 	<div class="form-group">
 		<label for="description">Description</label>
-		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="description"></textarea>
+		<textarea class="form-control" id="description" rows="3" placeholder="Description of task" v-model="task.description"></textarea>
 	</div>
 	<br>
 	<button type="button" class="btn btn-primary" @click="checkForm">Create Task</button>
 </div>
 
-<script>
-	const vscode = acquireVsCodeApi();
-
-	Vue.createApp({
-		data() {
-			return {
-				members: [],
-				name: null,
-				description: null,
-				selectedMember: '',
-				listItem: {}
-			};
-		},
-		mounted(){
-			this.sendMessageToBackend('getMembers');
-
-			window.addEventListener('message', event => {
-				const data = event.data;
-				switch (data.command) {
-					case 'loadMembers':
-						this.listItem = data.listItem;
-					break;
-				}
-			});
-		},
-		methods: {
-			checkForm: function (e) {
-				if (!this.name) {
-					this.sendMessageToBackend('error','Title is required.');
-				}else if (!this.description) {
-					this.sendMessageToBackend('error','Description is required.');
-				}else{
-					this.sendMessageToBackend('newTask',{
-						name: this.name,
-						description: this.description,
-						assignees:[
-							this.selectedMember
-						]
-					});
-				}
-			},
-			sendMessageToBackend(command = null, args = null){
-				vscode.postMessage({command: command,args: args});
-			}
-		}
-	}).mount('#app')
-</script>
+<script type="module" src="${vueApp}"></script>

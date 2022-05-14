@@ -3,9 +3,12 @@ import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
 import { Member, Statuses, Task, Tag, Priority, Status, List } from '../../types';
 import { ApiWrapper } from '../../api_wrapper';
+import { ListItem } from '../../tree_view/items/list_item';
+import * as constants from './../../constants';
 
 export class NewTaskWebview {
     context: vscode.ExtensionContext;
+    wrapper: ApiWrapper;
     panel: vscode.WebviewPanel;
     htmlFile: string;
 
@@ -15,25 +18,27 @@ export class NewTaskWebview {
     tags: any;
     priorities: any;
 
-    constructor(context: vscode.ExtensionContext, list: List, wrapper: ApiWrapper) {
+    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper) {
         this.context = context;
-        this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'new', 'index.html');
+        this.wrapper = wrapper;
 
-        console.log(list);
+        this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'new', 'index.html');
+        var listId = listItem.list.id;
+        var spaceId = listItem.list.space.id;
 
         var promises = [
             new Promise(async (resolve) => {
-                resolve(await wrapper.getMembers(list.id));
+                resolve(await wrapper.getMembers(listId));
             }),
             new Promise(async (resolve) => {
-                resolve(await wrapper.getStatus(list.id));
+                resolve(await wrapper.getStatus(listId));
             }),
-            // new Promise(async (resolve) => {
-            //     resolve(await wrapper.getTags(space.id));
-            // }),
-            // new Promise(async (resolve) => {
-            //     resolve(await wrapper.getPriorities(space.id));
-            // }),
+            new Promise(async (resolve) => {
+                resolve(await wrapper.getTags(spaceId));
+            }),
+            new Promise(async (resolve) => {
+                resolve(await wrapper.getPriorities(spaceId));
+            }),
         ];
 
         this.dependecies = {
@@ -41,7 +46,7 @@ export class NewTaskWebview {
             vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
             tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js'),
             tagifyCssSrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.css'),
-            vueApp: path.join(context.extensionPath, 'src', 'web_view', 'edit', 'script.js'),
+            vueApp: path.join(context.extensionPath, 'src', 'web_view', 'new', 'script.js'),
         };
 
         this.panel = vscode.window.createWebviewPanel(
@@ -66,11 +71,10 @@ export class NewTaskWebview {
                 .then(async (panel) => {
                     this.panel = panel as vscode.WebviewPanel;
 
-
                     this.panel.webview.postMessage({
                         command: 'init',
                         data: {
-                            list: list,
+                            list: listItem.list,
                             members: this.filterMembers(this.members),
                             statuses: this.filterStatuses(this.statuses),
                             tags: this.filterTags(this.tags),
@@ -85,9 +89,7 @@ export class NewTaskWebview {
                                     vscode.window.showErrorMessage(message.args);
                                     break;
                                 case "newTask":
-                                    var response = await wrapper.newTask(message.args);
-                                    vscode.window.showInformationMessage('newTask:' + response.id);
-                                    this.panel.dispose();
+                                    this.saveTask(listItem.list.id, message.args);
                                     break;
                             }
                         },
@@ -96,6 +98,40 @@ export class NewTaskWebview {
                     );
                 });
         });
+    }
+
+    private async saveTask(listId: string, data: any) {
+        var taskData = this.normalize(data);
+        var response = await this.wrapper.newTask(listId, taskData);
+        if (response.id) {
+            vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
+            this.panel.dispose();
+        } else {
+            console.log('data', data);
+            console.log('normalized data', taskData);
+            vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
+        }
+    }
+
+    private normalize(data: any) {
+        if (data.assignes) {
+            data.assignes = data.assignes.map((member: any) => {
+                return member.id;
+            });
+        }
+        if (data.status) {
+            data.status = data.status.value;
+        }
+        if (data.priority) {
+            data.priority = parseInt(data.priority.id);
+        }
+        if (data.tags) {
+            data.tags = data.tags.map((tag: any) => {
+                return tag.name;
+            });
+        }
+
+        return data;
     }
 
     private filterMembers(members: Array<Member>) {
@@ -123,10 +159,6 @@ export class NewTaskWebview {
 
         return result;
     }
-
-    // private findStatuses(id: String) {
-    // 	return Object(this.statuses).find((status: any) => status.id === id);
-    // }
 
     private filterTags(tags: Array<Tag>) {
         var result: Array<any> = [];

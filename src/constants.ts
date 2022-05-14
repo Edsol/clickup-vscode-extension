@@ -5,6 +5,9 @@ export const STATUS_STORED_KEY = 'clickup_status_list';
 export const TAGS_STORED_KEY = 'clicup_tags_list';
 export const PRIORITIES_STORED_KEY = 'clicup_priority_list';
 
+export const TASK_SAVE_ERROR_MESSAGE = 'An error occurred while saving';
+export const TASK_SAVE_SUCCESS_MESSAGE = 'New task was created';
+
 export const DEFAULT_TASK_DETAILS = [
     'id', 'name', 'description', 'url', 'priority', 'creator', 'tags'
 ];
