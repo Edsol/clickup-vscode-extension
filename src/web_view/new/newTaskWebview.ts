@@ -65,6 +65,7 @@ export class NewTaskWebview {
         Promise.all(promises).then((values) => {
             [this.members, this.statuses, this.tags, this.priorities] = values;
 
+            console.log('members', this.members);
 
             var webviewhelper = new WebviewHelper(context, this.panel, this.htmlFile);
             webviewhelper.getPanel(this.dependecies)
@@ -114,8 +115,8 @@ export class NewTaskWebview {
     }
 
     private normalize(data: any) {
-        if (data.assignes) {
-            data.assignes = data.assignes.map((member: any) => {
+        if (data.assignees) {
+            data.assignees = data.assignees.map((member: any) => {
                 return member.id;
             });
         }

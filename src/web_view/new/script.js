@@ -1,6 +1,6 @@
 const vscode = acquireVsCodeApi();
 
-var tagifyAssignTo;
+var tagifyAssignees;
 var tagifyStatuses;
 var tagifyTags;
 var tagifyPriorities;
@@ -41,12 +41,12 @@ Vue.createApp({
         };
     },
     mounted() {
-        var assignToElement = document.getElementById("assignes");
+        var assigneesElement = document.getElementById("assignees");
         var statusesElement = document.getElementById("status");
         var tagsElement = document.getElementById("tags");
         var priorityElement = document.getElementById("priority");
 
-        tagifyAssignTo = new Tagify(assignToElement, tagifyOptions);
+        tagifyAssignees = new Tagify(assigneesElement, tagifyOptions);
         tagifyStatuses = new Tagify(statusesElement, tagifySelectOptions);
         tagifyTags = new Tagify(tagsElement, tagifyOptions);
         tagifyPriorities = new Tagify(priorityElement, tagifySelectOptions);
@@ -56,7 +56,7 @@ Vue.createApp({
             switch (message.command) {
                 case "init":
                     this.list = message.data.list;
-                    tagifyAssignTo.whitelist = this.members = message.data.members;
+                    tagifyAssignees.whitelist = this.members = message.data.members;
                     tagifyStatuses.whitelist = this.statuses = message.data.statuses;
                     tagifyTags.whitelist = this.tags = message.data.tags;
                     tagifyPriorities.whitelist = this.priorities = message.data.priorities;
