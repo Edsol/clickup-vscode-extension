@@ -5,7 +5,7 @@ import { ListItem } from './items/list_item';
 import { SpaceItem } from './items/space_item';
 import { TeamItem } from './items/team_item';
 
-export class TeamProviderProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     teams: Array<any>;
     apiwrapper: any;
 
@@ -41,7 +41,7 @@ export class TeamProviderProvider implements vscode.TreeDataProvider<vscode.Tree
         if (element instanceof SpaceItem) {
             var lists: Array<types.List> = await this.apiwrapper.getFolderLists(element.id);
             resolve = Object.values(lists).map((list: types.List) => {
-                return new ListItem(list.id, list.name, vscode.TreeItemCollapsibleState.Collapsed);
+                return new ListItem(list, vscode.TreeItemCollapsibleState.Collapsed);
             });
         }
 

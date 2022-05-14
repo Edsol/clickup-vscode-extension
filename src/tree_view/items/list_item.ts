@@ -1,14 +1,13 @@
 import path = require('path');
 import { TreeItem, TreeItemCollapsibleState, window } from 'vscode';
+import { List } from '../../types';
 
 export class ListItem extends TreeItem {
     constructor(
-        public id: string,
-        public readonly label: string,
+        public list: List,
         public readonly collapsibleState: TreeItemCollapsibleState
     ) {
-        super(label, collapsibleState);
-        console.log('__dirname', __dirname);
+        super(list.name, collapsibleState);
 
         this.iconPath = {
             light: path.join(__dirname, '..', '..', '..', '..', 'resources', 'listItem', 'document.png'),
