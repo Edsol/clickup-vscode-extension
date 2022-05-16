@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../webviewHelper';
-import { Member, Statuses, Task, Tag, Priority, Status } from '../../types';
+import { Task } from '../../types';
 import { ApiWrapper } from '../../api_wrapper';
+import * as constant from '../../constants';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -91,7 +92,7 @@ export class EditWebview {
 									break;
 								case "updateTask":
 									//TODO: update only edited fields
-									this.updateTask(message.args.id, message.args);
+									this.updateTask(task, message.args);
 									break;
 							}
 						},
@@ -102,12 +103,16 @@ export class EditWebview {
 		});
 	}
 
-	private async updateTask(taskId: string, data: any) {
-		var taskData = WebviewHelper.normalize(data);
-		var response = await this.wrapper.updateTask(taskId, taskData);
-
+	private async updateTask(task: Task, data: any) {
+		var taskData = WebviewHelper.normalize(data, constant.DEFAULT_TASK_DETAILS);
+		var response = await this.wrapper.updateTask(task.id, taskData);
 		if (response) {
-			vscode.window.showInformationMessage('Task updated');
+			await this.wrapper.updateTaskTags(task.id, task.tags, taskData.tags);
+			vscode.window.showInformationMessage(constant.TASK_UPDATE_MESSAGE);
+		} else {
+			console.log('updateTask error: task data', taskData);
+			console.log('updateTask error: task response', response);
+			vscode.window.showErrorMessage(constant.TASK_UPDATE_ERROR_MESSAGE);
 		}
 	}
 }

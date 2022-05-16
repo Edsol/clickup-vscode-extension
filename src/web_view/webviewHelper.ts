@@ -48,7 +48,7 @@ export class WebviewHelper {
         return this.html;
     }
 
-    static normalize(data: any) {
+    static normalize(data: any, mapField: Array<String>) {
         if (data.assignees) {
             data.assignees = data.assignees.map((member: any) => {
                 return member.id;
@@ -66,7 +66,17 @@ export class WebviewHelper {
             });
         }
 
-        return data;
+        var filteredData: any = {};
+
+        Object.entries(data).map((element: any) => {
+            var key = element[0];
+            var value = element[1];
+            if (mapField.includes(key) && value !== null) {
+                filteredData[key] = value;
+            }
+        });
+        console.log('filteredData', filteredData);
+        return filteredData;
     }
 
     static filterMembers(members: Array<Member>) {

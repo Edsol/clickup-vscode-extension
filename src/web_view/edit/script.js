@@ -67,11 +67,12 @@ const appData = {
                     tagifyStatuses.whitelist = this.statuses = message.data.statuses;
                     tagifyStatuses.addTags(message.data.task.status.status);
 
-                    this.tags = message.data.tags;
-                    tagifyTags.whitelist = message.data.tags;
+                    tagifyTags.whitelist = this.tags = message.data.tags;
+                    console.log(this.tags);
+                    console.log('this.task', this.task);
 
                     //TODO: refactoring
-                    message.data.task.tags.forEach((tag) => {
+                    this.task.tags.forEach((tag) => {
                         tagifyTags.addTags(tag.name);
                     });
                     // tagifyTags.addTags(message.data.task.tags);
@@ -94,7 +95,7 @@ const appData = {
                     break;
 
                 default:
-                    this.task[key] = JSON.parse(value);
+                    this.task[key] = value ? JSON.parse(value) : null;
                     break;
             }
         },

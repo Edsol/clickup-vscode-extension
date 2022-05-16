@@ -68,13 +68,40 @@ export class ApiWrapper {
     }
 
     /**
-     * @param taskId {string}
-     * @param data {Object}
-     * 
-     * @returns object
-     */
-    async updateTask(taskId: string, data: Object): Promise<any> {
+ * @param taskId {string}
+ * @param data {Object}
+ * 
+ * @returns object
+ */
+    async updateTask(taskId: string, data: any): Promise<any> {
         var { body } = await this.clickup.tasks.update(taskId, data);
         return body;
+    }
+
+    async updateTaskTags(taskId: string, previousTags: any, tags: any) {
+        if (tags === undefined) {
+            //remove all tags
+            Object.values(previousTags).map((tag: any) => {
+                console.log('remove ' + tag.name);
+                this.clickup.tasks.removeTag(taskId, tag.name);
+            });
+            return;
+        }
+
+        Object.values(previousTags).map((tag: any) => {
+            console.log(Object.values(tags).includes(tag.name));
+            if (Object.values(tags).includes(tag.name) === false) {
+                console.log('remove tag ' + tag.name);
+                this.clickup.tasks.removeTag(taskId, tag.name);
+            }
+        });
+
+        tags.forEach((tagName: string) => {
+            var tagFound = previousTags.filter((obj: any) => obj.name === tagName);
+            if (tagFound.length === 0) {
+                console.log('add tag ' + tagName);
+                this.clickup.tasks.addTag(taskId, tagName);
+            }
+        });
     }
 }

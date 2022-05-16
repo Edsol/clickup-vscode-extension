@@ -99,7 +99,7 @@ export class NewTaskWebview {
     }
 
     private async saveTask(listId: string, data: any) {
-        var taskData = WebviewHelper.normalize(data);
+        var taskData = WebviewHelper.normalize(data, constants.DEFAULT_TASK_DETAILS);
         var response = await this.wrapper.newTask(listId, taskData);
         if (response.id) {
             vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
