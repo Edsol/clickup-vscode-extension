@@ -4,6 +4,7 @@ import { WebviewHelper } from '../webviewHelper';
 import { Task } from '../../types';
 import { ApiWrapper } from '../../api_wrapper';
 import * as constant from '../../constants';
+import { MainProvider } from '../../tree_view/main_provider';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -18,7 +19,7 @@ export class EditWebview {
 	tags: any;
 	priorities: any;
 
-	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper) {
+	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: MainProvider) {
 		this.context = context;
 		this.wrapper = wrapper;
 		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
@@ -91,8 +92,8 @@ export class EditWebview {
 									vscode.window.showErrorMessage(message.args);
 									break;
 								case "updateTask":
-									//TODO: update only edited fields
 									this.updateTask(task, message.args);
+									provider.refresh();
 									break;
 							}
 						},

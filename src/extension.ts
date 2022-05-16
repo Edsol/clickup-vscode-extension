@@ -42,7 +42,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
-		new EditWebview(context, taskItem.task, wrapper);
+		new EditWebview(context, taskItem.task, wrapper, provider);
 	});
 }
 

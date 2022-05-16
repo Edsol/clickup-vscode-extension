@@ -55,4 +55,11 @@ export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
         return Promise.resolve(resolve);
     }
 
+    private _onDidChangeTreeData: vscode.EventEmitter<undefined | null | void> = new vscode.EventEmitter<undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<undefined | null | void> = this._onDidChangeTreeData.event;
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
 }

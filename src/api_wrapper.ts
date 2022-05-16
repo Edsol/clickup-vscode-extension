@@ -78,20 +78,20 @@ export class ApiWrapper {
         return body;
     }
 
+    //TODO: refactoring function
     async updateTaskTags(taskId: string, previousTags: any, tags: any) {
         if (tags === undefined) {
             //remove all tags
             Object.values(previousTags).map((tag: any) => {
-                console.log('remove ' + tag.name);
+                console.log('remove ' + tag.name + 'from task ' + taskId);
                 this.clickup.tasks.removeTag(taskId, tag.name);
             });
             return;
         }
 
         Object.values(previousTags).map((tag: any) => {
-            console.log(Object.values(tags).includes(tag.name));
             if (Object.values(tags).includes(tag.name) === false) {
-                console.log('remove tag ' + tag.name);
+                console.log('remove tag ' + tag.name + 'from task ' + taskId);
                 this.clickup.tasks.removeTag(taskId, tag.name);
             }
         });
@@ -99,7 +99,7 @@ export class ApiWrapper {
         tags.forEach((tagName: string) => {
             var tagFound = previousTags.filter((obj: any) => obj.name === tagName);
             if (tagFound.length === 0) {
-                console.log('add tag ' + tagName);
+                console.log('add tag ' + tagName + 'in task ' + taskId);
                 this.clickup.tasks.addTag(taskId, tagName);
             }
         });
