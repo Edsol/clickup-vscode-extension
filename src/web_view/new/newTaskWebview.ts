@@ -4,6 +4,7 @@ import { WebviewHelper } from '../webviewHelper';
 import { ApiWrapper } from '../../api_wrapper';
 import { ListItem } from '../../tree_view/items/list_item';
 import * as constants from './../../constants';
+import { MainProvider } from '../../tree_view/main_provider';
 
 export class NewTaskWebview {
     context: vscode.ExtensionContext;
@@ -17,7 +18,7 @@ export class NewTaskWebview {
     tags: any;
     priorities: any;
 
-    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper) {
+    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: MainProvider) {
         this.context = context;
         this.wrapper = wrapper;
 
@@ -88,6 +89,7 @@ export class NewTaskWebview {
                                     break;
                                 case "newTask":
                                     this.saveTask(listItem.list.id, message.args);
+                                    provider.refresh();
                                     break;
                             }
                         },
