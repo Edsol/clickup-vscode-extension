@@ -1,36 +1,21 @@
-# ClickUp README
+<h1 align='center'>
+Unofficial <a href="http://clickup.com">ClickUp</a> VSCode extension
 
-Integrates clickup and its workflows into vscode
-
-## Features
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+</h1>
 
 ## Requirements
 
-The only requirement you need is a [ClickUp account](http://clickup.com)
+You need to have a ClickUp token to interact with your private task, use [official guide](https://docs.clickup.com/en/articles/1367130-getting-started-with-the-clickup-api) to create one
 
-## Extension Settings
+## Features
 
-At the first startup it is necessary to enter the access token
+* Show and edit task inside a List and Space
+* Create new task inside a List
 
-## Release Notes
+## Roadmap
 
-### 0.0.4
-
-* new task page powered by [Vuejs3](https://vuejs.org)
-![image](./media/0.0.4.png) 
-
-### 0.0.3
-
-* reload tasks list button
-
-### 0.0.2
-
-![image](./media/0.0.2.png)
-
-* Group tasks by status
-* Added Flags for priority level system (Urgent, High, Normal, Low).
-* Show task details (you can choose which fields to display, for now only by code).
-
-### 0.0.1
-
-Initial release
+- [ ] Task counter badge
+- [ ] Create new List
+- [ ] Create new Space
+- [x] load task informations in real time 
