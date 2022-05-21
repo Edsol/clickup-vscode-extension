@@ -15,6 +15,11 @@ export class ApiWrapper {
         return body.teams;
     }
 
+    async addTeam(name: string) {
+        const { body } = await this.clickup.teams.create();
+        return body;
+    }
+
     async getSpaces(teamId: string) {
         const { body } = await this.clickup.teams.getSpaces(teamId);
         return body.spaces;
@@ -22,6 +27,11 @@ export class ApiWrapper {
 
     async getSpace(spaceId: string) {
         const { body } = await this.clickup.spaces.get(spaceId);
+        return body;
+    }
+
+    async deleteSpace(spaceId: string) {
+        const { body } = await this.clickup.spaces.delete(spaceId);
         return body;
     }
 

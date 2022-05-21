@@ -14,5 +14,5 @@ export class ListItem extends TreeItem {
             dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'listItem', 'document_white.png')
         };
     }
-    contextValue = 'ListItem';
+    contextValue = 'listItem';
 }

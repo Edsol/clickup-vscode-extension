@@ -10,12 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onView:clickupTasksView",
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTask",
 		"onCommand:clickup:addTask",
 		"onCommand:clickup:editTask",
-		"onView:clickupTasksView"
+		"onCommand:clickup:addSpace",
+		"onCommand:clickup:deleteSpace"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -55,7 +57,7 @@
 			},
 			{
 				"command": "clickup.deleteTask",
-				"title": "delete",
+				"title": "delete Task",
 				"icon": "$(trash)"
 			},
 			{
@@ -65,12 +67,27 @@
 			},
 			{
 				"command": "clickup.addTask",
-				"title": "addTask",
+				"title": "add Task",
 				"icon": "$(add)"
+			},
+			{
+				"command": "clickup.addSpace",
+				"title": "add Space",
+				"icon": "$(add)"
+			},
+			{
+				"command": "clickup.deleteSpace",
+				"title": "delete Space",
+				"icon": "$(trash)"
 			}
 		],
 		"menus": {
 			"view/title": [
+				{
+					"command": "clickup.addSpace",
+					"when": "view == clickupTasksView",
+					"group": "navigation"
+				},
 				{
 					"command": "clickup.groupByStatus",
 					"when": "view == clickupTasksView"
@@ -92,8 +109,13 @@
 					"group": "inline"
 				},
 				{
+					"command": "clickup.deleteSpace",
+					"when": "viewItem == spaceItem",
+					"group": "inline"
+				},
+				{
 					"command": "clickup.addTask",
-					"when": "viewItem == ListItem",
+					"when": "viewItem == listItem",
 					"group": "inline"
 				}
 			]
