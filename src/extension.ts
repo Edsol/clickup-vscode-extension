@@ -25,7 +25,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	var teams = await wrapper.getTeams();
 
 	var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-	vscode.window.createTreeView('clickupTasksView', { treeDataProvider: provider });
+	vscode.window.createTreeView('clickupTasksView', {
+		treeDataProvider: provider,
+		showCollapseAll: true,
+	});
 
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {

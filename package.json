@@ -10,7 +10,6 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:clickup.helloWorld",
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTasks",
@@ -30,10 +29,6 @@
 			]
 		},
 		"commands": [
-			{
-				"command": "clickup.helloWorld",
-				"title": "Hello World"
-			},
 			{
 				"command": "clickup.setToken",
 				"title": "ClickUp: Add personal token"
