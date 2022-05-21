@@ -34,7 +34,7 @@ export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
         if (element instanceof TeamItem) {
             var spaces: Array<any> = await this.apiwrapper.getSpaces(element.id);
             resolve = Object.values(spaces).map((space: any) => {
-                return new SpaceItem(space.id, space.name, this.collapsedConst);
+                return new SpaceItem(space, this.collapsedConst);
             });
         }
 

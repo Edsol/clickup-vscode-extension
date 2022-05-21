@@ -18,7 +18,9 @@
 		"onCommand:clickup:addTask",
 		"onCommand:clickup:editTask",
 		"onCommand:clickup:addSpace",
-		"onCommand:clickup:deleteSpace"
+		"onCommand:clickup:deleteSpace",
+		"onCommand:clickup:addList",
+		"onCommand:clickup:deleteList"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -85,12 +87,22 @@
 				"command": "clickup.deleteSpace",
 				"title": "delete Space",
 				"icon": "$(trash)"
+			},
+			{
+				"command": "clickup.addList",
+				"title": "add List",
+				"icon": "$(add)"
+			},
+			{
+				"command": "clickup.deleteList",
+				"title": "delete List",
+				"icon": "$(trash)"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
-					"command": "clickup.addSpace",
+					"command": "clickup.addTeam",
 					"when": "view == clickupTasksView",
 					"group": "navigation"
 				},
@@ -125,8 +137,23 @@
 					"group": "inline"
 				},
 				{
+					"command": "clickup.addList",
+					"when": "viewItem == spaceItem",
+					"group": "inline"
+				},
+				{
+					"command": "clickup.deleteList",
+					"when": "viewItem == listItem",
+					"group": "inline"
+				},
+				{
 					"command": "clickup.addTask",
 					"when": "viewItem == listItem",
+					"group": "inline"
+				},
+				{
+					"command": "clickup.addSpace",
+					"when": "viewItem == teamItem",
 					"group": "inline"
 				}
 			]

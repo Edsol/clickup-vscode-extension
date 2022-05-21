@@ -15,8 +15,8 @@ export class ApiWrapper {
         return body.teams;
     }
 
-    async addTeam(name: string) {
-        const { body } = await this.clickup.teams.create();
+    async createTeam(name: string) {
+        const { body } = await this.clickup.teams.create(name);
         return body;
     }
 
@@ -30,8 +30,28 @@ export class ApiWrapper {
         return body;
     }
 
+    async createSpace(teamId: string, name: string) {
+        console.log(teamId, name);
+        const { body } = await this.clickup.teams.createSpace(teamId, {
+            name: name
+        });
+        return body;
+    }
+
     async deleteSpace(spaceId: string) {
         const { body } = await this.clickup.spaces.delete(spaceId);
+        return body;
+    }
+
+    async createList(spaceId: string, name: string) {
+        const { body } = await this.clickup.spaces.createFolderlessList(spaceId, {
+            name: name
+        });
+        return body;
+    }
+
+    async deleteList(listId: string) {
+        const { body } = await this.clickup.lists.delete(listId);
         return body;
     }
 

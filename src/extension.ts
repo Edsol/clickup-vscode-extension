@@ -55,34 +55,49 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
-		vscode.window.showInformationMessage("Are you sure you want to eliminate this task?", "Yes", "No")
-			.then(answer => {
-				if (answer === "Yes") {
-					wrapper.deleteTask(taskItem.task.id).then((response) => {
-						provider.refresh();
-					});
-				} else {
-					vscode.window.showInformationMessage('good, your task is safe');
-				}
-			});
+		utils.confirmDialog(constants.TASK_DELETE_MESSAGE, async () => {
+			await wrapper.deleteTask(taskItem.task.id);
+			provider.refresh();
+		}, () => {
+			vscode.window.showInformationMessage('good, your task is safe');
+		});
 	});
 
-	vscode.commands.registerCommand('clickup.addSpace', () => {
+	vscode.commands.registerCommand('clickup.addSpace', (teamItem) => {
 		vscode.window.showInputBox({
 			prompt: "Insert space name"
-		}).then((response) => {
-			console.log('response', response);
+		}).then(async (name) => {
+			console.log('response', name, teamItem.id);
+			await wrapper.createSpace(teamItem.id, name as string);
+			provider.refresh();
 		});
 	});
 
 	vscode.commands.registerCommand("clickup.deleteSpace", (spaceItem) => {
-		console.log('space', spaceItem.id);
-		utils.confirmDialog(constants.DELETE_SPACE_MESSAGE, async () => {
-			var response = await wrapper.deleteSpace(spaceItem.id);
-			console.log('response', response);
-			// provider.refresh();
+		utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
+			await wrapper.deleteSpace(spaceItem.id);
+			provider.refresh();
 		});
 	});
+
+	vscode.commands.registerCommand('clickup.addList', (spaceItem) => {
+		console.log('addList', spaceItem);
+		vscode.window.showInputBox({
+			prompt: "Insert list name"
+		}).then(async (name) => {
+			console.log('response', name, spaceItem.id);
+			await wrapper.createList(spaceItem.id, name as string);
+			provider.refresh();
+		});
+	});
+
+	vscode.commands.registerCommand("clickup.deleteList", (listItem) => {
+		utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
+			await wrapper.deleteList(listItem.id);
+			provider.refresh();
+		});
+	});
+
 
 
 }

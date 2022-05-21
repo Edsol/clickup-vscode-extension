@@ -9,8 +9,11 @@ export const TASK_SAVE_ERROR_MESSAGE = 'An error occurred while saving';
 export const TASK_SAVE_SUCCESS_MESSAGE = 'New task was created';
 export const TASK_UPDATE_MESSAGE = 'Task updated';
 export const TASK_UPDATE_ERROR_MESSAGE = 'An error occurred while updating';
+export const TASK_DELETE_MESSAGE = "Are you sure you want to eliminate this Task?";
 
-export const DELETE_SPACE_MESSAGE = "Are you sure you want to eliminate this Space?";
+export const SPACE_DELETE_MESSAGE = "Are you sure you want to eliminate this Space?";
+
+export const LIST_DELETE_MESSAGE = "Are you sure you want to eliminate this List?";
 
 export const DEFAULT_TASK_DETAILS = [
     'id', 'name', 'description', 'url', 'priority', 'creator', 'tags'

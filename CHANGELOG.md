@@ -2,6 +2,8 @@
 
 ### 0.0.6
 
+- add and delete list inside a space
+- create new space
 - refresh treeview button
 - add delete space function
 - delete task button

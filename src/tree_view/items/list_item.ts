@@ -8,7 +8,7 @@ export class ListItem extends TreeItem {
         public readonly collapsibleState: TreeItemCollapsibleState
     ) {
         super(list.name, collapsibleState);
-
+        this.id = list.id;
         this.iconPath = {
             light: path.join(__dirname, '..', '..', '..', '..', 'resources', 'listItem', 'document.png'),
             dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'listItem', 'document_white.png')
