@@ -14,6 +14,7 @@
 		"onView:clickupTasksView",
 		"onCommand:clickup:refresh",
 		"onCommand:clickup.setToken",
+		"onCommand:clickup.deleteToken",
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTask",
 		"onCommand:clickup:addTask",
@@ -37,19 +38,15 @@
 		"commands": [
 			{
 				"command": "clickup.setToken",
-				"title": "ClickUp: Add personal token"
+				"title": "ClickUp: Add token"
 			},
 			{
 				"command": "clickup.getToken",
-				"title": "ClickUp: Get personal token"
+				"title": "ClickUp: Get token"
 			},
 			{
-				"command": "clickup.getTasks",
-				"title": "ClickUp: get all tasks"
-			},
-			{
-				"command": "clickup.deleteTasks",
-				"title": "ClickUp: delete all tasks"
+				"command": "clickup.deleteToken",
+				"title": "ClickUp: delete token"
 			},
 			{
 				"command": "clickup.deleteTask",
@@ -94,11 +91,6 @@
 		],
 		"menus": {
 			"view/title": [
-				{
-					"command": "clickup.addTeam",
-					"when": "view == clickupTasksView",
-					"group": "navigation"
-				},
 				{
 					"command": "clickup.refresh",
 					"when": "view == clickupTasksView",

@@ -15,32 +15,40 @@ export async function activate(context: vscode.ExtensionContext) {
 	let storageManager = new LocalStorageService(context.workspaceState);
 	tokenService.init(storageManager);
 	var token: any = await storageManager.getValue('token');
-
+	console.log('token', token);
 	// If token doesn't exists show error message
 	if (token === undefined) {
 		vscode.window.showInformationMessage('No clickup token has been set!');
-		return;
+	} else {
+		//If token exists fetch informations
+		var wrapper = new ApiWrapper(token);
+		var teams = await wrapper.getTeams();
+
+		var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
+		vscode.window.createTreeView('clickupTasksView', {
+			treeDataProvider: provider,
+			showCollapseAll: true,
+		});
 	}
-
-	// If token exists fetch informations
-	var wrapper = new ApiWrapper(token);
-	var teams = await wrapper.getTeams();
-
-	var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-	vscode.window.createTreeView('clickupTasksView', {
-		treeDataProvider: provider,
-		showCollapseAll: true,
+	vscode.commands.registerCommand('clickup.setToken', async () => {
+		console.log('setToken');
+		if (await tokenInput.setToken()) {
+			vscode.window.showInformationMessage('Your token has been successfully saved');
+			vscode.commands.executeCommand('workbench.action.reloadWindow');
+		}
 	});
+
+	vscode.commands.registerCommand('clickup.deleteToken', async () => {
+		if (await tokenInput.deleteToken()) {
+			vscode.window.showInformationMessage('Your token has been successfully deleted');
+			vscode.commands.executeCommand('workbench.action.reloadWindow');
+		}
+	});
+
 	vscode.commands.registerCommand('clickup.refresh', () => {
 		provider.refresh();
 	});
 
-
-	vscode.commands.registerCommand('clickup.setToken', async () => {
-		if (await tokenInput.setToken()) {
-			vscode.window.showInformationMessage('Your token has been successfully saved');
-		}
-	});
 	vscode.commands.registerCommand('clickup.getToken', async () => {
 		var token = await tokenInput.getToken();
 		vscode.window.showInformationMessage('Your token is: ' + token);
@@ -97,9 +105,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			provider.refresh();
 		});
 	});
-
-
-
 }
 
 // this method is called when your extension is deactivated

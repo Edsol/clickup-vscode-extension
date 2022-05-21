@@ -24,6 +24,10 @@ export class TokenService {
             return false;
         }
     }
+
+    async delete() {
+        this.storageManager?.setValue('token', undefined);
+    }
 }
 
 export const tokenService: TokenService = new TokenService();

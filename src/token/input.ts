@@ -18,3 +18,8 @@ export async function getToken() {
   var token = await tokenService.getToken();
   return token;
 }
+
+export async function deleteToken() {
+  await tokenService.delete();
+  return true;
+}
