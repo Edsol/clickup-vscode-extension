@@ -61,9 +61,12 @@ export class ApiWrapper {
     }
 
     async newTask(listId: string, data: any) {
-        console.log('newTask', listId, data);
         var { body } = await this.clickup.lists.createTask(listId, data);
-        console.log('newTask response', body);
+        return body;
+    }
+
+    async deleteTask(taskId: string) {
+        var { body } = await this.clickup.tasks.delete(taskId);
         return body;
     }
 

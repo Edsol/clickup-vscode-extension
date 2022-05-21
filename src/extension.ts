@@ -47,6 +47,21 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
 		new EditWebview(context, taskItem.task, wrapper, provider);
 	});
+
+	vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
+		vscode.window.showInformationMessage("Are you sure you want to eliminate this task?", "Yes", "No")
+			.then(answer => {
+				if (answer === "Yes") {
+					wrapper.deleteTask(taskItem.task.id).then((response) => {
+						provider.refresh();
+					});
+				} else {
+					vscode.window.showInformationMessage('good, your task is safe');
+				}
+			});
+	});
+
+
 }
 
 // this method is called when your extension is deactivated
