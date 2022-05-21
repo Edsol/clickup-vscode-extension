@@ -2,6 +2,7 @@
 	"name": "clickup",
 	"displayName": "clickup",
 	"description": "integrates clickup and its workflows into vscode",
+	"repository": "https://github.com/Edsol/clickup-vscode-extension",
 	"version": "0.0.6",
 	"engines": {
 		"vscode": "^1.65.0"
