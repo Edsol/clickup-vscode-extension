@@ -1,9 +1,22 @@
 {
 	"name": "clickup",
 	"displayName": "clickup",
+	"publisher": "edsol",
 	"description": "integrates clickup and its workflows into vscode",
 	"repository": "https://github.com/Edsol/clickup-vscode-extension",
+	"icon": "images/icon.png",
+	"bugs": {
+		"url": "https://github.com/Edsol/clickup-vscode-extension/issues",
+		"email": "edoardo.soloperto@gmail.com"
+	},
 	"version": "0.0.6",
+	"license": "AGPL 3.0",
+	"keywords": [
+		"clickup",
+		"click up",
+		"click",
+		"up"
+	],
 	"engines": {
 		"vscode": "^1.65.0"
 	},
