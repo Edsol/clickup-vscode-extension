@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.0.6
+
+- delete task button
+- collapse all treeView button
+
 ### 0.0.5
 - redesigned treeview to view nested Space, List and Task
 - add dedicated icon for Space, List and Task
