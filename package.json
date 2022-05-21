@@ -51,14 +51,6 @@
 				"title": "ClickUp: delete all tasks"
 			},
 			{
-				"command": "clickup.groupByStatus",
-				"title": "Group by status"
-			},
-			{
-				"command": "clickup.groupByPriority",
-				"title": "Group by priority"
-			},
-			{
 				"command": "clickup.deleteTask",
 				"title": "delete Task",
 				"icon": "$(trash)"
@@ -110,14 +102,6 @@
 					"command": "clickup.refresh",
 					"when": "view == clickupTasksView",
 					"group": "navigation"
-				},
-				{
-					"command": "clickup.groupByStatus",
-					"when": "view == clickupTasksView"
-				},
-				{
-					"command": "clickup.groupByPriority",
-					"when": "view == clickupTasksView"
 				}
 			],
 			"view/item/context": [
