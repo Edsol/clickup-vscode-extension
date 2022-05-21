@@ -2,6 +2,7 @@
 
 ### 0.0.6
 
+- refresh treeview button
 - add delete space function
 - delete task button
 - collapse all treeView button

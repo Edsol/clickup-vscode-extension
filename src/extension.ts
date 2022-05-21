@@ -31,6 +31,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		treeDataProvider: provider,
 		showCollapseAll: true,
 	});
+	vscode.commands.registerCommand('clickup.refresh', () => {
+		provider.refresh();
+	});
+
 
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {

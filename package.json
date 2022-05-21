@@ -11,6 +11,7 @@
 	],
 	"activationEvents": [
 		"onView:clickupTasksView",
+		"onCommand:clickup:refresh",
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTask",
@@ -71,6 +72,11 @@
 				"icon": "$(add)"
 			},
 			{
+				"command": "clickup.refresh",
+				"title": "refresh",
+				"icon": "$(sync)"
+			},
+			{
 				"command": "clickup.addSpace",
 				"title": "add Space",
 				"icon": "$(add)"
@@ -85,6 +91,11 @@
 			"view/title": [
 				{
 					"command": "clickup.addSpace",
+					"when": "view == clickupTasksView",
+					"group": "navigation"
+				},
+				{
+					"command": "clickup.refresh",
 					"when": "view == clickupTasksView",
 					"group": "navigation"
 				},
