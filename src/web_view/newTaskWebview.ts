@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { WebviewHelper } from '../webviewHelper';
-import { ApiWrapper } from '../../api_wrapper';
-import { ListItem } from '../../tree_view/items/list_item';
-import * as constants from './../../constants';
-import { MainProvider } from '../../tree_view/main_provider';
+import { WebviewHelper } from '../web_view/webviewHelper';
+import { ApiWrapper } from '../api_wrapper';
+import { ListItem } from '../tree_view/items/list_item';
+import * as constants from './../constants';
+import { MainProvider } from '../tree_view/main_provider';
 
 export class NewTaskWebview {
     context: vscode.ExtensionContext;
@@ -43,7 +43,7 @@ export class NewTaskWebview {
 
         this.dependecies = {
             bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
-            vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
+            vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.prod.js'),
             tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js'),
             tagifyCssSrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.css'),
             vueApp: path.join(context.extensionPath, 'resources', 'web_view', 'new', 'script.js'),

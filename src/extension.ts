@@ -15,7 +15,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	let storageManager = new LocalStorageService(context.workspaceState);
 	tokenService.init(storageManager);
 	var token: any = await storageManager.getValue('token');
-	console.log('token', token);
+
 	// If token doesn't exists show error message
 	if (token === undefined) {
 		vscode.window.showInformationMessage('No clickup token has been set!');
@@ -31,7 +31,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	}
 	vscode.commands.registerCommand('clickup.setToken', async () => {
-		console.log('setToken');
 		if (await tokenInput.setToken()) {
 			vscode.window.showInformationMessage('Your token has been successfully saved');
 			vscode.commands.executeCommand('workbench.action.reloadWindow');
@@ -75,7 +74,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInputBox({
 			prompt: "Insert space name"
 		}).then(async (name) => {
-			console.log('response', name, teamItem.id);
 			await wrapper.createSpace(teamItem.id, name as string);
 			provider.refresh();
 		});
@@ -89,11 +87,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.addList', (spaceItem) => {
-		console.log('addList', spaceItem);
 		vscode.window.showInputBox({
 			prompt: "Insert list name"
 		}).then(async (name) => {
-			console.log('response', name, spaceItem.id);
 			await wrapper.createList(spaceItem.id, name as string);
 			provider.refresh();
 		});

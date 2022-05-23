@@ -1,5 +1,15 @@
 # Change Log
 
+### 0.0.8
+
+- when build extension the html a js files doesn't load if its was inside a src path
+- fix assignee on edit mode
+- load production vue.js library
+
+### 0.0.7
+
+- refactoring for publish on vscode marketplace
+
 ### 0.0.6
 
 - add and delete list inside a space

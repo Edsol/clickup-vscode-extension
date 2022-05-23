@@ -41,7 +41,7 @@ export class EditWebview {
 
 		this.dependecies = {
 			bootstrapSrc: path.join(context.extensionPath, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
-			vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
+			vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.prod.js'),
 			tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js'),
 			tagifyCssSrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.css'),
 			vueApp: path.join(context.extensionPath, 'resources', 'web_view', 'edit', 'script.js'),
@@ -67,7 +67,7 @@ export class EditWebview {
 			this.webviewhelper.getPanel(this.dependecies)
 				.then(async (panel: any) => {
 					this.panel = panel as vscode.WebviewPanel;
-
+					console.log(task);
 					this.panel.webview.postMessage({
 						command: 'init',
 						data: {

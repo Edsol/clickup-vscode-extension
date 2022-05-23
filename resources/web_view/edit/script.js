@@ -62,14 +62,15 @@ const appData = {
                     this.taskCopy = JSON.parse(JSON.stringify(this.task));
 
                     tagifyAssignees.whitelist = this.members = message.data.members;
-                    tagifyAssignees.addTags(message.data.members);
+                    //TODO: refactoring
+                    this.task.assignees.forEach((member) => {
+                        tagifyAssignees.addTags(member.username);
+                    });
 
                     tagifyStatuses.whitelist = this.statuses = message.data.statuses;
                     tagifyStatuses.addTags(message.data.task.status.status);
 
                     tagifyTags.whitelist = this.tags = message.data.tags;
-                    console.log(this.tags);
-                    console.log('this.task', this.task);
 
                     //TODO: refactoring
                     this.task.tags.forEach((tag) => {

@@ -2,11 +2,27 @@
 Unofficial <a href="http://clickup.com">ClickUp</a> VSCode extension
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![](https://vsmarketplacebadge.apphb.com/version-short/edsol.clickup.svg
+)
+![](https://vsmarketplacebadge.apphb.com/downloads-short/edsol.clickup.svg
+)
+![](https://vsmarketplacebadge.apphb.com/rating-short/edsol.clickup.svg
+)
+
 </h1>
 
 ## Requirements
 
 You need to have a ClickUp token to interact with your private task, use [official guide](https://docs.clickup.com/en/articles/1367130-getting-started-with-the-clickup-api) to create one
+
+## Install
+Use command:
+
+```
+ext install edsol.clickup
+```
+
+or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=edsol.clickup)
 
 ## Features
 
@@ -24,8 +40,11 @@ All other commands can be used only via GUI (for now)
 ## Roadmap
 
 - [ ] Task counter badge
+- [ ] Easy way to edit status outside edit mode
 - [ ] Manage via global settings
-- [ ] Increase performaces on edit task
+- [ ] Increase performaces
+- [ ] Add filters and groupings
+- [ ] Implements time tracking
 - [x] Add and delete list insde a space
 - [x] Create and delete spaces
 - [x] Refresh TreeView button 
