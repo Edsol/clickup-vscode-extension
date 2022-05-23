@@ -13,9 +13,24 @@ You need to have a ClickUp token to interact with your private task, use [offici
 * Show and edit task inside a List and Space
 * Create new task inside a List
 
+## Extension Commands
+This extension contributes the following commands:
+* `clickup:refresh`: reload and update data of TreeView
+* `clickup:setToken`: set personal token
+* `clickup:deleteToken`: delete personal token 
+
+All other commands can be used only via GUI (for now)
+
 ## Roadmap
 
 - [ ] Task counter badge
-- [ ] Create new List
-- [ ] Create new Space
+- [ ] Manage via global settings
+- [x] Add and delete list insde a space
+- [x] Create and delete spaces
+- [x] Refresh TreeView button 
+- [x] Collapse TreeView button
+- [x] Create new List
 - [x] load task informations in real time 
+
+## Release Notes
+Detailed Release Notes are available [here](CHANGELOG.md)
