@@ -4,9 +4,9 @@ import { ApiWrapper } from './api_wrapper';
 import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
-import { EditWebview } from './web_view/edit/editWebview';
+import { EditWebview } from './web_view/editWebview';
 import { MainProvider } from './tree_view/main_provider';
-import { NewTaskWebview } from './web_view/new/newTaskWebview';
+import { NewTaskWebview } from './web_view/newTaskWebview';
 import { Utils } from './utils';
 
 

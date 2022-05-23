@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { WebviewHelper } from '../webviewHelper';
-import { Task } from '../../types';
-import { ApiWrapper } from '../../api_wrapper';
-import * as constant from '../../constants';
-import { MainProvider } from '../../tree_view/main_provider';
+import { WebviewHelper } from './webviewHelper';
+import { Task } from '../types';
+import { ApiWrapper } from '../api_wrapper';
+import * as constant from '../constants';
+import { MainProvider } from '../tree_view/main_provider';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -22,7 +22,7 @@ export class EditWebview {
 	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: MainProvider) {
 		this.context = context;
 		this.wrapper = wrapper;
-		this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'edit', 'index.html');
+		this.htmlFile = path.join(context.extensionPath, 'resources', 'web_view', 'edit', 'index.html');
 
 		var promises = [
 			new Promise(async (resolve) => {
@@ -44,7 +44,7 @@ export class EditWebview {
 			vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
 			tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js'),
 			tagifyCssSrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.css'),
-			vueApp: path.join(context.extensionPath, 'src', 'web_view', 'edit', 'script.js'),
+			vueApp: path.join(context.extensionPath, 'resources', 'web_view', 'edit', 'script.js'),
 		};
 
 		this.panel = vscode.window.createWebviewPanel(
@@ -54,7 +54,7 @@ export class EditWebview {
 			{
 				enableScripts: true,
 				localResourceRoots: [
-					vscode.Uri.file(path.join(context.extensionPath, 'src', 'web_view')),
+					vscode.Uri.file(path.join(context.extensionPath, 'resources', 'web_view')),
 					vscode.Uri.file(path.join(context.extensionPath, 'node_modules'))
 				]
 			}

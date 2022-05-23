@@ -25,6 +25,7 @@ All other commands can be used only via GUI (for now)
 
 - [ ] Task counter badge
 - [ ] Manage via global settings
+- [ ] Increase performaces on edit task
 - [x] Add and delete list insde a space
 - [x] Create and delete spaces
 - [x] Refresh TreeView button 

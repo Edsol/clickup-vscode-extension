@@ -9,7 +9,7 @@
 		"url": "https://github.com/Edsol/clickup-vscode-extension/issues",
 		"email": "edoardo.soloperto@gmail.com"
 	},
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"license": "AGPL 3.0",
 	"keywords": [
 		"clickup",
@@ -28,7 +28,6 @@
 		"onCommand:clickup:refresh",
 		"onCommand:clickup.setToken",
 		"onCommand:clickup.deleteToken",
-		"onCommand:clickup.getTasks",
 		"onCommand:clickup.deleteTask",
 		"onCommand:clickup:addTask",
 		"onCommand:clickup:editTask",

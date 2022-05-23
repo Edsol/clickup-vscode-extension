@@ -22,7 +22,7 @@ export class NewTaskWebview {
         this.context = context;
         this.wrapper = wrapper;
 
-        this.htmlFile = path.join(context.extensionPath, 'src', 'web_view', 'new', 'index.html');
+        this.htmlFile = path.join(context.extensionPath, 'resources', 'web_view', 'new', 'index.html');
         var listId = listItem.list.id;
         var spaceId = listItem.list.space.id;
 
@@ -46,7 +46,7 @@ export class NewTaskWebview {
             vueSrc: path.join(context.extensionPath, 'node_modules', 'vue', 'dist', 'vue.global.js'),
             tagifySrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.min.js'),
             tagifyCssSrc: path.join(context.extensionPath, 'node_modules', '@yaireo', 'tagify', 'dist', 'tagify.css'),
-            vueApp: path.join(context.extensionPath, 'src', 'web_view', 'new', 'script.js'),
+            vueApp: path.join(context.extensionPath, 'resources', 'web_view', 'new', 'script.js'),
         };
 
         this.panel = vscode.window.createWebviewPanel(
@@ -56,7 +56,7 @@ export class NewTaskWebview {
             {
                 enableScripts: true,
                 localResourceRoots: [
-                    vscode.Uri.file(path.join(context.extensionPath, 'src', 'web_view')),
+                    vscode.Uri.file(path.join(context.extensionPath, 'resources', 'web_view')),
                     vscode.Uri.file(path.join(context.extensionPath, 'node_modules'))
                 ]
             }
