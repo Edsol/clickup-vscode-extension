@@ -16,5 +16,5 @@ export const SPACE_DELETE_MESSAGE = "Are you sure you want to eliminate this Spa
 export const LIST_DELETE_MESSAGE = "Are you sure you want to eliminate this List?";
 
 export const DEFAULT_TASK_DETAILS = [
-    'id', 'name', 'description', 'url', 'priority', 'creator', 'tags'
+    'id', 'name', 'description', 'url', 'status', 'priority', 'creator', 'tags', 'assignees'
 ];

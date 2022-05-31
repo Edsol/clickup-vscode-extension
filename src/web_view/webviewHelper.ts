@@ -49,6 +49,7 @@ export class WebviewHelper {
     }
 
     static normalize(data: any, mapField: Array<String>) {
+        console.log('before normalize', data);
         if (data.assignees) {
             data.assignees = data.assignees.map((member: any) => {
                 return member.id;
@@ -75,7 +76,7 @@ export class WebviewHelper {
                 filteredData[key] = value;
             }
         });
-        console.log('filteredData', filteredData);
+        console.log('after normalize data', filteredData);
         return filteredData;
     }
 

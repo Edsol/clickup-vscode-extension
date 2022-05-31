@@ -1,5 +1,9 @@
 # Change Log
 
+### 0.0.9
+
+- Fix issues: [2](https://github.com/Edsol/clickup-vscode-extension/issues/2),[3](https://github.com/Edsol/clickup-vscode-extension/issues/3)
+
 ### 0.0.8
 
 - when build extension the html a js files doesn't load if its was inside a src path
