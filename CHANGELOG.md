@@ -1,5 +1,8 @@
 # Change Log
 
+### 0.1.0
+
+- show folders and tasks inside a space (issue #4)
 ### 0.0.9
 
 - Fix issues: [2](https://github.com/Edsol/clickup-vscode-extension/issues/2),[3](https://github.com/Edsol/clickup-vscode-extension/issues/3)
