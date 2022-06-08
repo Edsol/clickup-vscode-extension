@@ -29,6 +29,10 @@ export class ApiWrapper {
         const { body } = await this.clickup.spaces.get(spaceId);
         return body;
     }
+    async getFolders(spaceId: string) {
+        const { body } = await this.clickup.spaces.getFolders(spaceId);
+        return body.folders;
+    }
 
     async createSpace(teamId: string, name: string) {
         console.log(teamId, name);
@@ -57,6 +61,10 @@ export class ApiWrapper {
 
     async getFolderLists(spaceId: string) {
         const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
+        return body.lists;
+    }
+    async getLists(folderId: string) {
+        const { body } = await this.clickup.folders.getLists(folderId);
         return body.lists;
     }
 

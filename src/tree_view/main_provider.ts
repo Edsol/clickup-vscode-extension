@@ -4,6 +4,7 @@ import { TaskItem } from './items/task_item';
 import { ListItem } from './items/list_item';
 import { SpaceItem } from './items/space_item';
 import { TeamItem } from './items/team_item';
+import { FolderItem } from './items/folder_item';
 
 export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     teams: Array<any>;
@@ -39,7 +40,18 @@ export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
         }
 
         if (element instanceof SpaceItem) {
+            var folders: Array<types.Folder> = await this.apiwrapper.getFolders(element.id);
+            resolve = Object.values(folders).map((folder: types.Folder) => {
+                return new FolderItem(folder, this.collapsedConst);
+            });
             var lists: Array<types.List> = await this.apiwrapper.getFolderLists(element.id);
+            Object.values(lists).map((list: types.List) => {
+                resolve.push(new ListItem(list, this.collapsedConst));
+            });
+        }
+
+        if (element instanceof FolderItem) {
+            var lists: Array<types.List> = await this.apiwrapper.getLists(element.folder.id);
             resolve = Object.values(lists).map((list: types.List) => {
                 return new ListItem(list, this.collapsedConst);
             });
