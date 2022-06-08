@@ -9,8 +9,8 @@ export class TeamItem extends TreeItem {
     ) {
         super(label, collapsibleState);
         this.iconPath = {
-            light: path.join(__filename, '..', '..', '..', '..', 'resources', 'teamItem', 'documents.png'),
-            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'teamItem', 'documents_white.png')
+            light: path.join(__filename, '..', '..', '..', '..', 'resources', 'teamItem', 'workspace.png'),
+            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'teamItem', 'workspace_white.png')
         };
     }
     contextValue = 'teamItem';
