@@ -39,7 +39,7 @@ All other commands can be used only via GUI (for now)
 
 ## Roadmap
 
-- [ ] Task counter badge
+- [x] Task counter badge
 - [ ] Easy way to edit status outside edit mode
 - [ ] Manage via global settings
 - [ ] Increase performaces
