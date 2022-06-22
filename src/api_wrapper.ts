@@ -74,7 +74,6 @@ export class ApiWrapper {
         return tasks;
     }
 
-
     async getMembers(listId: string) {
         var { body } = await this.clickup.lists.getMembers(listId);
         var members: Array<Member> = body.members;
@@ -144,5 +143,10 @@ export class ApiWrapper {
                 this.clickup.tasks.addTag(taskId, tagName);
             }
         });
+    }
+
+    async countTasks(listId: string) {
+        var tasks = await this.getTasks(listId);
+        return tasks.length === undefined ? 0 : tasks.length;
     }
 }

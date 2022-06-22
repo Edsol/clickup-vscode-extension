@@ -5,9 +5,13 @@ import { List } from '../../types';
 export class ListItem extends TreeItem {
     constructor(
         public list: List,
-        public readonly collapsibleState: TreeItemCollapsibleState
+        public readonly collapsibleState: TreeItemCollapsibleState,
+        public taskCounter?: number,
     ) {
-        super(list.name, collapsibleState);
+        if (taskCounter === undefined) {
+            taskCounter = 0;
+        }
+        super(list.name + ` (${taskCounter})`, collapsibleState);
         this.id = list.id;
         this.iconPath = {
             light: path.join(__dirname, '..', '..', '..', '..', 'resources', 'listItem', 'document.png'),

@@ -5,10 +5,11 @@ import { ListItem } from './items/list_item';
 import { SpaceItem } from './items/space_item';
 import { TeamItem } from './items/team_item';
 import { FolderItem } from './items/folder_item';
+import { ApiWrapper } from '../api_wrapper';
 
 export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     teams: Array<any>;
-    apiwrapper: any;
+    apiwrapper: ApiWrapper;
 
     collapsedConst = vscode.TreeItemCollapsibleState.Collapsed;
     noCollapsedConst = vscode.TreeItemCollapsibleState.None;
@@ -45,14 +46,22 @@ export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
                 return new FolderItem(folder, this.collapsedConst);
             });
             var lists: Array<types.List> = await this.apiwrapper.getFolderLists(element.id);
-            Object.values(lists).map((list: types.List) => {
-                resolve.push(new ListItem(list, this.collapsedConst));
-            });
+            // Object.values(lists).map(async (list: types.List) => {
+            //     // var taskCount = await this.apiwrapper.countTasks(list.id);
+            //     resolve.push(new ListItem(list, this.collapsedConst, 0));
+            // });
+            var response: any = await Promise.all(
+                Object.values(lists).map(async (list: types.List) => {
+                    var taskCount = await this.apiwrapper.countTasks(list.id);
+                    resolve.push(new ListItem(list, this.collapsedConst, taskCount));
+                })
+            );
+
         }
 
         if (element instanceof FolderItem) {
             var lists: Array<types.List> = await this.apiwrapper.getLists(element.folder.id);
-            resolve = Object.values(lists).map((list: types.List) => {
+            resolve = Object.values(lists).map(async (list: types.List) => {
                 return new ListItem(list, this.collapsedConst);
             });
         }
