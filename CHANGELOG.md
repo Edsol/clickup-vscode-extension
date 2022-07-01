@@ -1,5 +1,9 @@
 # Change Log
 
+### 0.1.2
+
+- tasks are not displayed in folders (issue [#5](https://github.com/Edsol/clickup-vscode-extension/issues/5))
+- 
 ### 0.1.1
 
 - added task counter
