@@ -57,13 +57,13 @@ export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
 
         if (element instanceof FolderItem) {
             var lists: Array<types.List> = await this.apiwrapper.getLists(element.folder.id);
-            resolve = Object.values(lists).map(async (list: types.List) => {
-                //* Fetches the task count for the list
-                var taskCount = await this.apiwrapper.countTasks(list.id);
-                return new ListItem(list, this.collapsedConst,taskCount);
-            });
-            //* resolves the list items
-            resolve = await Promise.all(resolve)
+            await Promise.all(
+                Object.values(lists).map(async (list: types.List) => {
+                    //* Fetches the task count for the list
+                    var taskCount = await this.apiwrapper.countTasks(list.id);
+                    resolve.push(new ListItem(list, this.collapsedConst, taskCount));
+                })
+            );
         }
 
         if (element instanceof ListItem) {
