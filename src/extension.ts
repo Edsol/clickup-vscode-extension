@@ -3,7 +3,7 @@ import { Console } from "console";
 import * as path from "path";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { extensions, commands, Uri, RelativePattern, ExtensionContext, workspace } from 'vscode';
+import { extensions, commands, Uri,env, RelativePattern, ExtensionContext, workspace } from 'vscode';
 import { GitExtension } from './git';
 const fs = require('fs');
 import Timer from './Timer';
@@ -55,6 +55,9 @@ export function activate(context: ExtensionContext) {
   });
   let stopTimer = commands.registerCommand('extension.stopTimer', () => {
     timer.stop();
+  });
+  let copyTimer = commands.registerCommand('extension.copyTimer', () => {
+    timer.copyTimer();
   });
 
   context.subscriptions.push(startTimer);

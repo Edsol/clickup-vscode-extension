@@ -1,5 +1,5 @@
 import path = require('path');
-import { workspace, StatusBarItem, window, StatusBarAlignment,} from 'vscode';
+import { workspace, StatusBarItem, window,env, StatusBarAlignment,} from 'vscode';
 const fs = require('fs');
 
 export default class Timer {
@@ -15,6 +15,8 @@ export default class Timer {
     // create status bar items
 		if (!this._statusBarItem) {
 			this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right);
+      this._statusBarItem.command = "extension.copyTimer";
+      this._statusBarPauseButton.tooltip = "Copy Duration";
 			this._statusBarItem.show();
 		}
 		if (!this._statusBarStartButton) {
@@ -43,7 +45,7 @@ export default class Timer {
   }
 
   public start() {
-    this._statusBarItem.show();    
+    this._statusBarItem.show();
     this._statusBarStartButton.hide();
     this._statusBarPauseButton.show();
     this._timer = setInterval(() => {
@@ -55,6 +57,10 @@ export default class Timer {
   public showTimer() {
     this._statusBarItem.text = `00:00:00`;
     this._statusBarItem.show();
+  }
+
+  public copyTimer() {
+    env.clipboard.writeText(this._statusBarItem.text);
   }
   public stop() {
     this._statusBarStartButton.show();
