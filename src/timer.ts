@@ -1,10 +1,14 @@
-import { workspace, StatusBarItem, window, StatusBarAlignment } from 'vscode';
+import path = require('path');
+import { workspace, StatusBarItem, window, StatusBarAlignment,} from 'vscode';
+const fs = require('fs');
 
 export default class Timer {
-  private _statusBarItem: StatusBarItem;
-  private _timer: NodeJS.Timer;
-
-  constructor() {
+  private _statusBarItem!: StatusBarItem;
+  private _timer!: NodeJS.Timer;
+  branchName:string | undefined;
+  total = 0;
+  constructor(branch:string) {
+    this.branchName = branch;
     if (!this._statusBarItem) {
       this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
       this._statusBarItem.text = '00:00';
@@ -16,29 +20,17 @@ export default class Timer {
     if (config.showAlarm) {
       return config.alarmMessage;
     } else {
-      return null;
+      return "";
     }
   }
 
   public start() {
     this._statusBarItem.text = `00:00:00`;
     this._statusBarItem.show();
-
-    let total = 0;
     this._timer = setInterval(() => {
-      total++;
-      let t = this.secondsToHms(total);
-
-      this._statusBarItem.text = `${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`;
-
-      // if (t.total <= 0) {
-      //   clearInterval(this._timer);
-      //   this._statusBarItem.hide();
-
-      //   if (this.alarmMessage) {
-      //     window.showInformationMessage(this.alarmMessage);
-      //   }
-      // }
+      this.total++;
+      let t = this.secondsToHms(this.total);
+      this._statusBarItem.text = `${this.branchName} ${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`
     }, 1000);
   }
 
@@ -49,7 +41,7 @@ export default class Timer {
     }
   }
 
-  public secondsToHms(d) {
+  public secondsToHms(d:number) {
     d = Number(d);
     var h = Math.floor(d / 3600);
     var m = Math.floor(d % 3600 / 60);
@@ -62,7 +54,7 @@ export default class Timer {
     }; 
 }
 
-  private _zeroBase(value) {
+  private _zeroBase(value:number) {
     return value < 10 ? `0${value}` : value;
   }
 }
