@@ -4,19 +4,37 @@ const fs = require('fs');
 
 export default class Timer {
   private _statusBarItem!: StatusBarItem;
+	private _statusBarStartButton!: StatusBarItem;
+	private _statusBarPauseButton!: StatusBarItem;
   private _timer!: NodeJS.Timer;
   branchName:string | undefined;
   total = 0;
   constructor(branch:string) {
     this.branchName = branch;
-    if (!this._statusBarItem) {
-      this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
-      this._statusBarItem.text = '00:00';
-    }
+    
+    // create status bar items
+		if (!this._statusBarItem) {
+			this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right);
+			this._statusBarItem.show();
+		}
+		if (!this._statusBarStartButton) {
+			this._statusBarStartButton = window.createStatusBarItem(StatusBarAlignment.Right);
+			this._statusBarStartButton.text = "$(triangle-right)";
+			this._statusBarStartButton.command = "extension.startTimer";
+			this._statusBarStartButton.tooltip = "Start Timer";
+		}
+		if (!this._statusBarPauseButton) {
+			this._statusBarPauseButton = window.createStatusBarItem(StatusBarAlignment.Right);
+			this._statusBarPauseButton.text = "$(debug-pause)";
+			this._statusBarPauseButton.command = "extension.stopTimer";
+			this._statusBarPauseButton.tooltip = "Pause Timer";
+		}
+
+		this._statusBarStartButton.show();
   }
 
   public get alarmMessage(): string {
-    let config = workspace.getConfiguration('simpleTimer');
+    let config = workspace.getConfiguration('branch-timer');
     if (config.showAlarm) {
       return config.alarmMessage;
     } else {
@@ -25,20 +43,23 @@ export default class Timer {
   }
 
   public start() {
-    this._statusBarItem.text = `00:00:00`;
-    this._statusBarItem.show();
+    this._statusBarItem.show();    
+    this._statusBarStartButton.hide();
+    this._statusBarPauseButton.show();
     this._timer = setInterval(() => {
       this.total++;
       let t = this.secondsToHms(this.total);
-      this._statusBarItem.text = `${this.branchName} ${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`
+      this._statusBarItem.text = `${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`
     }, 1000);
   }
-
+  public showTimer() {
+    this._statusBarItem.text = `00:00:00`;
+    this._statusBarItem.show();
+  }
   public stop() {
+    this._statusBarStartButton.show();
+    this._statusBarPauseButton.hide();
     clearInterval(this._timer);
-    if (this._statusBarItem) {
-      this._statusBarItem.hide();
-    }
   }
 
   public secondsToHms(d:number) {
