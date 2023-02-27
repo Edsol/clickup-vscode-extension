@@ -16,7 +16,7 @@ export default class Timer {
 		if (!this._statusBarItem) {
 			this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right);
       this._statusBarItem.command = "extension.copyTimer";
-      this._statusBarPauseButton.tooltip = "Copy Duration";
+      this._statusBarItem.tooltip = "Copy Duration";
 			this._statusBarItem.show();
 		}
 		if (!this._statusBarStartButton) {

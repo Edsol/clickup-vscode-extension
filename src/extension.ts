@@ -11,6 +11,7 @@ import Timer from './Timer';
 let timer: Timer;
 let gitBranch: string | undefined;
 let gitpath: string | undefined;
+let jsonPath: string | undefined;
 var data = JSON.parse("{}");
 
 // this method is called when your extension is activated
@@ -19,13 +20,14 @@ export function activate(context: ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
   gitpath = path.join(workspace.rootPath!, ".git");
+  jsonPath = path.join(workspace.rootPath!, ".branchTimer");
   gitBranch = getCurrentGitBranch(Uri.parse(gitpath));
   console.log(gitBranch);
 
   console.log('Congratulations, your extension "branch-timer" is now active!');
   timer = new Timer(gitBranch!);
-  if (fs.existsSync(path.join(workspace.rootPath!, ".branchTimer"))) {
-    var jsonFile: string = fs.readFileSync(path.join(workspace.rootPath!, ".branchTimer"), 'utf8');
+  if (fs.existsSync(jsonPath)) {
+    var jsonFile: string = fs.readFileSync(jsonPath, 'utf8');
     data = JSON.parse(jsonFile);
     timer.total = data[gitBranch!] ?? 0;
   }
@@ -60,8 +62,10 @@ export function activate(context: ExtensionContext) {
     timer.copyTimer();
   });
 
-  context.subscriptions.push(startTimer);
+  context.subscriptions.push(showTimer);
   context.subscriptions.push(stopTimer);
+  context.subscriptions.push(copyTimer);
+  context.subscriptions.push(startTimer);
 }
 function updateBranch() {
   data[gitBranch!] = timer.total;
@@ -70,7 +74,7 @@ function updateBranch() {
   timer.branchName = gitBranch;
   timer.total = data[gitBranch!] ?? 0;
   var jsonData = JSON.stringify(data);
-  fs.writeFile(path.join(workspace.rootPath!, ".branchTimer"), jsonData, (error: any) => {
+  fs.writeFile(jsonPath, jsonData, (error: any) => {
     if (error) {
       console.log('An error has occurred ', error);
       return;
