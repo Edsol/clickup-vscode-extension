@@ -27,9 +27,9 @@ if you show branch timer before it branch will be undefined.
 
 ### 0.0.1
 
-Show branch timer
-Contorl timer from status bar
-Click on duration for copy it  with branch
+* Show branch timer
+* Contorl timer from status bar
+* Click on duration for copy it  with branch
 
 ---
 
