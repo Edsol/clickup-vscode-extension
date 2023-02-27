@@ -16,12 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.startTimer",
-        "title": "Simple Timer: Start"
-      },
-      {
-        "command": "extension.stopTimer",
-        "title": "Simple Timer: Stop"
+        "command": "extension.showTimer",
+        "title": "Branch Timer: Show Start"
       }
     ]
   },

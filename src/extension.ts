@@ -50,7 +50,9 @@ export function activate(context: ExtensionContext) {
   let startTimer = commands.registerCommand('extension.startTimer', () => {
     timer.start();
   });
-
+  let showTimer = commands.registerCommand('extension.showTimer', () => {
+    timer.showTimer();
+  });
   let stopTimer = commands.registerCommand('extension.stopTimer', () => {
     timer.stop();
   });
