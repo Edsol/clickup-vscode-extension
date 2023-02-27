@@ -1,8 +1,10 @@
 {
   "name": "branch-timer",
-  "displayName": "branch-timer",
-  "description": "",
+  "displayName": "Branch Timer",
+  "description": "Timer for every branch",
   "version": "0.0.1",
+  "icon": "icon.png",
+  "publisher": "vscode-branch-timer",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -10,8 +12,12 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:branch-timer.helloWorld"
+    "onCommand:branch-timer.showTimer"
   ],
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/M97Chahboun/branch-timer.git"
+  },
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
