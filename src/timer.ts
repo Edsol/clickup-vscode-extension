@@ -14,19 +14,19 @@ export default class Timer {
 
     // create status bar items
     if (!this._statusBarItem) {
-      this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Right);
+      this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
       this._statusBarItem.command = "extension.copyTimer";
       this._statusBarItem.tooltip = "Copy Duration";
       this._statusBarItem.show();
     }
     if (!this._statusBarStartButton) {
-      this._statusBarStartButton = window.createStatusBarItem(StatusBarAlignment.Right);
+      this._statusBarStartButton = window.createStatusBarItem(StatusBarAlignment.Left);
       this._statusBarStartButton.text = "$(triangle-right)";
       this._statusBarStartButton.command = "extension.startTimer";
       this._statusBarStartButton.tooltip = "Start Timer";
     }
     if (!this._statusBarPauseButton) {
-      this._statusBarPauseButton = window.createStatusBarItem(StatusBarAlignment.Right);
+      this._statusBarPauseButton = window.createStatusBarItem(StatusBarAlignment.Left);
       this._statusBarPauseButton.text = "$(debug-pause)";
       this._statusBarPauseButton.command = "extension.stopTimer";
       this._statusBarPauseButton.tooltip = "Pause Timer";
@@ -60,7 +60,7 @@ export default class Timer {
   }
 
   public copyTimer() {
-    env.clipboard.writeText(this._statusBarItem.text);
+    env.clipboard.writeText(`${this.branchName} ${this._statusBarItem.text}`);
   }
   public stop() {
     this._statusBarStartButton.show();
