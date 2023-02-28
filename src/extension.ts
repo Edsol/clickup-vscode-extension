@@ -19,12 +19,18 @@ var data = JSON.parse("{}");
 export function activate(context: ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  gitpath = path.join(workspace.rootPath!, ".git");
-  jsonPath = path.join(workspace.rootPath!, ".branchTimer");
+  const workspacePath = workspace.workspaceFolders![0].uri.path;
+  gitpath = path.join(workspacePath, ".git");
+  const gitIgnore = path.join(workspacePath, ".gitignore")
+  jsonPath = path.join(workspacePath, ".vscode/branch-timer.json");
   gitBranch = getCurrentGitBranch(Uri.parse(gitpath));
-  console.log(gitBranch);
 
-  console.log('Congratulations, your extension "branch-timer" is now active!');
+  fs.appendFile(gitIgnore, '.vscode/branch-timer.json', function (err:any) {
+    if (err){
+      console.log(err);
+    }
+    console.log('Saved!');
+  });
   timer = new Timer(gitBranch!);
   if (fs.existsSync(jsonPath)) {
     var jsonFile: string = fs.readFileSync(jsonPath, 'utf8');
@@ -67,6 +73,7 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(copyTimer);
   context.subscriptions.push(startTimer);
 }
+
 function updateBranch() {
   data[gitBranch!] = timer.total;
   gitBranch = getCurrentGitBranch(Uri.parse(gitpath!));
