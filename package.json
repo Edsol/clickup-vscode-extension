@@ -2,7 +2,7 @@
   "name": "branch-timer",
   "displayName": "Branch Timer",
   "description": "Timer for every branch",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "icon": "icon.png",
   "publisher": "vscode-branch-timer",
   "engines": {
@@ -12,7 +12,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:branch-timer.showTimer"
+    "*"
   ],
   "repository": {
       "type": "git",
@@ -23,7 +23,7 @@
     "commands": [
       {
         "command": "extension.showTimer",
-        "title": "Show Branch Timer"
+        "title": "Enable Branch Timer"
       }
     ]
   },
