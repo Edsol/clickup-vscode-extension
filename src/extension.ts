@@ -1,9 +1,8 @@
 'use strict';
-import { Console } from "console";
 import * as path from "path";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { extensions, commands, Uri,env, RelativePattern, ExtensionContext, workspace } from 'vscode';
+import { extensions, commands, Uri, env, RelativePattern, ExtensionContext, workspace } from 'vscode';
 import { GitExtension } from './git';
 const fs = require('fs');
 import Timer from './Timer';
@@ -21,16 +20,9 @@ export function activate(context: ExtensionContext) {
   // This line of code will only be executed once when your extension is activated
   const workspacePath = workspace.workspaceFolders![0].uri.path;
   gitpath = path.join(workspacePath, ".git");
-  const gitIgnore = path.join(workspacePath, ".gitignore")
   jsonPath = path.join(workspacePath, ".vscode/branch-timer.json");
   gitBranch = getCurrentGitBranch(Uri.parse(gitpath));
-
-  fs.appendFile(gitIgnore, '.vscode/branch-timer.json', function (err:any) {
-    if (err){
-      console.log(err);
-    }
-    console.log('Saved!');
-  });
+  addToGitIgnore(workspacePath);
   timer = new Timer(gitBranch!);
   if (fs.existsSync(jsonPath)) {
     var jsonFile: string = fs.readFileSync(jsonPath, 'utf8');
@@ -135,3 +127,21 @@ function getCurrentGitBranch(docUri: Uri): string | undefined {
   return branchName;
 }
 
+
+function addToGitIgnore(workspacePath: string) {
+  var branchTimerPath = '.vscode/branch-timer.json';
+  const gitIgnore = path.join(workspacePath, ".gitignore")
+  if (fs.existsSync(gitIgnore)) {
+    var gitIgnoreFile: string = fs.readFileSync(gitIgnore, 'utf8');
+    if (!gitIgnoreFile.includes(branchTimerPath)) {
+      fs.appendFile(gitIgnore, branchTimerPath, function (err: any) {
+        if (err) {
+          console.log(err);
+        }
+        console.log('Added branch timer file to gitignore!');
+      });
+    } else {
+      console.log("Already Added");
+    }
+  }
+}
