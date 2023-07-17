@@ -1,11 +1,21 @@
-'use strict';
+"use strict";
 import * as path from "path";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { extensions, commands, Uri, env, RelativePattern, ExtensionContext, workspace } from 'vscode';
-import { GitExtension } from './git';
-const fs = require('fs');
-import Timer from './Timer';
+import {
+  extensions,
+  commands,
+  Uri,
+  env,
+  RelativePattern,
+  ExtensionContext,
+  workspace,
+  window,
+} from "vscode";
+import { GitExtension } from "./git";
+const fs = require("fs");
+import Timer from "./timer";
+import { time } from "console";
 
 let timer: Timer;
 let gitBranch: string | undefined;
@@ -24,22 +34,23 @@ export function activate(context: ExtensionContext) {
   gitBranch = getCurrentGitBranch(Uri.parse(gitpath));
   addToGitIgnore(workspacePath);
   timer = new Timer(gitBranch!);
+  checkWindowFocus(timer);
   if (fs.existsSync(jsonPath)) {
-    var jsonFile: string = fs.readFileSync(jsonPath, 'utf8');
+    var jsonFile: string = fs.readFileSync(jsonPath, "utf8");
     data = JSON.parse(jsonFile);
     timer.total = data[gitBranch!] ?? 0;
   }
   const pattern = new RelativePattern(gitpath, "HEAD");
   const watcher = workspace.createFileSystemWatcher(pattern, false, false);
-  watcher.onDidCreate(e => {
+  watcher.onDidCreate((e) => {
     updateBranch();
     console.log(".git/HEAD create detected");
   });
-  watcher.onDidChange(e => {
+  watcher.onDidChange((e) => {
     updateBranch();
     console.log(".git/HEAD change detected");
   });
-  workspace.onDidChangeConfiguration(e => {
+  workspace.onDidChangeConfiguration((e) => {
     updateBranch();
     console.log("Configuration change detected");
   });
@@ -47,16 +58,16 @@ export function activate(context: ExtensionContext) {
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with  registerCommand
   // The commandId parameter must match the command field in package.json
-  let startTimer = commands.registerCommand('extension.startTimer', () => {
+  let startTimer = commands.registerCommand("extension.startTimer", () => {
     timer.start();
   });
-  let showTimer = commands.registerCommand('extension.showTimer', () => {
+  let showTimer = commands.registerCommand("extension.showTimer", () => {
     timer.showTimer();
   });
-  let stopTimer = commands.registerCommand('extension.stopTimer', () => {
+  let stopTimer = commands.registerCommand("extension.stopTimer", () => {
     timer.stop();
   });
-  let copyTimer = commands.registerCommand('extension.copyTimer', () => {
+  let copyTimer = commands.registerCommand("extension.copyTimer", () => {
     timer.copyTimer();
   });
 
@@ -75,10 +86,10 @@ function updateBranch() {
   var jsonData = JSON.stringify(data);
   fs.writeFile(jsonPath, jsonData, (error: any) => {
     if (error) {
-      console.log('An error has occurred ', error);
+      console.log("An error has occurred ", error);
       return;
     }
-    console.log('Data written successfully to disk', gitBranch);
+    console.log("Data written successfully to disk", gitBranch);
   });
   timer.start();
 }
@@ -127,21 +138,38 @@ function getCurrentGitBranch(docUri: Uri): string | undefined {
   return branchName;
 }
 
-
 function addToGitIgnore(workspacePath: string) {
-  var branchTimerPath = '.vscode/branch-timer.json';
-  const gitIgnore = path.join(workspacePath, ".gitignore")
+  var branchTimerPath = ".vscode/branch-timer.json";
+  const gitIgnore = path.join(workspacePath, ".gitignore");
   if (fs.existsSync(gitIgnore)) {
-    var gitIgnoreFile: string = fs.readFileSync(gitIgnore, 'utf8');
+    var gitIgnoreFile: string = fs.readFileSync(gitIgnore, "utf8");
     if (!gitIgnoreFile.includes(branchTimerPath)) {
       fs.appendFile(gitIgnore, branchTimerPath, function (err: any) {
         if (err) {
           console.log(err);
         }
-        console.log('Added branch timer file to gitignore!');
+        console.log("Added branch timer file to gitignore!");
       });
     } else {
       console.log("Already Added");
     }
   }
+}
+
+function checkWindowFocus(timer: Timer) {
+  const windowState = window.state;
+  let isFocused = windowState.focused;
+
+  // Listen for changes in the window state
+  window.onDidChangeWindowState((event) => {
+    isFocused = event.focused;
+
+    if (isFocused) {
+      console.log("VSCode is focused");
+      timer.start();
+    } else {
+      console.log("VSCode is not focused");
+      timer.stop();
+    }
+  });
 }

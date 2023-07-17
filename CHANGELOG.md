@@ -1,9 +1,18 @@
-# Change Log
+## v0.0.1
 
-All notable changes to the "branch-timer" extension will be documented in this file.
+- Show branch timer
+- Control timer from status bar
+- Click on duration for copy it with branch
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## v0.0.2
 
-## [Unreleased]
+- Changed saved json directory And Added to .gitignore
 
-- Initial release
+## v0.0.3
+
+- Auto enable extension
+- Avoid duplicated add json file to gitignore
+
+## v0.0.4
+
+- Stop timer when vscode unfocused

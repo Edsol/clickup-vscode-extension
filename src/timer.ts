@@ -1,4 +1,3 @@
-import path = require('path');
 import { workspace, StatusBarItem, window, env, StatusBarAlignment } from 'vscode';
 const fs = require('fs');
 
@@ -51,7 +50,7 @@ export default class Timer {
     this._timer = setInterval(() => {
       this.total++;
       let t = this.secondsToHms(this.total);
-      this._statusBarItem.text = `${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`
+      this._statusBarItem.text = `${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`;
     }, 1000);
   }
   public showTimer() {
