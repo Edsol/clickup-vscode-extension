@@ -16,3 +16,11 @@
 ## v0.0.4
 
 - Stop timer when vscode unfocused
+
+## v0.1.0
+
+- Added sidebar view show :
+    - Branch name
+    - Branch duration
+    - duration percentage
+    - Copy & refresh buttons

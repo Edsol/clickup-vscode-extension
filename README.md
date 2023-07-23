@@ -23,14 +23,31 @@ Before you show branch timer make sure the branch named showed on bottom left
 if you show branch timer before it branch will be undefined.
 ## Release Notes
 
-### 0.0.1
+## v0.0.1
 
-* Show branch timer
-* Contorl timer from status bar
-* Click on duration for copy it  with branch
+- Show branch timer
+- Control timer from status bar
+- Click on duration for copy it with branch
 
-### 0.0.2
+## v0.0.2
 
-* Changed saved json directory to .vscode And Added to .gitignore
+- Changed saved json directory And Added to .gitignore
+
+## v0.0.3
+
+- Auto enable extension
+- Avoid duplicated add json file to gitignore
+
+## v0.0.4
+
+- Stop timer when vscode unfocused
+
+## v0.1.0
+
+- Added sidebar view show :
+    - Branch name
+    - Branch duration
+    - duration percentage
+    - Copy & refresh buttons
 
 ---

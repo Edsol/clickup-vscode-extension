@@ -1,0 +1,12 @@
+body {
+	background-color: transparent;
+}
+.percent {
+	text-align: center;
+  }
+
+.add-color-button {
+	display: block;
+	border: none;
+	margin: 0 auto;
+}

@@ -1,33 +1,34 @@
 "use strict";
 import * as path from "path";
+const fs = require("fs");
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import {
   extensions,
   commands,
   Uri,
-  env,
+  window,
   RelativePattern,
   ExtensionContext,
   workspace,
-  window,
 } from "vscode";
 import { GitExtension } from "./git";
-const fs = require("fs");
-import Timer from "./timer";
-import { time } from "console";
+
+import Timer, { secondsToHms, zeroBase } from "./timer";
+import { ColorsViewProvider } from "./view";
 
 let timer: Timer;
 let gitBranch: string | undefined;
 let gitpath: string | undefined;
-let jsonPath: string | undefined;
-var data = JSON.parse("{}");
+export let jsonPath: string | undefined;
+export var data = JSON.parse("{}");
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
+
   const workspacePath = workspace.workspaceFolders![0].uri.path;
   gitpath = path.join(workspacePath, ".git");
   jsonPath = path.join(workspacePath, ".vscode/branch-timer.json");
@@ -40,18 +41,26 @@ export function activate(context: ExtensionContext) {
     data = JSON.parse(jsonFile);
     timer.total = data[gitBranch!] ?? 0;
   }
+  const provider = new ColorsViewProvider(context.extensionUri);
+
+  context.subscriptions.push(
+    window.registerWebviewViewProvider(ColorsViewProvider.viewType, provider)
+  );
   const pattern = new RelativePattern(gitpath, "HEAD");
   const watcher = workspace.createFileSystemWatcher(pattern, false, false);
   watcher.onDidCreate((e) => {
     updateBranch();
+    provider.updateHtml();
     console.log(".git/HEAD create detected");
   });
   watcher.onDidChange((e) => {
     updateBranch();
+    provider.updateHtml();
     console.log(".git/HEAD change detected");
   });
   workspace.onDidChangeConfiguration((e) => {
     updateBranch();
+    provider.updateHtml();
     console.log("Configuration change detected");
   });
 

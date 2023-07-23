@@ -1,5 +1,10 @@
-import { workspace, StatusBarItem, window, env, StatusBarAlignment } from 'vscode';
-const fs = require('fs');
+import {
+  workspace,
+  StatusBarItem,
+  window,
+  env,
+  StatusBarAlignment,
+} from "vscode";
 
 export default class Timer {
   private _statusBarItem!: StatusBarItem;
@@ -19,13 +24,17 @@ export default class Timer {
       this._statusBarItem.show();
     }
     if (!this._statusBarStartButton) {
-      this._statusBarStartButton = window.createStatusBarItem(StatusBarAlignment.Left);
+      this._statusBarStartButton = window.createStatusBarItem(
+        StatusBarAlignment.Left
+      );
       this._statusBarStartButton.text = "$(triangle-right)";
       this._statusBarStartButton.command = "extension.startTimer";
       this._statusBarStartButton.tooltip = "Start Timer";
     }
     if (!this._statusBarPauseButton) {
-      this._statusBarPauseButton = window.createStatusBarItem(StatusBarAlignment.Left);
+      this._statusBarPauseButton = window.createStatusBarItem(
+        StatusBarAlignment.Left
+      );
       this._statusBarPauseButton.text = "$(debug-pause)";
       this._statusBarPauseButton.command = "extension.stopTimer";
       this._statusBarPauseButton.tooltip = "Pause Timer";
@@ -35,7 +44,7 @@ export default class Timer {
   }
 
   public get alarmMessage(): string {
-    let config = workspace.getConfiguration('branch-timer');
+    let config = workspace.getConfiguration("branch-timer");
     if (config.showAlarm) {
       return config.alarmMessage;
     } else {
@@ -49,8 +58,10 @@ export default class Timer {
     this._statusBarPauseButton.show();
     this._timer = setInterval(() => {
       this.total++;
-      let t = this.secondsToHms(this.total);
-      this._statusBarItem.text = `${this._zeroBase(t.h)}:${this._zeroBase(t.m)}:${this._zeroBase(t.s)}`;
+      let t = secondsToHms(this.total);
+      this._statusBarItem.text = `${zeroBase(t.h)}:${zeroBase(t.m)}:${zeroBase(
+        t.s
+      )}`;
     }, 1000);
   }
   public showTimer() {
@@ -66,21 +77,20 @@ export default class Timer {
     this._statusBarPauseButton.hide();
     clearInterval(this._timer);
   }
+}
 
-  public secondsToHms(d: number) {
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
+export function secondsToHms(d: number) {
+  d = Number(d);
+  var h = Math.floor(d / 3600);
+  var m = Math.floor((d % 3600) / 60);
+  var s = Math.floor((d % 3600) % 60);
 
-    return {
-      h: h,
-      m: m,
-      s: s
-    };
-  }
-
-  private _zeroBase(value: number) {
-    return value < 10 ? `0${value}` : value;
-  }
+  return {
+    h: h,
+    m: m,
+    s: s,
+  };
+}
+export function zeroBase(value: number) {
+  return value < 10 ? `0${value}` : value;
 }

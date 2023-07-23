@@ -2,7 +2,7 @@
   "name": "branch-timer",
   "displayName": "Branch Timer",
   "description": "Timer for every branch",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "icon": "icon.png",
   "publisher": "vscode-branch-timer",
   "engines": {
@@ -20,6 +20,25 @@
   },
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "branch-timer",
+          "title": "Package Explorer",
+          "icon": "icon.svg"
+        }
+      ]
+    },
+    "views": {
+      
+      "branch-timer": [
+        {
+        "type": "webview",
+        "id": "calicoColors.colorsView",
+        "name": "Calico Colors"
+      }
+      ]
+    },
     "commands": [
       {
         "command": "extension.showTimer",
