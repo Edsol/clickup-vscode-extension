@@ -17,6 +17,9 @@ Extension for track your work duration on every branch
 
 	![Copy Duration](screenshots/copy_duration.png)
 
+- Show branchs timers on sidebar with possibility to copy duration and refresh it:
+
+    ![Sidebar view](https://github.com/M97Chahboun/vscode-branch-timer/assets/69054810/2dc5fcd9-23ac-4330-8bed-69a526c8095f)
 ## Known Issues
 
 Before you show branch timer make sure the branch named showed on bottom left
@@ -49,5 +52,9 @@ if you show branch timer before it branch will be undefined.
     - Branch duration
     - duration percentage
     - Copy & refresh buttons
+
+## v0.1.1
+
+- Minor updates on texts
 
 ---

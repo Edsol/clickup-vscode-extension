@@ -2,7 +2,7 @@
   "name": "branch-timer",
   "displayName": "Branch Timer",
   "description": "Timer for every branch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "icon": "icon.png",
   "publisher": "vscode-branch-timer",
   "engines": {
@@ -24,7 +24,7 @@
       "activitybar": [
         {
           "id": "branch-timer",
-          "title": "Package Explorer",
+          "title": "Branches Timers",
           "icon": "icon.svg"
         }
       ]
@@ -34,8 +34,8 @@
       "branch-timer": [
         {
         "type": "webview",
-        "id": "calicoColors.colorsView",
-        "name": "Calico Colors"
+        "id": "branches.timers",
+        "name": "Branches Timers"
       }
       ]
     },

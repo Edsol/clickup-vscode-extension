@@ -24,3 +24,7 @@
     - Branch duration
     - duration percentage
     - Copy & refresh buttons
+
+## v0.1.1
+
+- Minor updates on texts

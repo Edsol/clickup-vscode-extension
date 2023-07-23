@@ -4,7 +4,7 @@ import { secondsToHms, zeroBase } from "./timer";
 const fs = require("fs");
 
 export class ColorsViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = "calicoColors.colorsView";
+  public static readonly viewType = "branches.timers";
 
   private _view?: vscode.WebviewView;
   constructor(private readonly _extensionUri: vscode.Uri) {}
