@@ -28,3 +28,7 @@
 ## v0.1.1
 
 - Minor updates on texts
+
+## v0.1.2
+
+- Sort branches by long duration

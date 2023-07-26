@@ -39,6 +39,11 @@ export function activate(context: ExtensionContext) {
   if (fs.existsSync(jsonPath)) {
     var jsonFile: string = fs.readFileSync(jsonPath, "utf8");
     data = JSON.parse(jsonFile);
+    data = Object.fromEntries(
+      Object.entries(data).sort(([, valueA], [, valueB]) => {
+        return (valueB as number) - (valueA as number);
+      })
+    );
     timer.total = data[gitBranch!] ?? 0;
   }
   const provider = new ColorsViewProvider(context.extensionUri);
