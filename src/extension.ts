@@ -14,7 +14,7 @@ import {
 } from "vscode";
 import { GitExtension } from "./git";
 
-import Timer, { secondsToHms, zeroBase } from "./timer";
+import Timer from "./timer";
 import { ColorsViewProvider } from "./view";
 
 let timer: Timer;
@@ -45,6 +45,15 @@ export function activate(context: ExtensionContext) {
       })
     );
     timer.total = data[gitBranch!] ?? 0;
+  } else {
+    // create the directory if it doesn't exist
+    const dirPath = path.dirname(jsonPath);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+
+    // create the file
+    fs.writeFileSync(jsonPath, JSON.stringify({}));
   }
   const provider = new ColorsViewProvider(context.extensionUri);
 
