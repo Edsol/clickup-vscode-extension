@@ -62,4 +62,8 @@ if you show branch timer before it branch will be undefined.
 
 - Sort branches by long duration
 
+## v0.1.4
+
+- Create .vscode folder if not exisT
+- Fixed timer issue
 ---

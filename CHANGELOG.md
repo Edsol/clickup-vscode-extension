@@ -32,3 +32,8 @@
 ## v0.1.2
 
 - Sort branches by long duration
+
+## v0.1.4
+
+- Create .vscode folder if not exisT
+- Fixed timer issue

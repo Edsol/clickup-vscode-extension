@@ -53,6 +53,7 @@ export default class Timer {
   }
 
   public start() {
+    this.stop();
     this._statusBarItem.show();
     this._statusBarStartButton.hide();
     this._statusBarPauseButton.show();
