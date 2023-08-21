@@ -37,3 +37,7 @@
 
 - Create .vscode folder if not exisT
 - Fixed timer issue
+
+## v0.1.5
+
+- Added pie chart to sidebar view
