@@ -20,10 +20,6 @@ Extension for track your work duration on every branch
 
   ![Sidebar view](https://github.com/M97Chahboun/vscode-branch-timer/assets/69054810/2dc5fcd9-23ac-4330-8bed-69a526c8095f)
 
-## Known Issues
-
-Before you show branch timer make sure the branch named showed on bottom left
-if you show branch timer before it branch will be undefined.
 
 ## Release Notes
 
@@ -71,4 +67,7 @@ if you show branch timer before it branch will be undefined.
 
 - Added pie chart to sidebar view
 
+v0.1.7
+
+- Fixed branch undefined issue
 ---

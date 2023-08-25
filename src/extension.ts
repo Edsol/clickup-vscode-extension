@@ -12,27 +12,25 @@ import {
   ExtensionContext,
   workspace,
 } from "vscode";
-import { GitExtension } from "./git";
 
 import Timer from "./timer";
 import { ColorsViewProvider } from "./view";
 
 let timer: Timer;
 let gitBranch: string | undefined;
-let gitpath: string | undefined;
 export let jsonPath: string | undefined;
 export var data = JSON.parse("{}");
-
-// this method is called when your extension is activated
+const workspacePath = workspace.workspaceFolders![0].uri.path;
+const gitpath = path.join(workspacePath, ".git");
+const headpath = path.join(gitpath, "HEAD");
+const BRANCH_PREFIX = "ref: refs/heads/";// this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
 
-  const workspacePath = workspace.workspaceFolders![0].uri.path;
-  gitpath = path.join(workspacePath, ".git");
   jsonPath = path.join(workspacePath, ".vscode/branch-timer.json");
-  gitBranch = getCurrentGitBranch(Uri.parse(gitpath));
+  gitBranch = getCurrentGitBranch();
   addToGitIgnore(workspacePath);
   timer = new Timer(gitBranch!);
   checkWindowFocus(timer);
@@ -102,7 +100,7 @@ export function activate(context: ExtensionContext) {
 
 function updateBranch() {
   data[gitBranch!] = timer.total;
-  gitBranch = getCurrentGitBranch(Uri.parse(gitpath!));
+  gitBranch = getCurrentGitBranch();
   timer.stop();
   timer.branchName = gitBranch;
   timer.total = data[gitBranch!] ?? 0;
@@ -121,44 +119,11 @@ export function deactivate() {
   updateBranch();
 }
 
-function getCurrentGitBranch(docUri: Uri): string | undefined {
-  console.debug("Git branch requested for document", docUri);
-
-  const extension = extensions.getExtension<GitExtension>("vscode.git");
-  if (!extension) {
-    console.warn("Git extension not available");
-    return undefined;
-  }
-  if (!extension.isActive) {
-    console.warn("Git extension not active");
-    return undefined;
-  }
-
-  // "1" == "Get version 1 of the API". Version one seems to be the latest when I
-  // type this.
-  const git = extension.exports.getAPI(1);
-
-  const repository = git.repositories[0];
-  console.log(git.repositories);
-  if (!repository) {
-    console.warn("No Git repository for current document", docUri);
-    return undefined;
-  }
-
-  const currentBranch = repository.state.HEAD;
-  if (!currentBranch) {
-    console.warn("No HEAD branch for current document", docUri);
-    return undefined;
-  }
-
-  const branchName = currentBranch.name;
-  if (!branchName) {
-    console.warn("Current branch has no name", docUri, currentBranch);
-    return undefined;
-  }
-
-  console.debug("Current branch name", branchName);
-  return branchName;
+function getCurrentGitBranch(): string {
+  var file = fs.readFileSync(headpath, "utf-8");
+  const line = file.split(/\r\n|\r|\n/)[0];
+  const branch = line.replace(BRANCH_PREFIX, "");
+  return branch;
 }
 
 function addToGitIgnore(workspacePath: string) {

@@ -41,3 +41,7 @@
 ## v0.1.5
 
 - Added pie chart to sidebar view
+
+v0.1.7
+
+- Fixed branch undefined issue
