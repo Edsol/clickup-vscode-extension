@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { data } from "./extension";
+import { data, gitBranch } from "./extension";
 import { secondsToHms, zeroBase } from "./timer";
 const fs = require("fs");
 
@@ -77,7 +77,7 @@ export class ColorsViewProvider implements vscode.WebviewViewProvider {
         <svg id="chart" viewBox="0 0 100 100"></svg>
         <div id="tooltip" class="tooltip"></div>
       </div>
-      <button class="refresh-button">Refresh</button>
+      <button class="refresh-button active">Refresh</button>
       <script nonce="${nonce}" src="${scriptUri}"></script>
       <script nonce="${nonce}">
         const data = ${JSON.stringify(data)};
@@ -184,11 +184,12 @@ function buildTable() {
   for (let key in data) {
     let value = data[key];
     var t = secondsToHms(value);
-    table += ` <tr>
+    var className = gitBranch?.toString() === key ? "active" : "";
+    table += ` <tr class=${className}>
 	  <td>${key}</td>
 	  <td class="duration">${zeroBase(t.h)}:${zeroBase(t.m)}:${zeroBase(t.s)}</td>
 	  <td> ${((value / total) * 100).toFixed(2)}%</td>
-	  <td><button class="copy-button" id="${key} : ${zeroBase(t.h)}:${zeroBase(
+	  <td><button class="copy-button active" id="${key} : ${zeroBase(t.h)}:${zeroBase(
       t.m
     )}:${zeroBase(t.s)}">Copy</button></td>
 	  </tr>`;

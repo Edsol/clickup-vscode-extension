@@ -45,3 +45,4 @@
 v0.1.7
 
 - Fixed branch undefined issue
+- Colored current branch

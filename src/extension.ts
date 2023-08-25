@@ -17,7 +17,7 @@ import Timer from "./timer";
 import { ColorsViewProvider } from "./view";
 
 let timer: Timer;
-let gitBranch: string | undefined;
+export let gitBranch: string | undefined;
 export let jsonPath: string | undefined;
 export var data = JSON.parse("{}");
 const workspacePath = workspace.workspaceFolders![0].uri.path;
@@ -54,10 +54,6 @@ export function activate(context: ExtensionContext) {
     fs.writeFileSync(jsonPath, JSON.stringify({}));
   }
   const provider = new ColorsViewProvider(context.extensionUri);
-
-  context.subscriptions.push(
-    window.registerWebviewViewProvider(ColorsViewProvider.viewType, provider)
-  );
   const pattern = new RelativePattern(gitpath, "HEAD");
   const watcher = workspace.createFileSystemWatcher(pattern, false, false);
   watcher.onDidCreate((e) => {
@@ -96,6 +92,9 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(stopTimer);
   context.subscriptions.push(copyTimer);
   context.subscriptions.push(startTimer);
+  context.subscriptions.push(
+    window.registerWebviewViewProvider(ColorsViewProvider.viewType, provider)
+  );
 }
 
 function updateBranch() {

@@ -20,7 +20,9 @@ Extension for track your work duration on every branch
 
   ![Sidebar view](https://github.com/M97Chahboun/vscode-branch-timer/assets/69054810/2dc5fcd9-23ac-4330-8bed-69a526c8095f)
 
+- Show branches & duration percents on pie chart and select current branch:
 
+  ![Pie Chart](https://github.com/M97Chahboun/vscode-branch-timer/assets/69054810/688e66c4-ccc9-448b-a9a4-5d010b7dfab4)
 ## Release Notes
 
 ## v0.0.1
@@ -70,4 +72,6 @@ Extension for track your work duration on every branch
 v0.1.7
 
 - Fixed branch undefined issue
+- Colored current branch
+
 ---
