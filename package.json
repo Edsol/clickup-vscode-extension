@@ -99,9 +99,21 @@
 				"command": "clickup.deleteList",
 				"title": "delete List",
 				"icon": "$(trash)"
+			},
+			{
+				"command": "clickup.statusChanger",
+				"title": "Status changer",
+				"icon": "$(sync)"
 			}
 		],
 		"menus": {
+			"scm/title": [
+				{
+					"when": "scmProvider == git",
+					"command": "clickup.statusChanger",
+					"group": "navigation"
+				}
+			],
 			"view/title": [
 				{
 					"command": "clickup.refresh",

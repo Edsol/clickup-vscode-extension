@@ -15,21 +15,29 @@ export async function activate(context: vscode.ExtensionContext) {
 	let storageManager = new LocalStorageService(context.workspaceState);
 	tokenService.init(storageManager);
 	var token: any = await storageManager.getValue('token');
+	const tokenRegex = /^[a-z]{2}[_]\d{8}[_].{32}/g;
 
 	// If token doesn't exists show error message
 	if (token === undefined) {
 		vscode.window.showInformationMessage('No clickup token has been set!');
+	} else if (token.match(tokenRegex) === null) {
+		vscode.window.showInformationMessage('Token was malformed!');
 	} else {
 		//If token exists fetch informations
 		var wrapper = new ApiWrapper(token);
-		var teams = await wrapper.getTeams();
-
-		var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-		vscode.window.createTreeView('clickupTasksView', {
-			treeDataProvider: provider,
-			showCollapseAll: true,
-		});
+		try {
+			var teams = await wrapper.getTeams();
+			var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
+			vscode.window.createTreeView('clickupTasksView', {
+				treeDataProvider: provider,
+				showCollapseAll: true,
+			});
+		} catch (error) {
+			console.log("Errors", error);
+			return;
+		}
 	}
+
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {
 			vscode.window.showInformationMessage('Your token has been successfully saved');
@@ -46,6 +54,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('clickup.refresh', () => {
 		provider.refresh();
+	});
+	vscode.commands.registerCommand('clickup.statusChanger', () => {
+		// provider.refresh();
+		console.log('statusChanger')
 	});
 
 	vscode.commands.registerCommand('clickup.getToken', async () => {
