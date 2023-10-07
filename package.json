@@ -102,8 +102,11 @@
 			},
 			{
 				"command": "clickup.statusChanger",
-				"title": "Status changer",
-				"icon": "$(sync)"
+				"title": "ClickUp status changer",
+				"icon": {
+					"dark": "./resources/bar/logo_dark.svg",
+					"light": "./resources/bar/logo_white.svg"
+				}
 			}
 		],
 		"menus": {

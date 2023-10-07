@@ -8,6 +8,7 @@ import { EditWebview } from './web_view/editWebview';
 import { MainProvider } from './tree_view/main_provider';
 import { NewTaskWebview } from './web_view/newTaskWebview';
 import { Utils } from './utils';
+import { showQuickPick } from './lib/statusQuickPicks';
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -55,9 +56,11 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('clickup.refresh', () => {
 		provider.refresh();
 	});
-	vscode.commands.registerCommand('clickup.statusChanger', () => {
-		// provider.refresh();
-		console.log('statusChanger')
+	vscode.commands.registerCommand('clickup.statusChanger', async () => {
+		console.log('statusChanger');
+		const resp = await showQuickPick();
+		console.log('statusChanger', resp);
+
 	});
 
 	vscode.commands.registerCommand('clickup.getToken', async () => {
