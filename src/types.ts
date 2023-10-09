@@ -154,6 +154,14 @@ export type StoredMembers = {
     members: Member[]
 };
 
+export type Team = {
+    id: string,
+    name: string,
+    color: string,
+    avatar: any,
+    members: Member[]
+};
+
 export type Member = {
     id: number,
     username: string,

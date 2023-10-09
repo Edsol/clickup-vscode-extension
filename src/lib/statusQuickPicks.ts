@@ -1,65 +1,11 @@
 import * as vscode from 'vscode';
 
-const steps = [
-    {
-        placeholder: "Select a task",
-        items: [
-            {
-                label: 'A',
-            },
-            {
-                label: 'B',
-            }
-        ],
-    },
-    {
-        placeholder: "Select a status",
-        items: [
-            {
-                label: 'S1',
-            },
-            {
-                label: 'S2',
-            },
-        ],
-    }
-];
-
-type step = {
-    placeholder: string,
-    items: [
-        {
-            label: string
-        }
-    ]
-};
-
 export const confirmButton: vscode.QuickInputButton = {
     iconPath: new vscode.ThemeIcon('arrow-right'),
     tooltip: 'confirm',
 };
 
-var stepCounter = 0;
-export async function showQuickPick(step: any = 0) {
-    while (stepCounter < steps.length) {
-        console.log('stepCounter', stepCounter);
-        var currentStep = <step>steps[stepCounter];
-        console.log('currentStep', currentStep);
-        await createQuickPick(stepCounter + 1, currentStep.items, currentStep.placeholder)
-            .then((response) => {
-                console.log('then response', response);
-                stepCounter++;
-            })
-            .catch((response) => {
-                console.log('catch response', response);
-                stepCounter--;
-            });
-    }
-    stepCounter = 0;
-
-}
-
-async function createQuickPick(step: any, items: any, placeholder: string) {
+export async function createQuickPick(items: vscode.QuickPickItem[], placeholder: string, totalSteps: any) {
     return new Promise(function (resolve, reject) {
         const picker = vscode.window.createQuickPick();
         picker.placeholder = placeholder;
@@ -67,19 +13,14 @@ async function createQuickPick(step: any, items: any, placeholder: string) {
         picker.matchOnDetail = true;
         picker.ignoreFocusOut = true;
         picker.items = items;
-        picker.step = step;
-        picker.totalSteps = steps.length;
+        picker.totalSteps = totalSteps;
         picker.show();
         picker.buttons = [vscode.QuickInputButtons.Back, confirmButton];
 
         picker.onDidAccept(function () {
-            console.log('onDidAccept', picker.activeItems);
             if (picker.activeItems.length) {
                 picker.dispose();
-                resolve({
-                    value: picker.value,
-                    activeItems: picker.activeItems,
-                });
+                resolve(picker.activeItems[0]);
             }
         });
         picker.onDidTriggerButton(function (e) {
@@ -87,12 +28,12 @@ async function createQuickPick(step: any, items: any, placeholder: string) {
                 if (picker.activeItems.length) {
                     resolve({
                         value: picker.value,
-                        activeItems: picker.activeItems,
+                        activeItems: picker.items[0],
                     });
                 } else {
                     resolve({
                         value: picker.value,
-                        activeItems: [picker.items[0]],
+                        activeItems: picker.items[0],
                     });
                 }
                 picker.dispose();

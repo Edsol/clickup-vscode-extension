@@ -8,8 +8,7 @@ import { EditWebview } from './web_view/editWebview';
 import { MainProvider } from './tree_view/main_provider';
 import { NewTaskWebview } from './web_view/newTaskWebview';
 import { Utils } from './utils';
-import { showQuickPick } from './lib/statusQuickPicks';
-
+import { StatusChanger } from './statusChanger';
 
 export async function activate(context: vscode.ExtensionContext) {
 	var utils = new Utils(vscode.window);
@@ -17,6 +16,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	tokenService.init(storageManager);
 	var token: any = await storageManager.getValue('token');
 	const tokenRegex = /^[a-z]{2}[_]\d{8}[_].{32}/g;
+	var wrapper: ApiWrapper;
+	var statusChanger: StatusChanger;
 
 	// If token doesn't exists show error message
 	if (token === undefined) {
@@ -25,7 +26,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Token was malformed!');
 	} else {
 		//If token exists fetch informations
-		var wrapper = new ApiWrapper(token);
+		wrapper = new ApiWrapper(token);
+		statusChanger = new StatusChanger(wrapper);
 		try {
 			var teams = await wrapper.getTeams();
 			var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
@@ -38,6 +40,16 @@ export async function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 	}
+
+	var taskIdWorkingOn: string | undefined = undefined;
+	var listOfTaskId: string | undefined = undefined;
+	// create a new status bar item that we can now manage
+	const taskChooser = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+	taskChooser.command = 'clickup.taskChooser';
+	// context.push(myStatusBarItem);
+	taskChooser.text = `$(megaphone) ClickUp task`;
+	taskChooser.tooltip = "Choose a task";
+	taskChooser.show();
 
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {
@@ -55,12 +67,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('clickup.refresh', () => {
 		provider.refresh();
-	});
-	vscode.commands.registerCommand('clickup.statusChanger', async () => {
-		console.log('statusChanger');
-		const resp = await showQuickPick();
-		console.log('statusChanger', resp);
-
 	});
 
 	vscode.commands.registerCommand('clickup.getToken', async () => {
@@ -116,6 +122,23 @@ export async function activate(context: vscode.ExtensionContext) {
 			provider.refresh();
 		});
 	});
+
+	vscode.commands.registerCommand('clickup.statusChanger', async () => {
+		if (taskIdWorkingOn === undefined || listOfTaskId === undefined) {
+			vscode.window.showInformationMessage(`No ClickUp task has been selected`);
+		} else {
+			var status = await statusChanger.showStatusQuickPick(listOfTaskId);
+			statusChanger.setGitMessage(`#${taskIdWorkingOn}[${status}]`);
+		}
+	});
+	vscode.commands.registerCommand('clickup.taskChooser', async () => {
+		var { taskId, listId } = await statusChanger.showTaskChooserQuickPick();
+		taskIdWorkingOn = taskId;
+		listOfTaskId = listId;
+		taskChooser.text = `#${taskIdWorkingOn}`;
+		taskChooser.tooltip = "ClickUp Task you are working on";
+	});
+
 }
 
 // this method is called when your extension is deactivated
