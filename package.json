@@ -24,17 +24,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:clickupTasksView",
-		"onCommand:clickup:refresh",
-		"onCommand:clickup.setToken",
-		"onCommand:clickup.deleteToken",
-		"onCommand:clickup.deleteTask",
-		"onCommand:clickup:addTask",
-		"onCommand:clickup:editTask",
-		"onCommand:clickup:addSpace",
-		"onCommand:clickup:deleteSpace",
-		"onCommand:clickup:addList",
-		"onCommand:clickup:deleteList"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
