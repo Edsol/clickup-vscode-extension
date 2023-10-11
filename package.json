@@ -24,17 +24,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:clickupTasksView",
-		"onCommand:clickup:refresh",
-		"onCommand:clickup.setToken",
-		"onCommand:clickup.deleteToken",
-		"onCommand:clickup.deleteTask",
-		"onCommand:clickup:addTask",
-		"onCommand:clickup:editTask",
-		"onCommand:clickup:addSpace",
-		"onCommand:clickup:deleteSpace",
-		"onCommand:clickup:addList",
-		"onCommand:clickup:deleteList"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -99,9 +89,24 @@
 				"command": "clickup.deleteList",
 				"title": "delete List",
 				"icon": "$(trash)"
+			},
+			{
+				"command": "clickup.statusChanger",
+				"title": "ClickUp status changer",
+				"icon": {
+					"dark": "./resources/bar/logo_dark.svg",
+					"light": "./resources/bar/logo_white.svg"
+				}
 			}
 		],
 		"menus": {
+			"scm/title": [
+				{
+					"when": "scmProvider == git",
+					"command": "clickup.statusChanger",
+					"group": "navigation"
+				}
+			],
 			"view/title": [
 				{
 					"command": "clickup.refresh",

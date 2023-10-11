@@ -1,5 +1,5 @@
 var clickup = require('clickup.js');
-import { Task, Member, Statuses, Tag } from './types';
+import { Task, Member, Statuses, Tag, Team } from './types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -12,7 +12,7 @@ export class ApiWrapper {
 
     async getTeams() {
         const { body } = await this.clickup.teams.get();
-        return body.teams;
+        return <[Team]>body.teams;
     }
 
     async createTeam(name: string) {
