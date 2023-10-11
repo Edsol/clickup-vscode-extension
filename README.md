@@ -28,6 +28,17 @@ or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=e
 
 * Show and edit task inside a List and Space
 * Create new task inside a List
+* Change task status via commit message
+
+
+## "Working on" Mode
+
+Through the menu in the Status Bar you can now select a task you are working on, once you have finished your changes you can change its status through the commit message.
+
+Watch the video below :arrow_down:
+
+[<img src="./docs/preview.png" width="600" height="300"
+/>](./docs/status_changer.mp4)
 
 ## Extension Commands
 This extension contributes the following commands:
