@@ -44,18 +44,21 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 	// initialize taskId an listId from storage
-	var taskIdWorkingOn: string | undefined = await storageManager.getValue('taskIdWorkingOn');
-	var listOfTaskId: string | undefined = await storageManager.getValue('listOfTaskId');
+	var taskIdWorkingOn: any | undefined = await storageManager.getValue('taskIdWorkingOn');
 
 	// initialize the statusBarItem
 	var taskStatusBarItem = new TaskStatusBarItem();
 	if (taskIdWorkingOn !== undefined) {
-		console.log("Task was found:" + taskIdWorkingOn);
-		taskFound(taskIdWorkingOn);
+		console.log("Task was found:" + taskIdWorkingOn.id);
+		taskFound(taskIdWorkingOn.id, taskIdWorkingOn.label);
 
 	}
-	function taskFound(taskId: string) {
-		taskStatusBarItem.setText(`#${taskId}`);
+	function taskFound(taskId: string, label: string = '') {
+		var message = `#${taskId}`;
+		if (label) {
+			message += `(${label})`;
+		}
+		taskStatusBarItem.setText(message);
 		taskStatusBarItem.setTooltip("ClickUp Task you are working on");
 		taskStatusBarItem.setCommand("clickup.removeTask");
 	}
@@ -63,7 +66,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	function forgetTask() {
 		taskStatusBarItem.setDefaults();
 		taskIdWorkingOn = undefined;
-		listOfTaskId = undefined;
 		statusChanger.itemsList.task.id = undefined;
 		storageManager.setValue('taskIdWorkingOn', undefined);
 		storageManager.setValue('listOfTaskId', undefined);
@@ -144,10 +146,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.statusChanger', async () => {
-		if (taskIdWorkingOn === undefined || listOfTaskId === undefined) {
+		if (taskIdWorkingOn === undefined) {
 			vscode.window.showInformationMessage(`No ClickUp task has been selected`);
 		} else {
-			var status = await statusChanger.showStatusQuickPick(listOfTaskId);
+			var status = await statusChanger.showStatusQuickPick(taskIdWorkingOn.listId);
 			if (status === undefined) {
 				vscode.window.showInformationMessage(`I couldn't read the status`);
 				return;
@@ -158,16 +160,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('clickup.taskChooser', async () => {
 		if (taskIdWorkingOn === undefined) {
-			var { taskId, listId } = await statusChanger.showTaskChooserQuickPick();
-			console.log('list and task id', { taskId, listId });
-			taskIdWorkingOn = taskId;
-			listOfTaskId = listId;
+			var taskData = taskIdWorkingOn = await statusChanger.showTaskChooserQuickPick();
 
-			taskFound(taskId);
+			taskFound(taskData.id, taskData.label);
 
 			//save last TaskId and ListId value
-			storageManager.setValue('taskIdWorkingOn', taskIdWorkingOn);
-			storageManager.setValue('listOfTaskId', listOfTaskId);
+			storageManager.setValue('taskIdWorkingOn', taskData);
 		}
 	});
 

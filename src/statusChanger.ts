@@ -76,9 +76,9 @@ export class StatusChanger {
 
             await createQuickPick(items, currentStep.params.placeholder, 1)
                 .then((response: any) => {
-                    console.log(`selected ${response.id} for ${type}`);
                     if (currentStep.params.type === 'task') {
                         this.itemsList.task.id = response.id;
+                        this.itemsList.task.label = response.label;
                         return;
                     }
                     this.itemsList[type].id = id = response.id;
@@ -98,7 +98,8 @@ export class StatusChanger {
                 });
         }
         return {
-            taskId: this.itemsList.task.id,
+            id: this.itemsList.task.id,
+            label: this.itemsList.task.label,
             listId: this.itemsList.list.id
         };
     }
@@ -111,7 +112,7 @@ export class StatusChanger {
                 label: e.status
             };
         });
-        const activeItems = statuses.filter((e: any) => e.type === 'closed').map((e: any) => { return { label: e.status }; });
+        // const activeItems = statuses.filter((e: any) => e.type === 'closed').map((e: any) => { return { label: e.status }; });
         const placeHolder = "Select a status to assign";
         return await createQuickPick(items, placeHolder, 1)
             .then((response: any) => {
