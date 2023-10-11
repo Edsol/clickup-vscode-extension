@@ -1,11 +1,13 @@
 import * as vscode from 'vscode';
 
-const DEFAULT_COMMAND = 'clickup.taskChooser';
-const DEFAULT_TEXT = `$(megaphone) ClickUp task`;
-const DEFAULT_TOOLTIP = "Choose a task";
-
 export class TaskStatusBarItem {
     taskItem;
+
+    readonly defaultCommand = 'clickup.taskChooser';
+    readonly defaultIcon = '$(zoom-in) ';
+    readonly defaultIconTaskSetted = '$(bookmark) ';
+    readonly defaultText = `ClickUp task`;
+    readonly defaultTooltip = "Choose a task";
 
     constructor() {
         this.taskItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -25,9 +27,9 @@ export class TaskStatusBarItem {
     }
 
     setDefaults() {
-        this.setCommand(DEFAULT_COMMAND);
-        this.setText(DEFAULT_TEXT);
-        this.setTooltip(DEFAULT_TOOLTIP);
+        this.setCommand(this.defaultCommand);
+        this.setText(this.defaultIcon + this.defaultText);
+        this.setTooltip(this.defaultTooltip);
         this.taskItem.show();
     }
 }

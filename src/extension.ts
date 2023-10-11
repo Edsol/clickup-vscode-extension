@@ -58,7 +58,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		if (label) {
 			message += `(${label})`;
 		}
-		taskStatusBarItem.setText(message);
+		taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
 		taskStatusBarItem.setTooltip("ClickUp Task you are working on");
 		taskStatusBarItem.setCommand("clickup.removeTask");
 	}
@@ -154,7 +154,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				vscode.window.showInformationMessage(`I couldn't read the status`);
 				return;
 			}
-			statusChanger.setGitMessage(`#${taskIdWorkingOn}[${status}]`);
+			statusChanger.setGitMessage(`#${taskIdWorkingOn.id}[${status}]`);
 		}
 	});
 
