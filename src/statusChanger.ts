@@ -87,8 +87,14 @@ export class StatusChanger {
                 .catch((error) => {
                     // restore previous type and key to go back
                     var prevStep = this.itemsList[currentStep.params.prevType];
+                    if (!prevStep) {
+                        return;
+                    }
                     type = prevStep.params.type;
-                    id = this.itemsList[prevStep.params.prevType].id;
+                    id = undefined;
+                    if (prevStep.params.prevType) {
+                        id = this.itemsList[prevStep.params.prevType].id;
+                    }
                 });
         }
         return {
@@ -128,10 +134,9 @@ export class StatusChanger {
             },
         ];
 
-        const placeHolder = "Do you want to remove this task?";
+        const placeHolder = "Forget the task?";
         return await createQuickPick(items, placeHolder, 1)
             .then((response: any) => {
-                console.log('response', response);
                 return response.value;
             })
             .catch(() => {
