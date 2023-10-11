@@ -1,200 +1,200 @@
 {
-	"name": "clickup",
-	"displayName": "clickup",
-	"publisher": "edsol",
-	"description": "integrates clickup and its workflows into vscode",
-	"repository": "https://github.com/Edsol/clickup-vscode-extension",
-	"icon": "images/icon.png",
-	"bugs": {
-		"url": "https://github.com/Edsol/clickup-vscode-extension/issues",
-		"email": "edoardo.soloperto@gmail.com"
-	},
-	"version": "0.1.2",
-	"license": "AGPL 3.0",
-	"keywords": [
-		"clickup",
-		"click up",
-		"click",
-		"up"
-	],
-	"engines": {
-		"vscode": "^1.65.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"*"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "clickup",
-					"title": "ClickUp",
-					"icon": "./resources/bar/logo.png"
-				}
-			]
-		},
-		"commands": [
-			{
-				"command": "clickup.setToken",
-				"title": "ClickUp: Add token"
-			},
-			{
-				"command": "clickup.getToken",
-				"title": "ClickUp: Get token"
-			},
-			{
-				"command": "clickup.deleteToken",
-				"title": "ClickUp: delete token"
-			},
-			{
-				"command": "clickup.deleteTask",
-				"title": "delete Task",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.editTask",
-				"title": "Edit",
-				"icon": "$(pencil)"
-			},
-			{
-				"command": "clickup.addTask",
-				"title": "add Task",
-				"icon": "$(add)"
-			},
-			{
-				"command": "clickup.refresh",
-				"title": "refresh",
-				"icon": "$(sync)"
-			},
-			{
-				"command": "clickup.addSpace",
-				"title": "add Space",
-				"icon": "$(add)"
-			},
-			{
-				"command": "clickup.deleteSpace",
-				"title": "delete Space",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.addList",
-				"title": "add List",
-				"icon": "$(add)"
-			},
-			{
-				"command": "clickup.deleteList",
-				"title": "delete List",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.statusChanger",
-				"title": "ClickUp status changer",
-				"icon": {
-					"dark": "./resources/bar/logo_dark.svg",
-					"light": "./resources/bar/logo_white.svg"
-				}
-			}
-		],
-		"menus": {
-			"scm/title": [
-				{
-					"when": "scmProvider == git",
-					"command": "clickup.statusChanger",
-					"group": "navigation"
-				}
-			],
-			"view/title": [
-				{
-					"command": "clickup.refresh",
-					"when": "view == clickupTasksView",
-					"group": "navigation"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "clickup.editTask",
-					"when": "viewItem == taskItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteTask",
-					"when": "viewItem == taskItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteSpace",
-					"when": "viewItem == spaceItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.addList",
-					"when": "viewItem == spaceItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteList",
-					"when": "viewItem == listItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.addTask",
-					"when": "viewItem == listItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.addSpace",
-					"when": "viewItem == teamItem",
-					"group": "inline"
-				}
-			]
-		},
-		"views": {
-			"clickup": [
-				{
-					"id": "clickupTasksView",
-					"name": "Tasks list"
-				}
-			]
-		},
-		"viewsWelcome": [
-			{
-				"view": "clickupTasksView",
-				"contents": "Generate a token to load tasks, [learn more](https://www.clickup.com).\n[Set token](command:clickup.setToken)"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.2.0",
-		"@types/inflection": "^1.13.0",
-		"@types/mocha": "^9.1.0",
-		"@types/node": "14.x",
-		"@types/vscode": "^1.65.0",
-		"@typescript-eslint/eslint-plugin": "^5.12.1",
-		"@typescript-eslint/parser": "^5.12.1",
-		"@vscode/test-electron": "^2.1.2",
-		"eslint": "^8.9.0",
-		"glob": "^7.2.0",
-		"mocha": "^9.2.1",
-		"typescript": "^4.7.2"
-	},
-	"dependencies": {
-		"@fortawesome/fontawesome-free": "^6.1.1",
-		"@yaireo/tagify": "^4.11.0",
-		"axios": "^0.27.2",
-		"bootstrap": "^5.1.3",
-		"clickup.js": "^3.0.1",
-		"vue": "^3.2.33"
-	}
+  "name": "clickup",
+  "displayName": "clickup",
+  "publisher": "edsol",
+  "description": "integrates clickup and its workflows into vscode",
+  "repository": "https://github.com/Edsol/clickup-vscode-extension",
+  "icon": "images/icon.png",
+  "bugs": {
+    "url": "https://github.com/Edsol/clickup-vscode-extension/issues",
+    "email": "edoardo.soloperto@gmail.com"
+  },
+  "version": "0.1.3",
+  "license": "AGPL 3.0",
+  "keywords": [
+    "clickup",
+    "click up",
+    "click",
+    "up"
+  ],
+  "engines": {
+    "vscode": "^1.65.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "clickup",
+          "title": "ClickUp",
+          "icon": "./resources/bar/logo.png"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "clickup.setToken",
+        "title": "ClickUp: Add token"
+      },
+      {
+        "command": "clickup.getToken",
+        "title": "ClickUp: Get token"
+      },
+      {
+        "command": "clickup.deleteToken",
+        "title": "ClickUp: delete token"
+      },
+      {
+        "command": "clickup.deleteTask",
+        "title": "delete Task",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.editTask",
+        "title": "Edit",
+        "icon": "$(pencil)"
+      },
+      {
+        "command": "clickup.addTask",
+        "title": "add Task",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.refresh",
+        "title": "refresh",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "clickup.addSpace",
+        "title": "add Space",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.deleteSpace",
+        "title": "delete Space",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.addList",
+        "title": "add List",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.deleteList",
+        "title": "delete List",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.statusChanger",
+        "title": "ClickUp status changer",
+        "icon": {
+          "dark": "./resources/bar/logo_dark.svg",
+          "light": "./resources/bar/logo_white.svg"
+        }
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "when": "scmProvider == git",
+          "command": "clickup.statusChanger",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "clickup.refresh",
+          "when": "view == clickupTasksView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "clickup.editTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteSpace",
+          "when": "viewItem == spaceItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.addList",
+          "when": "viewItem == spaceItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteList",
+          "when": "viewItem == listItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.addTask",
+          "when": "viewItem == listItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.addSpace",
+          "when": "viewItem == teamItem",
+          "group": "inline"
+        }
+      ]
+    },
+    "views": {
+      "clickup": [
+        {
+          "id": "clickupTasksView",
+          "name": "Tasks list"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "clickupTasksView",
+        "contents": "Generate a token to load tasks, [learn more](https://www.clickup.com).\n[Set token](command:clickup.setToken)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/inflection": "^1.13.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.65.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "@vscode/test-electron": "^2.1.2",
+    "eslint": "^8.9.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.1",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "@yaireo/tagify": "^4.11.0",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.1.3",
+    "clickup.js": "^3.0.1",
+    "vue": "^3.2.33"
+  }
 }
