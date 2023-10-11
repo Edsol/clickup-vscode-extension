@@ -1,65 +1,61 @@
 import * as vscode from 'vscode'
 import { createQuickPick } from './lib/statusQuickPicks';
 
-var taskId: any = null;
 
 export class StatusChanger {
     apiWrapper;
 
-    fetchApi: { [K: string]: Function } = {
-        teams: async () => {
-            return {
-                type: 'teams',
+    itemsList: { [K: string]: any } = {
+        team: {
+            params: {
+                type: 'team',
                 prevType: null,
-                nextType: 'spaces',
-                placeholder: "Choose a Team",
-                items: this.reduce(await this.apiWrapper.getTeams())
-            };
+                nextType: 'space',
+                placeholder: "Select a Team",
+            },
+            id: undefined,
+            items: async () => this.reduce(await this.apiWrapper.getTeams())
         },
-        spaces: async (teamId: string) => {
-            return {
-                type: 'spaces',
-                prevType: 'teams',
-                nextType: 'folders',
-                placeholder: "Choose a space",
-                items: this.reduce(await this.apiWrapper.getSpaces(teamId))
-            };
+        space: {
+            params: {
+                type: 'space',
+                prevType: 'team',
+                nextType: 'folder',
+                placeholder: "Select a space",
+            },
+            id: undefined,
+            items: async (teamId: string) => this.reduce(await this.apiWrapper.getSpaces(teamId))
         },
-        folders: async (spaceId: string) => {
-            return {
-                type: 'folders',
-                prevType: 'spaces',
-                nextType: 'lists',
-                placeholder: "Choose a space",
-                items: this.reduce(await this.apiWrapper.getFolders(spaceId))
-            };
+        folder: {
+            params: {
+                type: 'folder',
+                prevType: 'space',
+                nextType: 'list',
+                placeholder: "Select a folder",
+            },
+            id: undefined,
+            items: async (spaceId: string) => this.reduce(await this.apiWrapper.getFolders(spaceId))
         },
-        lists: async (folderId: string) => {
-            return {
-                type: 'lists',
-                prevType: 'folders',
-                nextType: 'tasks',
-                placeholder: "Choose a space",
-                items: this.reduce(await this.apiWrapper.getLists(folderId))
-            };
+        list: {
+            params: {
+                type: 'list',
+                prevType: 'folder',
+                nextType: 'task',
+                placeholder: "Select a list",
+            },
+            id: undefined,
+            items: async (folderId: string) => this.reduce(await this.apiWrapper.getLists(folderId))
         },
-        tasks: async (listId: string) => {
-            return {
-                type: 'tasks',
-                prevType: 'lists',
+        task: {
+            params: {
+                type: 'task',
+                prevType: 'list',
                 nextType: null,
-                placeholder: "Choose a space",
-                items: this.reduce(await this.apiWrapper.getTasks(listId))
-            };
+                placeholder: "Select a task",
+            },
+            id: undefined,
+            items: async (listId: string) => this.reduce(await this.apiWrapper.getTasks(listId))
         },
-    };
-
-    private lastId: { [K: string]: string } = {
-        teams: '',
-        spaces: '',
-        folders: '',
-        lists: '',
-        tasks: '',
     };
 
     constructor(apiWrapper: any) {
@@ -73,43 +69,74 @@ export class StatusChanger {
      * @return {*} 
      * @memberof StatusChanger
      */
-    async showTaskChooserQuickPick(type: string = 'teams', id: string = '') {
-        while (taskId === null) {
-            var currentStep = await this.fetchApi[type](id);
+    async showTaskChooserQuickPick(type: string = 'team', id: string | undefined = undefined) {
+        while (this.itemsList.task.id === undefined) {
+            var currentStep = await this.itemsList[type];
+            var items = await currentStep.items(id);
 
-            await createQuickPick(currentStep.items, currentStep.placeholder, 1)
+            await createQuickPick(items, currentStep.params.placeholder, 1)
                 .then((response: any) => {
-                    if (currentStep.nextType) {
-                        type = currentStep.nextType;
-                        id = this.lastId[type] = response.id;
-                    } else {
-                        taskId = response.id;
+                    console.log(`selected ${response.id} for ${type}`);
+                    if (currentStep.params.type === 'task') {
+                        this.itemsList.task.id = response.id;
+                        return;
                     }
+                    this.itemsList[type].id = id = response.id;
+                    type = currentStep.params.nextType;
                 })
-                .catch(() => {
+                .catch((error) => {
                     // restore previous type and key to go back
-                    type = currentStep.prevType;
-                    id = this.lastId[type];
+                    var prevStep = this.itemsList[currentStep.params.prevType];
+                    type = prevStep.params.type;
+                    id = this.itemsList[prevStep.params.prevType].id;
                 });
         }
-
         return {
-            taskId: taskId,
-            listId: this.lastId['lists']
+            taskId: this.itemsList.task.id,
+            listId: this.itemsList.list.id
         };
     }
 
     async showStatusQuickPick(listId: string) {
-        console.log('statuses', listId);
         const statuses = await this.apiWrapper.getStatus(listId);
-        // var items = [];
-        // const placeHolder = "";
-        // await createQuickPick(items, placeHolder, 1)
-        //     .then((response: any) => {
-        //         console.log('response', response);
-        //     })
-        //     .catch(() => {
-        //     });
+        const items = statuses.map((e: any) => {
+            return {
+                picked: e.type === 'closed',
+                label: e.status
+            };
+        });
+        const activeItems = statuses.filter((e: any) => e.type === 'closed').map((e: any) => { return { label: e.status }; });
+        const placeHolder = "Select a status to assign";
+        return await createQuickPick(items, placeHolder, 1)
+            .then((response: any) => {
+                return response.label;
+            })
+            .catch(() => {
+                return undefined;
+            });
+    }
+
+    async removeTaskQuickPick() {
+        const items = [
+            {
+                label: "Yes",
+                value: 1
+            },
+            {
+                label: "No",
+                value: 0
+            },
+        ];
+
+        const placeHolder = "Do you want to remove this task?";
+        return await createQuickPick(items, placeHolder, 1)
+            .then((response: any) => {
+                console.log('response', response);
+                return response.value;
+            })
+            .catch(() => {
+                return undefined;
+            });
     }
     /**
      *

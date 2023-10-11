@@ -5,14 +5,15 @@ export const confirmButton: vscode.QuickInputButton = {
     tooltip: 'confirm',
 };
 
-export async function createQuickPick(items: vscode.QuickPickItem[], placeholder: string, totalSteps: any) {
+export async function createQuickPick(items: vscode.QuickPickItem[], placeholder: string, totalSteps: any, activeItems: any = []) {
     return new Promise(function (resolve, reject) {
         const picker = vscode.window.createQuickPick();
         picker.placeholder = placeholder;
         picker.matchOnDescription = true;
         picker.matchOnDetail = true;
-        picker.ignoreFocusOut = true;
+        // picker.ignoreFocusOut = true;
         picker.items = items;
+        picker.activeItems = activeItems;
         picker.totalSteps = totalSteps;
         picker.show();
         picker.buttons = [vscode.QuickInputButtons.Back, confirmButton];
@@ -25,18 +26,11 @@ export async function createQuickPick(items: vscode.QuickPickItem[], placeholder
         });
         picker.onDidTriggerButton(function (e) {
             if (e === confirmButton) {
-                if (picker.activeItems.length) {
-                    resolve({
-                        value: picker.value,
-                        activeItems: picker.items[0],
-                    });
-                } else {
-                    resolve({
-                        value: picker.value,
-                        activeItems: picker.items[0],
-                    });
-                }
                 picker.dispose();
+                resolve({
+                    value: picker.value,
+                    activeItems: picker.items[0],
+                });
             }
 
             if (e === vscode.QuickInputButtons.Back) {
@@ -49,20 +43,4 @@ export async function createQuickPick(items: vscode.QuickPickItem[], placeholder
             }
         });
     });
-
-    // if (selectedStep) {
-    //     currentStep.selection = selectedStep;
-    //     console.log('selectedStep', selectedStep);
-    //     // Avanza al passo successivo
-    //     stepCounter++;
-    //     if (stepCounter < steps.length) {
-    //         currentStep = await <any>showQuickPick(stepCounter);
-    //     } else {
-    //         // Hai completato tutti i passaggi
-    //         vscode.window.showInformationMessage('Hai completato tutti i passaggi.');
-    //         stepCounter = 0; // Reimposta il passo a 0 per il prossimo utilizzo
-    //         return currentStep;
-    //     }
-    // }
-    // return steps;
 }
