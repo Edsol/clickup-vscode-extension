@@ -1,13 +1,7 @@
 <h1 align='center'>
 Unofficial <a href="http://clickup.com">ClickUp</a> VSCode extension
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-![](https://vsmarketplacebadge.apphb.com/version-short/edsol.clickup.svg
-)
-![](https://vsmarketplacebadge.apphb.com/downloads-short/edsol.clickup.svg
-)
-![](https://vsmarketplacebadge.apphb.com/rating-short/edsol.clickup.svg
-)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue)](https://www.gnu.org/licenses/agpl-3.0)
 
 </h1>
 
@@ -37,8 +31,6 @@ Through the menu in the Status Bar you can now select a task you are working on,
 
 Watch the video below :arrow_down:
 
-[<img src="./docs/preview.png" width="600" height="300"
-/>](./docs/status_changer.mp4)
 
 ## Extension Commands
 This extension contributes the following commands:
