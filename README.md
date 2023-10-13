@@ -42,6 +42,10 @@ This extension contributes the following commands:
 
 All other commands can be used only via GUI (for now)
 
+## How to configure the extension
+
+- Enable task title: `Settings > clickup.showTaskTitle`
+
 ## Roadmap
 
 - [x] Task counter badge

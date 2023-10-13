@@ -28,6 +28,18 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": [
+      {
+        "title": "ClickUp",
+        "properties": {
+          "clickup.showTaskTitle": {
+            "type": "boolean",
+            "default": true,
+            "description": "show the task name in the statusbar when a task is selected"
+          }
+        }
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {

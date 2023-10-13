@@ -10,16 +10,19 @@ import { NewTaskWebview } from './web_view/newTaskWebview';
 import { Utils } from './utils';
 import { StatusChanger } from './statusChanger';
 import { TaskStatusBarItem } from './lib/taskStatusBarItem';
+import { Configuration } from './configuration';
 
 export async function activate(context: vscode.ExtensionContext) {
 	var utils = new Utils(vscode.window);
 	let storageManager = new LocalStorageService(context.workspaceState);
+
 	tokenService.init(storageManager);
 	var token: any = await storageManager.getValue('token');
-
 	const tokenRegex = /^[a-z]{2}[_]\d+[_].{32}/g;
+
 	var wrapper: ApiWrapper;
 	var statusChanger: StatusChanger;
+	var configuration: Configuration;
 
 	// If token doesn't exists show error message
 	if (token === undefined) {
@@ -30,6 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		//If token exists fetch informations
 		wrapper = new ApiWrapper(token);
 		statusChanger = new StatusChanger(wrapper);
+		configuration = new Configuration();
 		try {
 			var teams = await wrapper.getTeams();
 			var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
@@ -55,7 +59,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 	function taskFound(taskId: string, label: string = '') {
 		var message = `#${taskId}`;
-		if (label) {
+		if (label && configuration.get("showTaskTitle")) {
 			message += `(${label})`;
 		}
 		taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
