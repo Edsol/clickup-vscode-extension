@@ -29,7 +29,9 @@ or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=e
 
 Through the menu in the Status Bar you can now select a task you are working on, once you have finished your changes you can change its status through the commit message.
 
-Watch the video below :arrow_down:
+Usage:
+
+<img src="./docs/status.gif" height=500></img>
 
 
 ## Extension Commands
