@@ -17,7 +17,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	tokenService.init(storageManager);
 	var token: any = await storageManager.getValue('token');
 
-	const tokenRegex = /^[a-z]{2}[_]\d{8}[_].{32}/g;
+	const tokenRegex = /^[a-z]{2}[_]\d{5,8}[_].{32}/g;
 	var wrapper: ApiWrapper;
 	var statusChanger: StatusChanger;
 
