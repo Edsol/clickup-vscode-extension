@@ -45,7 +45,7 @@ All other commands can be used only via GUI (for now)
 ## Roadmap
 
 - [x] Task counter badge
-- [ ] Easy way to edit status outside edit mode
+- [x] Easy way to edit status outside edit mode
 - [ ] Manage via global settings
 - [ ] Increase performaces
 - [ ] Add filters and groupings

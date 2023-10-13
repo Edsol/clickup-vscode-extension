@@ -33,7 +33,7 @@
         {
           "id": "clickup",
           "title": "ClickUp",
-          "icon": "./resources/bar/logo.png"
+          "icon": "./resources/bar/logo_sidebar.svg"
         }
       ]
     },
@@ -94,8 +94,8 @@
         "command": "clickup.statusChanger",
         "title": "ClickUp status changer",
         "icon": {
-          "dark": "./resources/bar/logo_dark.svg",
-          "light": "./resources/bar/logo_white.svg"
+          "dark": "./resources/bar/logo_white.svg",
+          "light": "./resources/bar/logo_dark.svg"
         }
       }
     ],
