@@ -1,8 +1,8 @@
 {
   "name": "clickup",
-  "displayName": "clickup",
+  "displayName": "%displayName%",
   "publisher": "edsol",
-  "description": "integrates clickup and its workflows into vscode",
+  "description": "%description%",
   "repository": "https://github.com/Edsol/clickup-vscode-extension",
   "icon": "images/icon.png",
   "bugs": {
@@ -27,6 +27,7 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "l10n": "./l10n",
   "contributes": {
     "configuration": [
       {
@@ -52,11 +53,11 @@
     "commands": [
       {
         "command": "clickup.setToken",
-        "title": "ClickUp: Add token"
+        "title": "%clickup.setToken.title%"
       },
       {
         "command": "clickup.getToken",
-        "title": "ClickUp: Get token"
+        "title": "%clickup.getToken.title%"
       },
       {
         "command": "clickup.deleteToken",
@@ -185,7 +186,9 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "translate": "npx @vscode/l10n-dev export -0 ./l10n ./src",
+    "deploy": "vsce publish"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
@@ -203,6 +206,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
+    "@vscode/l10n": "^0.0.16",
+    "@vscode/l10n-dev": "^0.0.29",
     "@yaireo/tagify": "^4.11.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.1.3",

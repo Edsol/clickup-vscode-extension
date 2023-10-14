@@ -1,3 +1,12 @@
+import * as vscode from 'vscode';
+import * as l10n from '@vscode/l10n';
+
+if (vscode.l10n.uri?.fsPath) {
+    l10n.config({
+        fsPath: vscode.l10n.uri?.fsPath
+    });
+}
+
 export class Utils {
     window: any;
 
@@ -6,9 +15,9 @@ export class Utils {
     }
 
     confirmDialog(message: string, yesCallback?: CallableFunction, noCallable?: CallableFunction) {
-        this.window.showInformationMessage("Are you sure you want to eliminate this task?", "Yes", "No")
+        this.window.showInformationMessage(l10n.t("Are you sure you want to eliminate this task?"), l10n.t("Yes"), l10n.t("No"))
             .then((answer: string) => {
-                if (answer === "Yes") {
+                if (answer === l10n.t("Yes")) {
                     if (yesCallback) {
                         yesCallback();
                     }

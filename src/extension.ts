@@ -11,6 +11,13 @@ import { Utils } from './utils';
 import { StatusChanger } from './statusChanger';
 import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './configuration';
+import * as l10n from '@vscode/l10n';
+
+if (vscode.l10n.uri?.fsPath) {
+	l10n.config({
+		fsPath: vscode.l10n.uri?.fsPath
+	});
+}
 
 export async function activate(context: vscode.ExtensionContext) {
 	var utils = new Utils(vscode.window);
@@ -26,9 +33,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// If token doesn't exists show error message
 	if (token === undefined) {
-		vscode.window.showInformationMessage('No clickup token has been set!');
+		vscode.window.showInformationMessage(constants.NO_CLICKUP_TOKEN_SET);
 	} else if (token.match(tokenRegex) === null) {
-		vscode.window.showInformationMessage('Token was malformed!');
+		vscode.window.showInformationMessage(l10n.t('Invalid Token!'));
 	} else {
 		//If token exists fetch informations
 		wrapper = new ApiWrapper(token);
@@ -53,7 +60,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	// initialize the statusBarItem
 	var taskStatusBarItem = new TaskStatusBarItem();
 	if (taskIdWorkingOn !== undefined) {
-		console.log("Task was found:" + taskIdWorkingOn.id);
 		taskFound(taskIdWorkingOn.id, taskIdWorkingOn.label);
 
 	}
@@ -63,7 +69,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			message += `(${label})`;
 		}
 		taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
-		taskStatusBarItem.setTooltip("ClickUp Task you are working on");
+		taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
 		taskStatusBarItem.setCommand("clickup.removeTask");
 	}
 
@@ -73,12 +79,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		statusChanger.itemsList.task.id = undefined;
 		storageManager.setValue('taskIdWorkingOn', undefined);
 		storageManager.setValue('listOfTaskId', undefined);
-		vscode.window.showInformationMessage(`Task was removed`);
+		vscode.window.showInformationMessage(constants.TASK_REMOVED);
 	}
 
 	vscode.commands.registerCommand('clickup.setToken', async () => {
 		if (await tokenInput.setToken()) {
-			vscode.window.showInformationMessage('Your token has been successfully saved');
+			vscode.window.showInformationMessage(constants.SET_TOKEN);
 			vscode.commands.executeCommand('workbench.action.reloadWindow');
 		}
 	});
@@ -86,7 +92,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('clickup.deleteToken', async () => {
 		if (await tokenInput.deleteToken()) {
 			forgetTask();
-			vscode.window.showInformationMessage('Your token has been successfully deleted');
+			vscode.window.showInformationMessage(constants.DELETE_TOKEN);
 			vscode.commands.executeCommand('workbench.action.reloadWindow');
 		}
 	});
@@ -97,7 +103,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('clickup.getToken', async () => {
 		var token = await tokenInput.getToken();
-		vscode.window.showInformationMessage('Your token is: ' + token);
+		vscode.window.showInformationMessage(l10n.t('Your token is: {token}', { token: token }));
 	});
 
 	vscode.commands.registerCommand('clickup.addTask', (listItem) => {
@@ -113,7 +119,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			await wrapper.deleteTask(taskItem.task.id);
 			provider.refresh();
 		}, () => {
-			vscode.window.showInformationMessage('good, your task is safe');
+			vscode.window.showInformationMessage(l10n.t("The task was deleted correctly"));
 		});
 	});
 
@@ -151,11 +157,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('clickup.statusChanger', async () => {
 		if (taskIdWorkingOn === undefined) {
-			vscode.window.showInformationMessage(`No ClickUp task has been selected`);
+			vscode.window.showInformationMessage(constants.NO_TASK_SELECTED);
 		} else {
 			var status = await statusChanger.showStatusQuickPick(taskIdWorkingOn.listId);
 			if (status === undefined) {
-				vscode.window.showInformationMessage(`I couldn't read the status`);
+				vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
 				return;
 			}
 			statusChanger.setGitMessage(`#${taskIdWorkingOn.id}[${status}]`);

@@ -1,0 +1,18 @@
+{
+  "Yes": "Yes",
+  "No": "No",
+  "Invalid Token!": "Invalid Token!",
+  "Your token is: {token}": "Your token is: {token}",
+  "The task was deleted correctly": "The task was deleted correctly",
+  "No clickup token has been set!": "No clickup token has been set!",
+  "ClickUp Task you are working on": "ClickUp Task you are working on",
+  "Your token has been successfully saved": "Your token has been successfully saved",
+  "Your token has been successfully deleted": "Your token has been successfully deleted",
+  "An error occurred while saving": "An error occurred while saving",
+  "New task was created": "New task was created",
+  "Task updated": "Task updated",
+  "An error occurred while updating": "An error occurred while updating",
+  "Are you sure you want to eliminate this Task?": "Are you sure you want to eliminate this Task?",
+  "Are you sure you want to eliminate this Space?": "Are you sure you want to eliminate this Space?",
+  "Are you sure you want to eliminate this List?": "Are you sure you want to eliminate this List?"
+}

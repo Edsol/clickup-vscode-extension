@@ -1,0 +1,6 @@
+{
+    "displayName": "clickup",
+    "description": "Integrates clickup and its workflows into vscode",
+    "clickup.setToken.title": "ClickUp: Add token",
+    "clickup.getToken.title": "ClickUp: show token"
+}
