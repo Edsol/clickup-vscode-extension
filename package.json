@@ -53,59 +53,59 @@
     "commands": [
       {
         "command": "clickup.setToken",
-        "title": "%clickup.setToken.title%"
+        "title": "%setToken.title%"
       },
       {
         "command": "clickup.getToken",
-        "title": "%clickup.getToken.title%"
+        "title": "%getToken.title%"
       },
       {
         "command": "clickup.deleteToken",
-        "title": "ClickUp: delete token"
+        "title": "%deleteToken.title%"
       },
       {
         "command": "clickup.deleteTask",
-        "title": "delete Task",
+        "title": "%deleteTask.title%",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.editTask",
-        "title": "Edit",
+        "title": "%editTask.title%",
         "icon": "$(pencil)"
       },
       {
         "command": "clickup.addTask",
-        "title": "add Task",
+        "title": "%addTask.title%",
         "icon": "$(add)"
       },
       {
         "command": "clickup.refresh",
-        "title": "refresh",
+        "title": "%refreshTask.title%",
         "icon": "$(sync)"
       },
       {
         "command": "clickup.addSpace",
-        "title": "add Space",
+        "title": "%addSpace.title%",
         "icon": "$(add)"
       },
       {
         "command": "clickup.deleteSpace",
-        "title": "delete Space",
+        "title": "%deleteSpace.title%",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.addList",
-        "title": "add List",
+        "title": "%addList.title%",
         "icon": "$(add)"
       },
       {
         "command": "clickup.deleteList",
-        "title": "delete List",
+        "title": "%deleteList.title%",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.statusChanger",
-        "title": "ClickUp status changer",
+        "title": "%statusChanger.title%",
         "icon": {
           "dark": "./resources/bar/logo_white.svg",
           "light": "./resources/bar/logo_dark.svg"
@@ -169,7 +169,7 @@
       "clickup": [
         {
           "id": "clickupTasksView",
-          "name": "Tasks list"
+          "name": "%taskList.name%"
         }
       ]
     },
