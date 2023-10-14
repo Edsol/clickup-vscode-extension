@@ -40,17 +40,16 @@ This extension contributes the following commands:
 * `clickup:setToken`: set personal token
 * `clickup:deleteToken`: delete personal token 
 
-All other commands can be used only via GUI (for now)
 
 ## How to configure the extension
 
-- Enable task title: `Settings > clickup.showTaskTitle`
+Go to `Settings > Extension > ClickUp` and change the parameters to configure to your liking the extension.
 
 ## Roadmap
 
 - [x] Task counter badge
 - [x] Easy way to edit status outside edit mode
-- [ ] Manage via global settings
+- [x] Manage via global settings
 - [ ] Increase performaces
 - [ ] Add filters and groupings
 - [ ] Implements time tracking
@@ -59,7 +58,18 @@ All other commands can be used only via GUI (for now)
 - [x] Refresh TreeView button 
 - [x] Collapse TreeView button
 - [x] Create new List
-- [x] load task informations in real time 
+- [x] load task informations in real time
+- [x] translation support
+
+## Translation
+The extension supports English and Italian (my native language). You can help me translate it into your language, it will be very easy to do so:
+
+1. Copy the `package.nls.json` file in the root of project and renaming it by adding the identifier for your language. For example for the Italian language the file will have the name `package.nls.it.json`
+2. Copy the `bundle.l10n.json` file in the `l10n` folder and renaming it by adding the identifier for your language. For example for the Italian language the file will have the name `bundle.l10n.it.json`
 
 ## Release Notes
 Detailed Release Notes are available [here](CHANGELOG.md)
+
+## Do you want to support my work? Buy me an espresso coffee (I'm Italian)
+
+<a href="https://www.buymeacoffee.com/edsol" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
