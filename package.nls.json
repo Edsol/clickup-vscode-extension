@@ -7,11 +7,13 @@
     "deleteTask.title": "Clickup: delete Task",
     "editTask.title": "Clickup: edit Task",
     "addTask.title": "Clickup: add Task",
+    "workOnTask.title": "Clickup: work on Task",
     "refreshTask.title": "Clickup: refresh Task",
     "addSpace.title": "Clickup: add Space",
     "deleteSpace.title": "Clickup: delete Space",
     "addList.title": "Clickup: add List",
     "deleteList.title": "Clickup: delete List",
     "statusChanger.title": "Clickup: Status changer",
-    "taskList.name": "Clickup: Task list"
+    "taskList.name": "Task list",
+    "timeTracker.name": "Time Tracker"
 }

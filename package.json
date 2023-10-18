@@ -18,7 +18,7 @@
     "up"
   ],
   "engines": {
-    "vscode": "^1.65.0"
+    "vscode": "^1.83.0"
   },
   "categories": [
     "Other"
@@ -41,15 +41,6 @@
         }
       }
     ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "clickup",
-          "title": "ClickUp",
-          "icon": "./resources/bar/logo_sidebar.svg"
-        }
-      ]
-    },
     "commands": [
       {
         "command": "clickup.setToken",
@@ -77,6 +68,11 @@
         "command": "clickup.addTask",
         "title": "%addTask.title%",
         "icon": "$(add)"
+      },
+      {
+        "command": "clickup.workOnTask",
+        "title": "%addTask.title%",
+        "icon": "$(pin)"
       },
       {
         "command": "clickup.refresh",
@@ -139,6 +135,11 @@
           "group": "inline"
         },
         {
+          "command": "clickup.workOnTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
           "command": "clickup.deleteSpace",
           "when": "viewItem == spaceItem",
           "group": "inline"
@@ -155,7 +156,7 @@
         },
         {
           "command": "clickup.addTask",
-          "when": "viewItem == listItem",
+          "when": "viewItem == taskItem",
           "group": "inline"
         },
         {
@@ -165,11 +166,24 @@
         }
       ]
     },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "clickup",
+          "title": "ClickUp",
+          "icon": "./resources/bar/logo_sidebar.svg"
+        }
+      ]
+    },
     "views": {
       "clickup": [
         {
-          "id": "clickupTasksView",
+          "id": "tasksViewer",
           "name": "%taskList.name%"
+        },
+        {
+          "id": "timeTracker",
+          "name": "%timeTracker.name%"
         }
       ]
     },
@@ -195,7 +209,7 @@
     "@types/inflection": "^1.13.0",
     "@types/mocha": "^9.1.0",
     "@types/node": "14.x",
-    "@types/vscode": "^1.65.0",
+    "@types/vscode": "^1.83.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "@vscode/test-electron": "^2.1.2",

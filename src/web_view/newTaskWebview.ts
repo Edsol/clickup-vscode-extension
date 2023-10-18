@@ -4,7 +4,7 @@ import { WebviewHelper } from '../web_view/webviewHelper';
 import { ApiWrapper } from '../api_wrapper';
 import { ListItem } from '../tree_view/items/list_item';
 import * as constants from './../constants';
-import { MainProvider } from '../tree_view/main_provider';
+import { TaskListProvider } from '../tree_view/taskListProvider';
 
 export class NewTaskWebview {
     context: vscode.ExtensionContext;
@@ -18,7 +18,7 @@ export class NewTaskWebview {
     tags: any;
     priorities: any;
 
-    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: MainProvider) {
+    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: TaskListProvider) {
         this.context = context;
         this.wrapper = wrapper;
 

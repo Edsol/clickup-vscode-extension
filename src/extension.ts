@@ -5,13 +5,14 @@ import { LocalStorageService } from './localStorageService';
 import * as tokenInput from './token/input';
 import { tokenService } from './token/service';
 import { EditWebview } from './web_view/editWebview';
-import { MainProvider } from './tree_view/main_provider';
+import { TaskListProvider } from './tree_view/taskListProvider';
 import { NewTaskWebview } from './web_view/newTaskWebview';
 import { Utils } from './utils';
 import { StatusChanger } from './statusChanger';
 import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './configuration';
 import * as l10n from '@vscode/l10n';
+import { TimesListProvider } from './tree_view/timesListProvider';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
@@ -29,7 +30,18 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	var wrapper: ApiWrapper;
 	var statusChanger: StatusChanger;
-	var configuration: Configuration;
+	var configuration: Configuration = new Configuration();
+
+	// initialize taskId an listId from storage
+	var taskIdWorkingOn: any | undefined = await storageManager.getValue('taskIdWorkingOn');
+
+	// initialize the statusBarItem
+	var taskStatusBarItem = new TaskStatusBarItem();
+	if (taskIdWorkingOn !== undefined) {
+		console.log('taskIdWorkingOn', taskIdWorkingOn);
+		taskFound(taskIdWorkingOn.id, taskIdWorkingOn.label, taskIdWorkingOn.listId);
+
+	}
 
 	// If token doesn't exists show error message
 	if (token === undefined) {
@@ -40,12 +52,20 @@ export async function activate(context: vscode.ExtensionContext) {
 		//If token exists fetch informations
 		wrapper = new ApiWrapper(token);
 		statusChanger = new StatusChanger(wrapper);
-		configuration = new Configuration();
+
 		try {
+			// inizialize the TaskList tree
 			var teams = await wrapper.getTeams();
-			var provider = new MainProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-			vscode.window.createTreeView('clickupTasksView', {
-				treeDataProvider: provider,
+			var taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
+			vscode.window.createTreeView('tasksViewer', {
+				treeDataProvider: taskListProvider,
+				showCollapseAll: true,
+			});
+
+			// inizialize the TimesList tree
+			var timesListProvider = new TimesListProvider(taskIdWorkingOn.id, wrapper);
+			vscode.window.createTreeView('timeTracker', {
+				treeDataProvider: timesListProvider,
 				showCollapseAll: true,
 			});
 		} catch (error) {
@@ -54,16 +74,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}
 
-	// initialize taskId an listId from storage
-	var taskIdWorkingOn: any | undefined = await storageManager.getValue('taskIdWorkingOn');
-
-	// initialize the statusBarItem
-	var taskStatusBarItem = new TaskStatusBarItem();
-	if (taskIdWorkingOn !== undefined) {
-		taskFound(taskIdWorkingOn.id, taskIdWorkingOn.label);
-
-	}
-	function taskFound(taskId: string, label: string = '') {
+	function taskFound(taskId: string, label: string = '', listId: number) {
 		var message = `#${taskId}`;
 		if (label && configuration.get("showTaskTitle")) {
 			message += `(${label})`;
@@ -71,6 +82,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
 		taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
 		taskStatusBarItem.setCommand("clickup.removeTask");
+
+		//save last TaskId and ListId value
+		storageManager.setValue('taskIdWorkingOn', {
+			id: taskId,
+			label: label,
+			listId: listId
+		});
 	}
 
 	function forgetTask() {
@@ -98,7 +116,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.refresh', () => {
-		provider.refresh();
+		taskListProvider.refresh();
 	});
 
 	vscode.commands.registerCommand('clickup.getToken', async () => {
@@ -107,35 +125,40 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('clickup.addTask', (listItem) => {
-		new NewTaskWebview(context, listItem, wrapper, provider);
+		new NewTaskWebview(context, listItem, wrapper, taskListProvider);
 	});
 
 	vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
-		new EditWebview(context, taskItem.task, wrapper, provider);
+		new EditWebview(context, taskItem.task, wrapper, taskListProvider);
 	});
 
 	vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
 		utils.confirmDialog(constants.TASK_DELETE_MESSAGE, async () => {
 			await wrapper.deleteTask(taskItem.task.id);
-			provider.refresh();
+			taskListProvider.refresh();
 		}, () => {
 			vscode.window.showInformationMessage(l10n.t("The task was deleted correctly"));
 		});
 	});
+
+	vscode.commands.registerCommand('clickup.workOnTask', (taskItem) => {
+		const task = taskItem.task;
+		taskFound(task.id, task.name, task.list.id);
+	})
 
 	vscode.commands.registerCommand('clickup.addSpace', (teamItem) => {
 		vscode.window.showInputBox({
 			prompt: "Insert space name"
 		}).then(async (name) => {
 			await wrapper.createSpace(teamItem.id, name as string);
-			provider.refresh();
+			taskListProvider.refresh();
 		});
 	});
 
 	vscode.commands.registerCommand("clickup.deleteSpace", (spaceItem) => {
 		utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
 			await wrapper.deleteSpace(spaceItem.id);
-			provider.refresh();
+			taskListProvider.refresh();
 		});
 	});
 
@@ -144,14 +167,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			prompt: "Insert list name"
 		}).then(async (name) => {
 			await wrapper.createList(spaceItem.id, name as string);
-			provider.refresh();
+			taskListProvider.refresh();
 		});
 	});
 
 	vscode.commands.registerCommand("clickup.deleteList", (listItem) => {
 		utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
 			await wrapper.deleteList(listItem.id);
-			provider.refresh();
+			taskListProvider.refresh();
 		});
 	});
 
@@ -171,11 +194,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('clickup.taskChooser', async () => {
 		if (taskIdWorkingOn === undefined) {
 			var taskData = taskIdWorkingOn = await statusChanger.showTaskChooserQuickPick();
-
-			taskFound(taskData.id, taskData.label);
-
-			//save last TaskId and ListId value
-			storageManager.setValue('taskIdWorkingOn', taskData);
+			taskFound(taskData.id, taskData.label, taskData.listId);
 		}
 	});
 

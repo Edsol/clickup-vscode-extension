@@ -107,6 +107,11 @@ export class ApiWrapper {
         return body;
     }
 
+    async getTrackedTime(taskId: string) {
+        var { body } = await this.clickup.tasks.getTrackedTime(taskId);
+        return body.data;
+    }
+
     /**
  * @param taskId {string}
  * @param data {Object}

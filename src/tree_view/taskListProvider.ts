@@ -7,7 +7,7 @@ import { TeamItem } from './items/team_item';
 import { FolderItem } from './items/folder_item';
 import { ApiWrapper } from '../api_wrapper';
 
-export class MainProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     teams: Array<any>;
     apiwrapper: ApiWrapper;
 
