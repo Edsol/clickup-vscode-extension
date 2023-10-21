@@ -7,11 +7,13 @@ const collapsedConst = vscode.TreeItemCollapsibleState.Collapsed;
 const noCollapsedConst = vscode.TreeItemCollapsibleState.None;
 
 export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-    taskId: string;
+    taskId?: string;
     apiwrapper: ApiWrapper;
 
-    constructor(taskId: string, apiWrapper: ApiWrapper) {
-        this.taskId = taskId;
+    constructor(apiWrapper: ApiWrapper, taskId?: string) {
+        if (taskId) {
+            this.taskId = taskId;
+        }
         this.apiwrapper = apiWrapper;
     }
 
@@ -21,6 +23,10 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
 
     async getChildren(element?: any): Promise<(vscode.TreeItem)[]> {
         var resolve: any = [];
+
+        if (!this.taskId) {
+            return Promise.resolve(resolve);
+        }
 
         if (element === undefined) {
             var trackedTime = await this.apiwrapper.getTrackedTime(this.taskId);

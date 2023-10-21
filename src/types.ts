@@ -1,3 +1,11 @@
+export type selectedTaskData = {
+    id: string,
+    label: string,
+    listId: number
+};
+
+
+// Clickup Types
 export type Task = {
     archived: boolean,
     assignees: Assignee[],

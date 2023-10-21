@@ -21,6 +21,7 @@ export const TASK_REMOVED = l10n.t(`Task was removed`);
 export const SET_TOKEN = l10n.t('Your token has been successfully saved');
 export const DELETE_TOKEN = l10n.t('Your token has been successfully deleted');
 export const NO_TASK_SELECTED = l10n.t(`No ClickUp task has been selected`);
+export const NO_LIST_ID = l10n.t(`Impossible to retrieve states from reference list`);
 export const STATUS_READ_ERROR = l10n.t(`I couldn't read the status`);
 
 

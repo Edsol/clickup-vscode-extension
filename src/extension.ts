@@ -12,6 +12,7 @@ import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './configuration';
 import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
+import { selectedTaskData } from './types';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
@@ -28,7 +29,7 @@ var utils = new Utils(vscode.window);
 var timesListProvider: TimesListProvider;
 var statusChanger: StatusChanger;
 var taskStatusBarItem: TaskStatusBarItem;
-var taskIdWorkingOn: any | undefined;
+var selectedTaskData: selectedTaskData | undefined;
 var taskListProvider: TaskListProvider;
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -38,31 +39,32 @@ export async function activate(context: vscode.ExtensionContext) {
 	const token = await tokenManager.init();
 
 	// initialize taskId an listId from storage
-	taskIdWorkingOn = await storageManager.getValue('taskIdWorkingOn');
+	selectedTaskData = await storageManager.getValue('selectedTaskData');
 
 	// initialize the statusBarItem
 	taskStatusBarItem = new TaskStatusBarItem();
-	if (taskIdWorkingOn !== undefined) {
-		taskFound(taskIdWorkingOn.id, taskIdWorkingOn.label, taskIdWorkingOn.listId);
+	if (selectedTaskData !== undefined) {
+		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
 
 	}
 
-	if (token) {
-		//If token exists fetch informations
-		wrapper = new ApiWrapper(token);
-		statusChanger = new StatusChanger(wrapper);
+	if (!token) {
+		return;
+	}
+	//If token exists fetch data
+	wrapper = new ApiWrapper(token);
+	statusChanger = new StatusChanger(wrapper);
 
-		// inizialize the TaskList tree
-		var teams = await wrapper.getTeams();
-		taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-		vscode.window.createTreeView('tasksViewer', {
-			treeDataProvider: taskListProvider,
-			showCollapseAll: true,
-		});
+	// inizialize the TaskList tree
+	var teams = await wrapper.getTeams();
+	taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
+	vscode.window.createTreeView('tasksViewer', {
+		treeDataProvider: taskListProvider,
+		showCollapseAll: true,
+	});
 
-		if (taskIdWorkingOn) {
-			taskFound(taskIdWorkingOn.id, taskIdWorkingOn.label, taskIdWorkingOn.listId);
-		}
+	if (selectedTaskData !== undefined) {
+		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
 	}
 }
 
@@ -76,31 +78,33 @@ function taskFound(taskId: string, label: string = '', listId: number) {
 	taskStatusBarItem.setCommand("clickup.removeTask");
 
 	//save last TaskId and ListId value
-	storageManager.setValue('taskIdWorkingOn', {
+	storageManager.setValue('selectedTaskData', {
 		id: taskId,
 		label: label,
 		listId: listId
 	});
 
 	if (wrapper) {
-		// inizialize the TimesList tree
-		timesListProvider = new TimesListProvider(taskId, wrapper);
-		vscode.window.createTreeView('timeTracker', {
-			treeDataProvider: timesListProvider,
-			showCollapseAll: false,
-			// canSelectMany: true
-		});
+		initTimeTrakerTree(taskId);
 	}
 }
 
 function forgetTask() {
 	taskStatusBarItem.setDefaults();
-	taskIdWorkingOn = undefined;
+	selectedTaskData = undefined;
 	statusChanger.itemsList.task.id = undefined;
-	storageManager.setValue('taskIdWorkingOn', undefined);
+	storageManager.setValue('selectedTaskData', undefined);
 	storageManager.setValue('listOfTaskId', undefined);
 	vscode.window.showInformationMessage(constants.TASK_REMOVED);
-	// vscode.window.createTreeView('timeTracker', undefined);
+	initTimeTrakerTree();
+}
+
+function initTimeTrakerTree(taskId?: string) {
+	timesListProvider = new TimesListProvider(wrapper, taskId);
+	vscode.window.createTreeView('timeTracker', {
+		treeDataProvider: timesListProvider,
+		showCollapseAll: true
+	});
 }
 
 vscode.commands.registerCommand('clickup.setToken', async () => {
@@ -182,21 +186,26 @@ vscode.commands.registerCommand("clickup.deleteList", (listItem) => {
 });
 
 vscode.commands.registerCommand('clickup.statusChanger', async () => {
-	if (taskIdWorkingOn === undefined) {
+	if (selectedTaskData === undefined) {
 		vscode.window.showInformationMessage(constants.NO_TASK_SELECTED);
-	} else {
-		var status = await statusChanger.showStatusQuickPick(taskIdWorkingOn.listId);
-		if (status === undefined) {
-			vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
-			return;
-		}
-		statusChanger.setGitMessage(`#${taskIdWorkingOn.id}[${status}]`);
+		return;
 	}
+	if (selectedTaskData.listId === undefined) {
+		vscode.window.showInformationMessage(constants.NO_LIST_ID);
+		return;
+	}
+
+	var status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
+	if (status === undefined) {
+		vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
+		return;
+	}
+	statusChanger.setGitMessage(`#${selectedTaskData.id}[${status}]`);
 });
 
 vscode.commands.registerCommand('clickup.taskChooser', async () => {
-	if (taskIdWorkingOn === undefined) {
-		var taskData = taskIdWorkingOn = await statusChanger.showTaskChooserQuickPick();
+	if (selectedTaskData === undefined) {
+		var taskData = selectedTaskData = await statusChanger.showTaskChooserQuickPick();
 		taskFound(taskData.id, taskData.label, taskData.listId);
 	}
 });
