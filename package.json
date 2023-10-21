@@ -156,7 +156,7 @@
         },
         {
           "command": "clickup.addTask",
-          "when": "viewItem == taskItem",
+          "when": "viewItem == listItem",
           "group": "inline"
         },
         {

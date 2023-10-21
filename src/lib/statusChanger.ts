@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { createQuickPick } from './lib/statusQuickPicks';
+import { createQuickPick } from './statusQuickPicks';
 
 
 export class StatusChanger {

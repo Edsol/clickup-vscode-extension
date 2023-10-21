@@ -1,4 +1,4 @@
-import { LocalStorageService } from '../localStorageService';
+import { LocalStorageService } from './localStorageService';
 import * as vscode from 'vscode';
 import * as constants from '../constants';
 import * as l10n from '@vscode/l10n';

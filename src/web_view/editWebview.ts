@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from './webviewHelper';
 import { Task } from '../types';
-import { ApiWrapper } from '../api_wrapper';
+import { ApiWrapper } from '../lib/apiWrapper';
 import * as constant from '../constants';
 import { TaskListProvider } from '../tree_view/taskListProvider';
 

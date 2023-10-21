@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ApiWrapper } from '../api_wrapper';
+import { ApiWrapper } from '../lib/apiWrapper';
 import { TrackingItem } from './timesItem/trackingItem';
 import { IntervalItem } from './timesItem/intervalItem';
 

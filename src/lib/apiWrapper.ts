@@ -1,5 +1,5 @@
 var clickup = require('clickup.js');
-import { Task, Member, Statuses, Tag, Team } from './types';
+import { Task, Member, Statuses, Tag, Team } from '../types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
