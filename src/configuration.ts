@@ -11,7 +11,6 @@ export class Configuration {
     }
 
     get(key: string) {
-        console.log(this.configuration);
         return this.configuration[key];
     }
 }

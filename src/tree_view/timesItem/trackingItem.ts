@@ -1,6 +1,6 @@
 
 import path = require('path');
-import { TreeItem, TreeItemCollapsibleState, window } from 'vscode';
+import { TreeItem, TreeItemCollapsibleState, ThemeIcon } from 'vscode';
 import { Tracking } from '../../types';
 
 export class TrackingItem extends TreeItem {
@@ -10,10 +10,7 @@ export class TrackingItem extends TreeItem {
     ) {
         super(trackingItem.user.username, collapsibleState);
         this.id = "" + trackingItem.time;
-        this.iconPath = {
-            light: path.join(__dirname, '..', '..', '..', '..', 'resources', 'folderItem', 'documents.png'),
-            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'folderItem', 'documents_white.png')
-        };
+        this.iconPath = ThemeIcon.Folder;
     }
     contextValue = 'trackingItem';
 }

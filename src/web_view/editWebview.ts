@@ -67,7 +67,6 @@ export class EditWebview {
 			this.webviewhelper.getPanel(this.dependecies)
 				.then(async (panel: any) => {
 					this.panel = panel as vscode.WebviewPanel;
-					console.log(task);
 					this.panel.webview.postMessage({
 						command: 'init',
 						data: {
@@ -111,8 +110,6 @@ export class EditWebview {
 			await this.wrapper.updateTaskTags(task.id, task.tags, taskData.tags);
 			vscode.window.showInformationMessage(constant.TASK_UPDATE_MESSAGE);
 		} else {
-			console.log('updateTask error: task data', taskData);
-			console.log('updateTask error: task response', response);
 			vscode.window.showErrorMessage(constant.TASK_UPDATE_ERROR_MESSAGE);
 		}
 	}

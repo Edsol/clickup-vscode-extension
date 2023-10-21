@@ -107,8 +107,6 @@ export class NewTaskWebview {
             vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
             this.panel.dispose();
         } else {
-            console.log('data', data);
-            console.log('normalized data', taskData);
             vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
         }
     }

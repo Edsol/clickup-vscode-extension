@@ -10,7 +10,7 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
     taskId: string;
     apiwrapper: ApiWrapper;
 
-    constructor(taskId: string, apiWrapper: any) {
+    constructor(taskId: string, apiWrapper: ApiWrapper) {
         this.taskId = taskId;
         this.apiwrapper = apiWrapper;
     }
@@ -24,18 +24,31 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
 
         if (element === undefined) {
             var trackedTime = await this.apiwrapper.getTrackedTime(this.taskId);
-            resolve = Object.values(trackedTime).map((tracking: any) => {
-                return new TrackingItem(tracking, collapsedConst);
-            });
+            if (trackedTime) {
+                resolve = Object.values(trackedTime).map((tracking: any) => {
+                    return new TrackingItem(tracking, collapsedConst);
+                });
+            }
         }
 
         if (element instanceof TrackingItem) {
             resolve = Object.values(element.trackingItem.intervals).map((interval: any) => {
-                console.log(interval);
-                return new IntervalItem(interval, noCollapsedConst);
+                return new IntervalItem(interval, this.unixtimeToString(<number>interval.start), this.unixtimeToString(<number>interval.end), noCollapsedConst);
             });
         }
 
         return Promise.resolve(resolve);
+    }
+    /**
+     *
+     *
+     * @private
+     * @param {number} unixtime
+     * @return {*} 
+     * @memberof TimesListProvider
+     */
+    private unixtimeToString(unixtime: number) {
+        var date = new Date(unixtime * 1);
+        return date.toLocaleString(vscode.env.language);
     }
 }

@@ -39,9 +39,6 @@ export class WebviewHelper {
             for (const scriptName in scripts) {
                 var file = scripts[scriptName];
                 const localFile = this.panel.webview.asWebviewUri(vscode.Uri.file(file));
-                if (verbose) {
-                    console.log('inject in ' + scriptName, localFile.toString());
-                }
                 this.html = this.html.replace("${" + scriptName + "}", localFile.toString());
             }
         }
@@ -49,7 +46,6 @@ export class WebviewHelper {
     }
 
     static normalize(data: any, mapField: Array<String>) {
-        console.log('before normalize', data);
         if (data.assignees) {
             data.assignees = data.assignees.map((member: any) => {
                 return member.id;
@@ -76,7 +72,6 @@ export class WebviewHelper {
                 filteredData[key] = value;
             }
         });
-        console.log('after normalize data', filteredData);
         return filteredData;
     }
 
