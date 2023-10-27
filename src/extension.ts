@@ -66,155 +66,156 @@ export async function activate(context: vscode.ExtensionContext) {
 	if (selectedTaskData !== undefined) {
 		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
 	}
+}
 
-	function taskFound(taskId: string, label: string = '', listId: number) {
-		var message = `#${taskId}`;
-		if (label && configuration.get("showTaskTitle")) {
-			message += `(${label})`;
-		}
-		taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
-		taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
-		taskStatusBarItem.setCommand("clickup.removeTask");
-
-		//save last TaskId and ListId value
-		storageManager.setValue('selectedTaskData', {
-			id: taskId,
-			label: label,
-			listId: listId
-		});
-
-		if (wrapper) {
-			initTimeTrakerTree(taskId);
-		}
+function taskFound(taskId: string, label: string = '', listId: number) {
+	var message = `#${taskId}`;
+	if (label && configuration.get("showTaskTitle")) {
+		message += `(${label})`;
 	}
+	taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
+	taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
+	taskStatusBarItem.setCommand("clickup.removeTask");
 
-	function forgetTask() {
-		taskStatusBarItem.setDefaults();
-		selectedTaskData = undefined;
-		statusChanger.itemsList.task.id = undefined;
-		storageManager.setValue('selectedTaskData', undefined);
-		storageManager.setValue('listOfTaskId', undefined);
-		vscode.window.showInformationMessage(constants.TASK_REMOVED);
-		initTimeTrakerTree();
+	//save last TaskId and ListId value
+	storageManager.setValue('selectedTaskData', {
+		id: taskId,
+		label: label,
+		listId: listId
+	});
+
+	if (wrapper) {
+		initTimeTrakerTree(taskId);
 	}
+}
 
-	function initTimeTrakerTree(taskId?: string) {
-		timesListProvider = new TimesListProvider(wrapper, taskId);
-		vscode.window.createTreeView('timeTracker', {
-			treeDataProvider: timesListProvider,
-			showCollapseAll: true
-		});
-	}
+function forgetTask() {
+	taskStatusBarItem.setDefaults();
+	selectedTaskData = undefined;
+	statusChanger.itemsList.task.id = undefined;
+	storageManager.setValue('selectedTaskData', undefined);
+	storageManager.setValue('listOfTaskId', undefined);
+	vscode.window.showInformationMessage(constants.TASK_REMOVED);
+	initTimeTrakerTree();
+}
 
-	vscode.commands.registerCommand('clickup.setToken', async () => {
-		if (await tokenManager.askToken()) {
-			vscode.window.showInformationMessage(constants.SET_TOKEN);
-			vscode.commands.executeCommand('workbench.action.reloadWindow');
-		}
-	});
-
-	vscode.commands.registerCommand('clickup.deleteToken', async () => {
-		if (await tokenManager.delete()) {
-			forgetTask();
-			vscode.window.showInformationMessage(constants.DELETE_TOKEN);
-			vscode.commands.executeCommand('workbench.action.reloadWindow');
-		}
-	});
-
-	vscode.commands.registerCommand('clickup.refresh', () => {
-		taskListProvider.refresh();
-	});
-
-	vscode.commands.registerCommand('clickup.getToken', async () => {
-		var token = await tokenManager.getToken();
-		vscode.window.showInformationMessage(l10n.t('Your token is: {token}', { token: token }));
-	});
-
-	vscode.commands.registerCommand('clickup.addTask', (listItem) => {
-		new NewTaskWebview(context, listItem, wrapper, taskListProvider);
-	});
-
-	vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
-		new EditWebview(context, taskItem.task, wrapper, taskListProvider);
-	});
-
-	vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
-		utils.confirmDialog(constants.TASK_DELETE_MESSAGE, async () => {
-			await wrapper.deleteTask(taskItem.task.id);
-			taskListProvider.refresh();
-		}, () => {
-			vscode.window.showInformationMessage(l10n.t("The task was deleted correctly"));
-		});
-	});
-
-	vscode.commands.registerCommand('clickup.workOnTask', (taskItem) => {
-		const task = taskItem.task;
-		taskFound(task.id, task.name, task.list.id);
-	});
-
-	vscode.commands.registerCommand('clickup.addSpace', (teamItem) => {
-		vscode.window.showInputBox({
-			prompt: "Insert space name"
-		}).then(async (name) => {
-			await wrapper.createSpace(teamItem.id, name as string);
-			taskListProvider.refresh();
-		});
-	});
-
-	vscode.commands.registerCommand("clickup.deleteSpace", (spaceItem) => {
-		utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
-			await wrapper.deleteSpace(spaceItem.id);
-			taskListProvider.refresh();
-		});
-	});
-
-	vscode.commands.registerCommand('clickup.addList', (spaceItem) => {
-		vscode.window.showInputBox({
-			prompt: "Insert list name"
-		}).then(async (name) => {
-			await wrapper.createList(spaceItem.id, name as string);
-			taskListProvider.refresh();
-		});
-	});
-
-	vscode.commands.registerCommand("clickup.deleteList", (listItem) => {
-		utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
-			await wrapper.deleteList(listItem.id);
-			taskListProvider.refresh();
-		});
-	});
-
-	vscode.commands.registerCommand('clickup.statusChanger', async () => {
-		if (selectedTaskData === undefined) {
-			vscode.window.showInformationMessage(constants.NO_TASK_SELECTED);
-			return;
-		}
-		if (selectedTaskData.listId === undefined) {
-			vscode.window.showInformationMessage(constants.NO_LIST_ID);
-			return;
-		}
-
-		var status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
-		if (status === undefined) {
-			vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
-			return;
-		}
-		statusChanger.setGitMessage(`#${selectedTaskData.id}[${status}]`);
-	});
-
-	vscode.commands.registerCommand('clickup.taskChooser', async () => {
-		if (selectedTaskData === undefined) {
-			var taskData = selectedTaskData = await statusChanger.showTaskChooserQuickPick();
-			taskFound(taskData.id, taskData.label, taskData.listId);
-		}
-	});
-
-	vscode.commands.registerCommand('clickup.removeTask', async () => {
-		if (await statusChanger.removeTaskQuickPick() === 1) {
-			forgetTask();
-		}
+function initTimeTrakerTree(taskId?: string) {
+	timesListProvider = new TimesListProvider(wrapper, taskId);
+	vscode.window.createTreeView('timeTracker', {
+		treeDataProvider: timesListProvider,
+		showCollapseAll: true
 	});
 }
+
+
+vscode.commands.registerCommand('clickup.setToken', async () => {
+	if (await tokenManager.askToken()) {
+		vscode.window.showInformationMessage(constants.SET_TOKEN);
+		vscode.commands.executeCommand('workbench.action.reloadWindow');
+	}
+});
+
+vscode.commands.registerCommand('clickup.deleteToken', async () => {
+	if (await tokenManager.delete()) {
+		forgetTask();
+		vscode.window.showInformationMessage(constants.DELETE_TOKEN);
+		vscode.commands.executeCommand('workbench.action.reloadWindow');
+	}
+});
+
+vscode.commands.registerCommand('clickup.refresh', () => {
+	taskListProvider.refresh();
+});
+
+vscode.commands.registerCommand('clickup.getToken', async () => {
+	var token = await tokenManager.getToken();
+	vscode.window.showInformationMessage(l10n.t('Your token is: {token}', { token: token }));
+});
+
+vscode.commands.registerCommand('clickup.addTask', (listItem) => {
+	new NewTaskWebview(context, listItem, wrapper, taskListProvider);
+});
+
+vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
+	new EditWebview(context, taskItem.task, wrapper, taskListProvider);
+});
+
+vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
+	utils.confirmDialog(constants.TASK_DELETE_MESSAGE, async () => {
+		await wrapper.deleteTask(taskItem.task.id);
+		taskListProvider.refresh();
+	}, () => {
+		vscode.window.showInformationMessage(l10n.t("The task was deleted correctly"));
+	});
+});
+
+vscode.commands.registerCommand('clickup.workOnTask', (taskItem) => {
+	const task = taskItem.task;
+	taskFound(task.id, task.name, task.list.id);
+});
+
+vscode.commands.registerCommand('clickup.addSpace', (teamItem) => {
+	vscode.window.showInputBox({
+		prompt: "Insert space name"
+	}).then(async (name) => {
+		await wrapper.createSpace(teamItem.id, name as string);
+		taskListProvider.refresh();
+	});
+});
+
+vscode.commands.registerCommand("clickup.deleteSpace", (spaceItem) => {
+	utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
+		await wrapper.deleteSpace(spaceItem.id);
+		taskListProvider.refresh();
+	});
+});
+
+vscode.commands.registerCommand('clickup.addList', (spaceItem) => {
+	vscode.window.showInputBox({
+		prompt: "Insert list name"
+	}).then(async (name) => {
+		await wrapper.createList(spaceItem.id, name as string);
+		taskListProvider.refresh();
+	});
+});
+
+vscode.commands.registerCommand("clickup.deleteList", (listItem) => {
+	utils.confirmDialog(constants.SPACE_DELETE_MESSAGE, async () => {
+		await wrapper.deleteList(listItem.id);
+		taskListProvider.refresh();
+	});
+});
+
+vscode.commands.registerCommand('clickup.statusChanger', async () => {
+	if (selectedTaskData === undefined) {
+		vscode.window.showInformationMessage(constants.NO_TASK_SELECTED);
+		return;
+	}
+	if (selectedTaskData.listId === undefined) {
+		vscode.window.showInformationMessage(constants.NO_LIST_ID);
+		return;
+	}
+
+	var status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
+	if (status === undefined) {
+		vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
+		return;
+	}
+	statusChanger.setGitMessage(`#${selectedTaskData.id}[${status}]`);
+});
+
+vscode.commands.registerCommand('clickup.taskChooser', async () => {
+	if (selectedTaskData === undefined) {
+		var taskData = selectedTaskData = await statusChanger.showTaskChooserQuickPick();
+		taskFound(taskData.id, taskData.label, taskData.listId);
+	}
+});
+
+vscode.commands.registerCommand('clickup.removeTask', async () => {
+	if (await statusChanger.removeTaskQuickPick() === 1) {
+		forgetTask();
+	}
+});
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
