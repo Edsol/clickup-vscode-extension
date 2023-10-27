@@ -55,9 +55,9 @@
         "title": "%deleteToken.title%"
       },
       {
-        "command": "clickup.deleteTask",
-        "title": "%deleteTask.title%",
-        "icon": "$(trash)"
+        "command": "clickup.addTask",
+        "title": "%addTask.title%",
+        "icon": "$(add)"
       },
       {
         "command": "clickup.editTask",
@@ -65,9 +65,9 @@
         "icon": "$(pencil)"
       },
       {
-        "command": "clickup.addTask",
-        "title": "%addTask.title%",
-        "icon": "$(add)"
+        "command": "clickup.deleteTask",
+        "title": "%deleteTask.title%",
+        "icon": "$(trash)"
       },
       {
         "command": "clickup.workOnTask",
@@ -87,6 +87,16 @@
       {
         "command": "clickup.deleteSpace",
         "title": "%deleteSpace.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.addFolder",
+        "title": "%addFolder.title%",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.deleteFolder",
+        "title": "%deleteFolder.title%",
         "icon": "$(trash)"
       },
       {
@@ -146,7 +156,12 @@
         },
         {
           "command": "clickup.addList",
-          "when": "viewItem == spaceItem",
+          "when": "viewItem == folderItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteFolder",
+          "when": "viewItem == folderItem",
           "group": "inline"
         },
         {

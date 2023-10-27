@@ -19,9 +19,21 @@ ext install edsol.clickup
 or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=edsol.clickup)
 
 ## Features
-### Show/edit task
+### List task
+View tasks within lists, folders, spaces
+
+![list](./docs/list_task.png)
+
+### Task functions
+edit, delete, or use a task
+
+![functions](./docs/edit_task.png)
 
 ### Create new task
+
+Add a new task in any list
+
+![new-task](./docs/new_task.png)
 
 ### "Working on" Mode
 
@@ -31,7 +43,25 @@ Usage:
 
 <img src="./docs/status.gif" height=500></img>
 
+we can also work on a specific task by selecting it from the list
+
+![work-on-task](./docs/work_on.png)
+
 ### Task status changer via commit message
+
+We can change the status of the task directly in the commit message.
+
+Select a task with the instructions above and use dedicated button in git tab:
+
+![select-task](./docs/select_task.png)
+
+select a new status from list
+
+![select-status](./docs/select_status.png)
+
+complete commit message and push it
+
+![commit_message](./docs/commit_message.png)
 
 
 ## Extension Commands
