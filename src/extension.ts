@@ -123,13 +123,13 @@ vscode.commands.registerCommand('clickup.deleteToken', async () => {
 	}
 });
 
-vscode.commands.registerCommand('clickup.refresh', () => {
-	taskListProvider.refresh();
-});
-
 vscode.commands.registerCommand('clickup.getToken', async () => {
 	var token = await tokenManager.getToken();
 	vscode.window.showInformationMessage(l10n.t('Your token is: {token}', { token: token }));
+});
+
+vscode.commands.registerCommand('clickup.refresh', () => {
+	taskListProvider.refresh();
 });
 
 vscode.commands.registerCommand('clickup.addTask', (listItem) => {

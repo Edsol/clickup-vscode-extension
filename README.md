@@ -18,6 +18,15 @@ ext install edsol.clickup
 
 or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=edsol.clickup)
 
+## Inizialize
+Use the dedicated command to manipulate API token:
+
+### Token
+* `Clickup: Set token`
+* `Clickup: show token`
+* `Clickup: delete token`
+
+
 ## Features
 ### List task
 View tasks within lists, folders, spaces
@@ -62,13 +71,6 @@ select a new status from list
 complete commit message and push it
 
 ![commit_message](./docs/commit_message.png)
-
-
-## Extension Commands
-This extension contributes the following commands:
-* `clickup:refresh`: reload and update data of TreeView
-* `clickup:setToken`: set personal token
-* `clickup:deleteToken`: delete personal token 
 
 
 ## How to configure the extension

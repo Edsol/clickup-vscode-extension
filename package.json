@@ -44,74 +44,89 @@
     "commands": [
       {
         "command": "clickup.setToken",
-        "title": "%setToken.title%"
+        "title": "%setToken.title%",
+        "category": "ClickUp"
       },
       {
         "command": "clickup.getToken",
-        "title": "%getToken.title%"
+        "title": "%getToken.title%",
+        "category": "ClickUp"
       },
       {
         "command": "clickup.deleteToken",
-        "title": "%deleteToken.title%"
+        "title": "%deleteToken.title%",
+        "category": "ClickUp"
       },
       {
         "command": "clickup.addTask",
         "title": "%addTask.title%",
+        "category": "ClickUp",
         "icon": "$(add)"
       },
       {
         "command": "clickup.editTask",
         "title": "%editTask.title%",
+        "category": "ClickUp",
         "icon": "$(pencil)"
       },
       {
         "command": "clickup.deleteTask",
         "title": "%deleteTask.title%",
+        "category": "ClickUp",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.workOnTask",
         "title": "%addTask.title%",
+        "category": "ClickUp",
         "icon": "$(pin)"
       },
       {
         "command": "clickup.refresh",
         "title": "%refreshTask.title%",
+        "category": "ClickUp",
         "icon": "$(sync)"
       },
       {
         "command": "clickup.addSpace",
         "title": "%addSpace.title%",
+        "category": "ClickUp",
         "icon": "$(add)"
       },
       {
         "command": "clickup.deleteSpace",
         "title": "%deleteSpace.title%",
+        "category": "ClickUp",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.addFolder",
         "title": "%addFolder.title%",
+        "category": "ClickUp",
         "icon": "$(add)"
       },
       {
         "command": "clickup.deleteFolder",
         "title": "%deleteFolder.title%",
+        "category": "ClickUp",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.addList",
         "title": "%addList.title%",
+        "category": "ClickUp",
         "icon": "$(add)"
       },
       {
         "command": "clickup.deleteList",
         "title": "%deleteList.title%",
+        "category": "ClickUp",
         "icon": "$(trash)"
       },
       {
         "command": "clickup.statusChanger",
         "title": "%statusChanger.title%",
+        "category": "ClickUp",
         "icon": {
           "dark": "./resources/bar/logo_white.svg",
           "light": "./resources/bar/logo_dark.svg"
