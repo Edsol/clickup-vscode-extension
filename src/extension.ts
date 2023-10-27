@@ -125,6 +125,10 @@ vscode.commands.registerCommand('clickup.deleteToken', async () => {
 
 vscode.commands.registerCommand('clickup.getToken', async () => {
 	var token = await tokenManager.getToken();
+	if (token) {
+		vscode.window.showInformationMessage(l10n.t('No token was found'));
+		return;
+	}
 	vscode.window.showInformationMessage(l10n.t('Your token is: {token}', { token: token }));
 });
 
