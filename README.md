@@ -19,19 +19,49 @@ ext install edsol.clickup
 or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=edsol.clickup)
 
 ## Features
+### List task
+View tasks within lists, folders, spaces
 
-* Show and edit task inside a List and Space
-* Create new task inside a List
-* Change task status via commit message
+![list](./docs/list_task.png)
 
+### Task functions
+edit, delete, or use a task
 
-## "Working on" Mode
+![functions](./docs/edit_task.png)
+
+### Create new task
+
+Add a new task in any list
+
+![new-task](./docs/new_task.png)
+
+### "Working on" Mode
 
 Through the menu in the Status Bar you can now select a task you are working on, once you have finished your changes you can change its status through the commit message.
 
 Usage:
 
 <img src="./docs/status.gif" height=500></img>
+
+we can also work on a specific task by selecting it from the list
+
+![work-on-task](./docs/work_on.png)
+
+### Task status changer via commit message
+
+We can change the status of the task directly in the commit message.
+
+Select a task with the instructions above and use dedicated button in git tab:
+
+![select-task](./docs/select_task.png)
+
+select a new status from list
+
+![select-status](./docs/select_status.png)
+
+complete commit message and push it
+
+![commit_message](./docs/commit_message.png)
 
 
 ## Extension Commands
@@ -52,7 +82,7 @@ Go to `Settings > Extension > ClickUp` and change the parameters to configure to
 - [x] Manage via global settings
 - [ ] Increase performaces
 - [ ] Add filters and groupings
-- [ ] Implements time tracking
+- [x] Implements time tracking
 - [x] Add and delete list insde a space
 - [x] Create and delete spaces
 - [x] Refresh TreeView button 

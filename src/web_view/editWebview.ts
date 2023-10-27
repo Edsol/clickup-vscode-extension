@@ -2,9 +2,9 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from './webviewHelper';
 import { Task } from '../types';
-import { ApiWrapper } from '../api_wrapper';
+import { ApiWrapper } from '../lib/apiWrapper';
 import * as constant from '../constants';
-import { MainProvider } from '../tree_view/main_provider';
+import { TaskListProvider } from '../tree_view/taskListProvider';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -19,7 +19,7 @@ export class EditWebview {
 	tags: any;
 	priorities: any;
 
-	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: MainProvider) {
+	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: TaskListProvider) {
 		this.context = context;
 		this.wrapper = wrapper;
 		this.htmlFile = path.join(context.extensionPath, 'resources', 'web_view', 'edit', 'index.html');
@@ -67,7 +67,6 @@ export class EditWebview {
 			this.webviewhelper.getPanel(this.dependecies)
 				.then(async (panel: any) => {
 					this.panel = panel as vscode.WebviewPanel;
-					console.log(task);
 					this.panel.webview.postMessage({
 						command: 'init',
 						data: {
@@ -111,8 +110,6 @@ export class EditWebview {
 			await this.wrapper.updateTaskTags(task.id, task.tags, taskData.tags);
 			vscode.window.showInformationMessage(constant.TASK_UPDATE_MESSAGE);
 		} else {
-			console.log('updateTask error: task data', taskData);
-			console.log('updateTask error: task response', response);
 			vscode.window.showErrorMessage(constant.TASK_UPDATE_ERROR_MESSAGE);
 		}
 	}

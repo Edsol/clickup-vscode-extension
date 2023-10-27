@@ -9,7 +9,7 @@
     "url": "https://github.com/Edsol/clickup-vscode-extension/issues",
     "email": "edoardo.soloperto@gmail.com"
   },
-  "version": "0.4.3",
+  "version": "0.5.0",
   "license": "AGPL 3.0",
   "keywords": [
     "clickup",
@@ -18,7 +18,7 @@
     "up"
   ],
   "engines": {
-    "vscode": "^1.65.0"
+    "vscode": "^1.83.0"
   },
   "categories": [
     "Other"
@@ -41,15 +41,6 @@
         }
       }
     ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "clickup",
-          "title": "ClickUp",
-          "icon": "./resources/bar/logo_sidebar.svg"
-        }
-      ]
-    },
     "commands": [
       {
         "command": "clickup.setToken",
@@ -64,9 +55,9 @@
         "title": "%deleteToken.title%"
       },
       {
-        "command": "clickup.deleteTask",
-        "title": "%deleteTask.title%",
-        "icon": "$(trash)"
+        "command": "clickup.addTask",
+        "title": "%addTask.title%",
+        "icon": "$(add)"
       },
       {
         "command": "clickup.editTask",
@@ -74,9 +65,14 @@
         "icon": "$(pencil)"
       },
       {
-        "command": "clickup.addTask",
+        "command": "clickup.deleteTask",
+        "title": "%deleteTask.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.workOnTask",
         "title": "%addTask.title%",
-        "icon": "$(add)"
+        "icon": "$(pin)"
       },
       {
         "command": "clickup.refresh",
@@ -91,6 +87,16 @@
       {
         "command": "clickup.deleteSpace",
         "title": "%deleteSpace.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.addFolder",
+        "title": "%addFolder.title%",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.deleteFolder",
+        "title": "%deleteFolder.title%",
         "icon": "$(trash)"
       },
       {
@@ -139,13 +145,23 @@
           "group": "inline"
         },
         {
+          "command": "clickup.workOnTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
           "command": "clickup.deleteSpace",
           "when": "viewItem == spaceItem",
           "group": "inline"
         },
         {
           "command": "clickup.addList",
-          "when": "viewItem == spaceItem",
+          "when": "viewItem == folderItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteFolder",
+          "when": "viewItem == folderItem",
           "group": "inline"
         },
         {
@@ -165,11 +181,24 @@
         }
       ]
     },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "clickup",
+          "title": "ClickUp",
+          "icon": "./resources/bar/logo_sidebar.svg"
+        }
+      ]
+    },
     "views": {
       "clickup": [
         {
-          "id": "clickupTasksView",
+          "id": "tasksViewer",
           "name": "%taskList.name%"
+        },
+        {
+          "id": "timeTracker",
+          "name": "%timeTracker.name%"
         }
       ]
     },
@@ -195,7 +224,7 @@
     "@types/inflection": "^1.13.0",
     "@types/mocha": "^9.1.0",
     "@types/node": "14.x",
-    "@types/vscode": "^1.65.0",
+    "@types/vscode": "^1.83.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "@vscode/test-electron": "^2.1.2",

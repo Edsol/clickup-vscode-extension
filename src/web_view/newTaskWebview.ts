@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { WebviewHelper } from '../web_view/webviewHelper';
-import { ApiWrapper } from '../api_wrapper';
+import { ApiWrapper } from '../lib/apiWrapper';
 import { ListItem } from '../tree_view/items/list_item';
 import * as constants from './../constants';
-import { MainProvider } from '../tree_view/main_provider';
+import { TaskListProvider } from '../tree_view/taskListProvider';
 
 export class NewTaskWebview {
     context: vscode.ExtensionContext;
@@ -18,7 +18,7 @@ export class NewTaskWebview {
     tags: any;
     priorities: any;
 
-    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: MainProvider) {
+    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: TaskListProvider) {
         this.context = context;
         this.wrapper = wrapper;
 
@@ -107,8 +107,6 @@ export class NewTaskWebview {
             vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
             this.panel.dispose();
         } else {
-            console.log('data', data);
-            console.log('normalized data', taskData);
             vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
         }
     }

@@ -1,5 +1,5 @@
-import * as vscode from 'vscode'
-import { createQuickPick } from './lib/statusQuickPicks';
+import * as vscode from 'vscode';
+import { createQuickPick } from './statusQuickPicks';
 
 
 export class StatusChanger {
@@ -104,7 +104,7 @@ export class StatusChanger {
         };
     }
 
-    async showStatusQuickPick(listId: string) {
+    async showStatusQuickPick(listId: number) {
         const statuses = await this.apiWrapper.getStatus(listId);
         const items = statuses.map((e: any) => {
             return {

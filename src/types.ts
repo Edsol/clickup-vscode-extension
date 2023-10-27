@@ -1,3 +1,11 @@
+export type selectedTaskData = {
+    id: string,
+    label: string,
+    listId: number
+};
+
+
+// Clickup Types
 export type Task = {
     archived: boolean,
     assignees: Assignee[],
@@ -187,3 +195,29 @@ export type StoredStatuses = {
     time: number,
     statuses: Statuses[]
 };
+
+export type User = {
+    color: string,
+    email: string,
+    id: number,
+    initials: string,
+    profilePicture?: string,
+    username: string
+}
+export type Interval = {
+    billable: boolean,
+    date_added: string,
+    description?: string,
+    end: string,
+    id: string,
+    source: string,
+    start: string,
+    tags?: Tag[],
+    time: string
+}
+
+export type Tracking = {
+    intervals: Interval[],
+    time: number,
+    user: User
+}

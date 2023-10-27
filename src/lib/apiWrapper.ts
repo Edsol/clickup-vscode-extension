@@ -1,5 +1,5 @@
 var clickup = require('clickup.js');
-import { Task, Member, Statuses, Tag, Team } from './types';
+import { Task, Member, Statuses, Tag, Team } from '../types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -35,7 +35,6 @@ export class ApiWrapper {
     }
 
     async createSpace(teamId: string, name: string) {
-        console.log(teamId, name);
         const { body } = await this.clickup.teams.createSpace(teamId, {
             name: name
         });
@@ -107,6 +106,16 @@ export class ApiWrapper {
         return body;
     }
 
+    async getTrackedTime(taskId: string) {
+        var { body } = await this.clickup.tasks.getTrackedTime(taskId);
+        return body.data;
+    }
+
+    async getTimeInStatus(taskId: string) {
+        var { body } = await this.clickup.tasks.getTimeInStatus(taskId);
+        return body.data;
+    }
+
     /**
  * @param taskId {string}
  * @param data {Object}
@@ -123,7 +132,6 @@ export class ApiWrapper {
         if (tags === undefined) {
             //remove all tags
             Object.values(previousTags).map((tag: any) => {
-                console.log('remove ' + tag.name + 'from task ' + taskId);
                 this.clickup.tasks.removeTag(taskId, tag.name);
             });
             return;
@@ -131,7 +139,6 @@ export class ApiWrapper {
 
         Object.values(previousTags).map((tag: any) => {
             if (Object.values(tags).includes(tag.name) === false) {
-                console.log('remove tag ' + tag.name + 'from task ' + taskId);
                 this.clickup.tasks.removeTag(taskId, tag.name);
             }
         });
@@ -139,7 +146,6 @@ export class ApiWrapper {
         tags.forEach((tagName: string) => {
             var tagFound = previousTags.filter((obj: any) => obj.name === tagName);
             if (tagFound.length === 0) {
-                console.log('add tag ' + tagName + 'in task ' + taskId);
                 this.clickup.tasks.addTag(taskId, tagName);
             }
         });
