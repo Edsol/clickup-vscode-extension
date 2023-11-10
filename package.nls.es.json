@@ -1,0 +1,19 @@
+{
+    "displayName": "clickup",
+    "description": "Integrata clickup  y su flujo de trabajo en vscode",
+    "setToken.title": "Clickup:configura el token",
+    "getToken.title": "Clickup: muestra token",
+    "deleteToken.title": "Clickup: elimina token",
+    "deleteTask.title": "Clickup: elimina Tarea",
+    "editTask.title": "Clickup: modifica Tarea",
+    "addTask.title": "Clickup: agrega Tarea",
+    "workOnTask.title": "Clickup: trabaja en la Tarea",
+    "refreshTask.title": "Clickup: actualiza Tarea",
+    "addSpace.title": "Clickup: agrega Espacio",
+    "deleteSpace.title": "Clickup: elimina Espacio",
+    "addList.title": "Clickup: agrega Lista",
+    "deleteList.title": "Clickup: elimina Lista",
+    "statusChanger.title": "Clickup: modificador de estado",
+    "taskList.name": "Lista de tareas",
+    "timeTracker.name": "Seguimiento de tiempo"
+}
