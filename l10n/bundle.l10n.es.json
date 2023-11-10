@@ -1,0 +1,18 @@
+{
+    "Yes": "Si",
+    "No": "No",
+    "Invalid Token!": "El token no es válido",
+    "Your token is: {token}": "Su token es: {token}",
+    "The task was deleted correctly": "La tarea se eliminó correctamente",
+    "No clickup token has been set!": "¡No se ha configurado ningún token de clickup!",
+    "ClickUp Task you are working on": "Tarea de ClickUp en la que estás trabajando",
+    "Your token has been successfully saved": "Su token se ha guardado correctamente",
+    "Your token has been successfully deleted": "Su token se ha eliminado correctamente",
+    "An error occurred while saving": "Se ha producido un error al guardar",
+    "New task was created": "Una nueva tarea ha sido creada",
+    "Task updated": "Tarea actualizada",
+    "An error occurred while updating": "Se ha producido un error al actualizar",
+    "Are you sure you want to eliminate this Task?": "¿Estás seguro de que quieres eliminar esta tarea?",
+    "Are you sure you want to eliminate this Space?": "¿Estás seguro de que quieres eliminar este Espacio?",
+    "Are you sure you want to eliminate this List?": "¿Estás seguro de que quieres eliminar esta Lista?"
+  }
