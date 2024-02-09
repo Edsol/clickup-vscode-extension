@@ -212,6 +212,10 @@
           "name": "%taskList.name%"
         },
         {
+          "id": "MyTask",
+          "name": "%myTask.name%"
+        },
+        {
           "id": "timeTracker",
           "name": "%timeTracker.name%"
         }

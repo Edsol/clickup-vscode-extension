@@ -15,5 +15,6 @@
     "deleteList.title": "Rimuovi List",
     "statusChanger.title": "Cambia stato",
     "taskList.name": "Lista dei Task",
-    "timeTracker.name": "Time Tracker"
+    "timeTracker.name": "Time Tracker",
+    "myTask.name": "I miei task"
 }

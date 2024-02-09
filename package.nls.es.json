@@ -15,5 +15,6 @@
     "deleteList.title": "Clickup: elimina Lista",
     "statusChanger.title": "Clickup: modificador de estado",
     "taskList.name": "Lista de tareas",
-    "timeTracker.name": "Seguimiento de tiempo"
+    "timeTracker.name": "Seguimiento de tiempo",
+    "myTask.name": "Mis Tareas"
 }
