@@ -1,4 +1,6 @@
 var clickup = require('clickup.js');
+var buildSearchParams = require('clickup.js/src/utils/buildSearchParams');
+
 import { Task, Member, Statuses, Tag, Team } from '../types';
 
 export class ApiWrapper {
@@ -8,6 +10,11 @@ export class ApiWrapper {
     constructor(token: String) {
         this.token = token;
         this.clickup = new clickup.Clickup(token);
+    }
+
+    async getUser() {
+        const { body } = await this.clickup.authorization.getAuthorizedUser();
+        return body.user;
     }
 
     async getTeams() {
@@ -154,5 +161,17 @@ export class ApiWrapper {
     async countTasks(listId: string) {
         var tasks = await this.getTasks(listId);
         return tasks.length === undefined ? 0 : tasks.length;
+    }
+
+    async getMyTask(teamId: string, assignId: string) {
+        var options = {
+            "assignees[]": [
+                // assignees: TODO: waiting to accept the PR to fix
+                assignId
+            ]
+        };
+
+        var { body } = await this.clickup.teams.getFilteredTasks(teamId, options);
+        return body.tasks;
     }
 }

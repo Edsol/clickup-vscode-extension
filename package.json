@@ -212,7 +212,7 @@
           "name": "%taskList.name%"
         },
         {
-          "id": "MyTask",
+          "id": "myTask",
           "name": "%myTask.name%"
         },
         {
