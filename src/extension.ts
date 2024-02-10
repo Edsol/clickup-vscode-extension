@@ -35,8 +35,8 @@ var taskStatusBarItem: TaskStatusBarItem;
 var selectedTaskData: selectedTaskData | undefined;
 var taskListProvider: TaskListProvider;
 
-export async function activate(context: vscode.ExtensionContext) {
-	context = context;
+export async function activate(cntx: vscode.ExtensionContext) {
+	context = cntx;
 	storageManager = new LocalStorageService(context.workspaceState);
 	tokenManager = new TokenManager(storageManager);
 	const token = await tokenManager.init();
