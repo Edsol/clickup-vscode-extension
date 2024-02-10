@@ -5,7 +5,7 @@ import * as types from '../../types';
 export class TaskItem extends TreeItem {
     constructor(
         public task: types.Task,
-        public readonly collapsibleState: TreeItemCollapsibleState,
+        public readonly collapsibleState: TreeItemCollapsibleState = TreeItemCollapsibleState.None,
     ) {
         super(task.name, collapsibleState);
 

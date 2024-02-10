@@ -12,14 +12,16 @@ import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './lib/configuration';
 import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
-import { selectedTaskData } from './types';
+import { Team, selectedTaskData } from './types';
+import { MyTaskListProvider } from './tree_view/mytaskListProvider';
+import { TeamItem } from './tree_view/items/team_item';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
 		fsPath: vscode.l10n.uri?.fsPath
 	});
 }
-
+var me;
 var configuration: Configuration = new Configuration();
 var tokenManager: TokenManager;
 var context: vscode.ExtensionContext;
@@ -27,13 +29,14 @@ var storageManager: LocalStorageService;
 var wrapper: ApiWrapper;
 var utils = new Utils(vscode.window);
 var timesListProvider: TimesListProvider;
+var myTaskProvider: MyTaskListProvider;
 var statusChanger: StatusChanger;
 var taskStatusBarItem: TaskStatusBarItem;
 var selectedTaskData: selectedTaskData | undefined;
 var taskListProvider: TaskListProvider;
 
-export async function activate(context: vscode.ExtensionContext) {
-	context = context;
+export async function activate(cntx: vscode.ExtensionContext) {
+	context = cntx;
 	storageManager = new LocalStorageService(context.workspaceState);
 	tokenManager = new TokenManager(storageManager);
 	const token = await tokenManager.init();
@@ -53,11 +56,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 	//If token exists fetch data
 	wrapper = new ApiWrapper(token);
+	me = await wrapper.getUser();
+
 	statusChanger = new StatusChanger(wrapper);
 
 	// inizialize the TaskList tree
 	var teams = await wrapper.getTeams();
 	taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
+	initMyTaskTree(teams, me.id);
+
 	vscode.window.createTreeView('tasksViewer', {
 		treeDataProvider: taskListProvider,
 		showCollapseAll: true,
@@ -103,6 +110,14 @@ function initTimeTrakerTree(taskId?: string) {
 	timesListProvider = new TimesListProvider(wrapper, taskId);
 	vscode.window.createTreeView('timeTracker', {
 		treeDataProvider: timesListProvider,
+		showCollapseAll: true
+	});
+}
+
+function initMyTaskTree(teams: Array<Team>, userId: string) {
+	myTaskProvider = new MyTaskListProvider(wrapper, teams, userId);
+	vscode.window.createTreeView('myTask', {
+		treeDataProvider: myTaskProvider,
 		showCollapseAll: true
 	});
 }
