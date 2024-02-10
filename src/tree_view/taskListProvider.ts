@@ -68,9 +68,9 @@ export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
         if (element instanceof ListItem) {
             var tasks: Array<types.Task> = await this.apiwrapper.getTasks(element.list.id);
-            resolve = Object.values(tasks).map((task: types.Task) => {
-                return new TaskItem(task, this.noCollapsedConst);
-            });
+            for (const task of tasks) {
+                resolve.push(new TaskItem(task, this.noCollapsedConst));
+            }
         }
 
         return Promise.resolve(resolve);

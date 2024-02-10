@@ -20,16 +20,16 @@ export class MyTaskListProvider implements vscode.TreeDataProvider<vscode.TreeIt
     }
 
     async getChildren(element?: (types.Space)): Promise<(vscode.TreeItem)[]> {
-        let resolve: any = undefined;
+        let resolve: any = [];
 
         for (const team of this.teams) {
-            var tasks = await this.apiwrapper.getMyTask(team.id, this.userId);
-            resolve = Object.values(tasks)
-                .map((task: any) => {
-                    return new TaskItem(task);
-                });
+            var tasks: Array<types.Task> = await this.apiwrapper.getMyTask(team.id, this.userId);
+            for (const task of tasks) {
+                resolve.push(new TaskItem(task));
+            }
 
         }
+
         return Promise.resolve(resolve);
     }
 }
