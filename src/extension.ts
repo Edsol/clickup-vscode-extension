@@ -24,6 +24,7 @@ const workspacePath = workspace.workspaceFolders![0].uri.path;
 const gitpath = path.join(workspacePath, ".git");
 const headpath = path.join(gitpath, "HEAD");
 const BRANCH_PREFIX = "ref: refs/heads/"; // this method is called when your extension is activated
+let isPausedManually: boolean = false;
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -76,12 +77,14 @@ export function activate(context: ExtensionContext) {
   // Now provide the implementation of the command with  registerCommand
   // The commandId parameter must match the command field in package.json
   let startTimer = commands.registerCommand("extension.startTimer", () => {
+    isPausedManually = false;
     timer.start();
   });
   let showTimer = commands.registerCommand("extension.showTimer", () => {
     timer.showTimer();
   });
   let stopTimer = commands.registerCommand("extension.stopTimer", () => {
+    isPausedManually = true;
     timer.stop();
   });
   let copyTimer = commands.registerCommand("extension.copyTimer", () => {
@@ -158,7 +161,9 @@ function checkWindowFocus(timer: Timer) {
   // Listen for changes in the window state
   window.onDidChangeWindowState((event) => {
     isFocused = event.focused;
-
+    if (isPausedManually) {
+      return;
+    }
     if (isFocused) {
       console.log("VSCode is focused");
       timer.start();

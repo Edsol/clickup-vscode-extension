@@ -49,3 +49,4 @@
 
 ## v.1.8
 - Added autoAddToGitIgnore configuration for control add branch timer json to gitignore
+- Handled timer manually paused

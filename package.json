@@ -2,7 +2,7 @@
   "name": "branch-timer",
   "displayName": "Branch Timer",
   "description": "Timer for every branch",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "icon": "icon.png",
   "publisher": "vscode-branch-timer",
   "engines": {
