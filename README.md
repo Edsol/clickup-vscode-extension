@@ -69,9 +69,12 @@ Extension for track your work duration on every branch
 
 - Added pie chart to sidebar view
 
-v0.1.7
+## v0.1.7
 
 - Fixed branch undefined issue
 - Colored current branch
+
+## v.1.8
+- Added autoAddToGitIgnore configuration for control add branch timer json to gitignore
 
 ---

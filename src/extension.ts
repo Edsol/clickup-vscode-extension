@@ -23,7 +23,7 @@ export var data = JSON.parse("{}");
 const workspacePath = workspace.workspaceFolders![0].uri.path;
 const gitpath = path.join(workspacePath, ".git");
 const headpath = path.join(gitpath, "HEAD");
-const BRANCH_PREFIX = "ref: refs/heads/";// this method is called when your extension is activated
+const BRANCH_PREFIX = "ref: refs/heads/"; // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -128,6 +128,14 @@ function getCurrentGitBranch(): string {
 function addToGitIgnore(workspacePath: string) {
   var branchTimerPath = ".vscode/branch-timer.json";
   const gitIgnore = path.join(workspacePath, ".gitignore");
+  const config = workspace.getConfiguration("branchTimer");
+  const autoAddToGitIgnore = config.get("autoAddToGitIgnore");
+
+  if (!autoAddToGitIgnore) {
+    console.log("Auto add to .gitignore is disabled, skipping");
+    return;
+  }
+
   if (fs.existsSync(gitIgnore)) {
     var gitIgnoreFile: string = fs.readFileSync(gitIgnore, "utf8");
     if (!gitIgnoreFile.includes(branchTimerPath)) {

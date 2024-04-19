@@ -48,7 +48,17 @@
         "command": "extension.showTimer",
         "title": "Enable Branch Timer"
       }
-    ]
+    ],
+  "configuration": {
+    "title": "Branch Timer",
+    "properties": {
+      "branchTimer.autoAddToGitIgnore": {
+        "type": "boolean",
+        "default": true,
+        "description": "Automatically add .vscode/branch-timer.json to .gitignore"
+      }
+    }
+  }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
