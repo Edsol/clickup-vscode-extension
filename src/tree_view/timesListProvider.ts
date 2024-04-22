@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ApiWrapper } from '../lib/apiWrapper';
 import { TrackingItem } from './timesItem/trackingItem';
 import { IntervalItem } from './timesItem/intervalItem';
+import { Interval, Tracking } from '../types';
 
 const collapsedConst = vscode.TreeItemCollapsibleState.Collapsed;
 const noCollapsedConst = vscode.TreeItemCollapsibleState.None;
@@ -17,29 +18,30 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
         this.apiwrapper = apiWrapper;
     }
 
-    getTreeItem(element: any): vscode.TreeItem {
+    getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
         return element;
     }
 
-    async getChildren(element?: any): Promise<(vscode.TreeItem)[]> {
-        var resolve: any = [];
-
+    async getChildren(element?: vscode.TreeItem): Promise<(vscode.TreeItem)[]> {
+        let resolve: Array<vscode.TreeItem> = [];
+        console.log("getChildren", this.taskId);
         if (!this.taskId) {
             return Promise.resolve(resolve);
         }
 
         if (element === undefined) {
-            var trackedTime = await this.apiwrapper.getTrackedTime(this.taskId);
-            if (trackedTime) {
-                resolve = Object.values(trackedTime).map((tracking: any) => {
+            const trackedTime = await this.apiwrapper.getTrackedTime(this.taskId);
+            if (trackedTime.length > 0) {
+                resolve = Object.values(trackedTime).map((tracking: Tracking) => {
                     return new TrackingItem(tracking, collapsedConst);
                 });
             }
         }
 
         if (element instanceof TrackingItem) {
-            resolve = Object.values(element.trackingItem.intervals).map((interval: any) => {
-                return new IntervalItem(interval, this.unixtimeToString(<number>interval.start), this.unixtimeToString(<number>interval.end), noCollapsedConst);
+            console.log('element', element);
+            resolve = Object.values(element.trackingItem.intervals).map((interval: Interval) => {
+                return new IntervalItem(interval, this.unixtimeToString(parseFloat(interval.start)), this.unixtimeToString(parseFloat(interval.end)), noCollapsedConst);
             });
         }
 
@@ -54,7 +56,7 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
      * @memberof TimesListProvider
      */
     private unixtimeToString(unixtime: number) {
-        var date = new Date(unixtime * 1);
+        const date = new Date(unixtime * 1);
         return date.toLocaleString(vscode.env.language);
     }
 }

@@ -1,7 +1,8 @@
 export type SelectedTaskData = {
     id: string,
     label: string,
-    listId: number
+    listId: number,
+    teamId: number
 };
 
 
@@ -203,7 +204,8 @@ export type User = {
     initials: string,
     profilePicture?: string,
     username: string
-}
+};
+
 export type Interval = {
     billable: boolean,
     date_added: string,
@@ -214,10 +216,29 @@ export type Interval = {
     start: string,
     tags?: Tag[],
     time: string
-}
+};
 
 export type Tracking = {
     intervals: Interval[],
     time: number,
     user: User
-}
+};
+
+export type RequestCreateTime = {
+    start: number,
+    stop?: number,
+    end?: number,
+    billable?: boolean,
+    duration: number,
+    assignee?: number
+};
+
+export type ResponseCreateTime = {
+    description: string,
+    tags: Tag[],
+    start: number,
+    billable: boolean,
+    duration: number,
+    assignee: number,
+    tid: string
+};

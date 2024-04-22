@@ -227,11 +227,6 @@
         {
           "id": "timeTracker",
           "name": "%timeTracker.name%"
-        },
-        {
-          "type": "webview",
-          "id": "clickup.timers",
-          "name": "ClickUp Timers"
         }
       ]
     },

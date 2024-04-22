@@ -97,7 +97,7 @@ function taskFound(taskId: string, label: string, listId: number) {
 	});
 
 	if (wrapper) {
-		timer = new Timer();
+		timer = new Timer(taskId, wrapper);
 		initTimeTrakerTree(taskId);
 	}
 }
@@ -110,6 +110,8 @@ function forgetTask() {
 	storageManager.setValue('listOfTaskId', undefined);
 	vscode.window.showInformationMessage(constants.TASK_REMOVED);
 	initTimeTrakerTree();
+	timer.stop();
+	timer.destroy();
 }
 
 function initTimeTrakerTree(taskId?: string) {
