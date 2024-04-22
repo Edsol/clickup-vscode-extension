@@ -1,4 +1,4 @@
-export type selectedTaskData = {
+export type SelectedTaskData = {
     id: string,
     label: string,
     listId: number
@@ -54,7 +54,7 @@ export type Assignee = {
     email: string
 };
 
-export type Checklist = {};
+export type Checklist = undefined;
 
 export type Creator = {
     id: number,
@@ -64,9 +64,9 @@ export type Creator = {
     profilePicture: string
 };
 
-export type CustomField = {};
-export type Dependecie = {};
-export type Parent = {};
+export type CustomField = undefined;
+export type Dependecie = undefined;
+export type Parent = undefined;
 
 export type Status = {
     status: string,
@@ -77,9 +77,9 @@ export type Status = {
 };
 
 export type List = {
-    archived: Boolean,
+    archived: boolean,
     assignee: boolean,
-    deleted: Boolean,
+    deleted: boolean,
     id: string,
     inbound_adress: string,
     name: string,
@@ -155,7 +155,7 @@ export type Tag = {
     creator: number
 };
 
-export type Watcher = {};
+export type Watcher = undefined;
 
 export type StoredMembers = {
     time: number,
@@ -166,7 +166,7 @@ export type Team = {
     id: string,
     name: string,
     color: string,
-    avatar: any,
+    avatar: unknown,
     members: Member[]
 };
 

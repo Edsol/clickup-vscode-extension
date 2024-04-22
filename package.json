@@ -131,6 +131,10 @@
           "dark": "./resources/bar/logo_white.svg",
           "light": "./resources/bar/logo_dark.svg"
         }
+      },
+      {
+        "command": "clickup.showTimer",
+        "title": "Enable Branch Timer"
       }
     ],
     "menus": {
@@ -202,6 +206,11 @@
           "id": "clickup",
           "title": "ClickUp",
           "icon": "./resources/bar/logo_sidebar.svg"
+        },
+        {
+          "id": "clickup-timer",
+          "title": "ClickUp Timers",
+          "icon": "timer_icon.svg"
         }
       ]
     },
@@ -218,6 +227,11 @@
         {
           "id": "timeTracker",
           "name": "%timeTracker.name%"
+        },
+        {
+          "type": "webview",
+          "id": "clickup.timers",
+          "name": "ClickUp Timers"
         }
       ]
     },
@@ -242,7 +256,6 @@
     "@types/glob": "^7.2.0",
     "@types/inflection": "^1.13.0",
     "@types/mocha": "^9.1.0",
-    "@types/node": "14.x",
     "@types/vscode": "^1.83.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
@@ -254,10 +267,11 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
+    "@types/node": "^20.12.7",
     "@vscode/l10n": "^0.0.16",
     "@vscode/l10n-dev": "^0.0.29",
     "@yaireo/tagify": "^4.11.0",
-    "axios": "^0.27.2",
+    "axios": "^1.6.8",
     "bootstrap": "^5.1.3",
     "clickup.js": "^3.0.1",
     "vue": "^3.2.33"

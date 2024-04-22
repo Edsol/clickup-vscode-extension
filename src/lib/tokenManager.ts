@@ -5,7 +5,7 @@ import * as l10n from '@vscode/l10n';
 
 export default class TokenManager {
     storageManager?: LocalStorageService;
-    token?: String = undefined;
+    token?: string = undefined;
     regex = /^[a-z]{2}[_]\d+[_].{32}/g;
 
     constructor(storageManager: LocalStorageService) {
@@ -13,7 +13,7 @@ export default class TokenManager {
 
     }
 
-    async init() {
+    async init(): Promise<string | undefined> {
         this.token = await this.getToken();
         if (await this.isValid()) {
             return this.token;
@@ -35,7 +35,7 @@ export default class TokenManager {
         return await this.setToken(token);
     }
 
-    async setToken(token: String | undefined): Promise<boolean> {
+    async setToken(token: string | undefined): Promise<boolean> {
         this.storageManager?.setValue('token', token);
         return true;
     }
@@ -45,12 +45,11 @@ export default class TokenManager {
     }
 
     async hasToken() {
-        var token = await this.getToken();
+        const token = await this.getToken();
         if (token) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     async delete() {

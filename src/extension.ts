@@ -12,28 +12,31 @@ import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './lib/configuration';
 import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
-import { Team, selectedTaskData } from './types';
+import { Team, User, SelectedTaskData } from './types';
 import { MyTaskListProvider } from './tree_view/mytaskListProvider';
 import { TeamItem } from './tree_view/items/team_item';
+import Timer from './timer';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
 		fsPath: vscode.l10n.uri?.fsPath
 	});
 }
-var me;
-var configuration: Configuration = new Configuration();
-var tokenManager: TokenManager;
-var context: vscode.ExtensionContext;
-var storageManager: LocalStorageService;
-var wrapper: ApiWrapper;
-var utils = new Utils(vscode.window);
-var timesListProvider: TimesListProvider;
-var myTaskProvider: MyTaskListProvider;
-var statusChanger: StatusChanger;
-var taskStatusBarItem: TaskStatusBarItem;
-var selectedTaskData: selectedTaskData | undefined;
-var taskListProvider: TaskListProvider;
+let me: User;
+const configuration: Configuration = new Configuration();
+let tokenManager: TokenManager;
+let context: vscode.ExtensionContext;
+let storageManager: LocalStorageService;
+let wrapper: ApiWrapper;
+const utils = new Utils(vscode.window);
+let timesListProvider: TimesListProvider;
+let myTaskProvider: MyTaskListProvider;
+let statusChanger: StatusChanger;
+let taskStatusBarItem: TaskStatusBarItem;
+let selectedTaskData: SelectedTaskData | undefined;
+let taskListProvider: TaskListProvider;
+let timer: Timer;
+let isPausedManually: boolean;
 
 export async function activate(cntx: vscode.ExtensionContext) {
 	context = cntx;
@@ -61,9 +64,9 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	statusChanger = new StatusChanger(wrapper);
 
 	// inizialize the TaskList tree
-	var teams = await wrapper.getTeams();
+	const teams = await wrapper.getTeams();
 	taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-	initMyTaskTree(teams, me.id);
+	initMyTaskTree(teams, `${me.id}`);
 
 	vscode.window.createTreeView('tasksViewer', {
 		treeDataProvider: taskListProvider,
@@ -73,10 +76,12 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	if (selectedTaskData !== undefined) {
 		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
 	}
+	isPausedManually = false;
+
 }
 
-function taskFound(taskId: string, label: string = '', listId: number) {
-	var message = `#${taskId}`;
+function taskFound(taskId: string, label: string, listId: number) {
+	let message = `#${taskId}`;
 	if (label && configuration.get("showTaskTitle")) {
 		message += `(${label})`;
 	}
@@ -92,6 +97,7 @@ function taskFound(taskId: string, label: string = '', listId: number) {
 	});
 
 	if (wrapper) {
+		timer = new Timer();
 		initTimeTrakerTree(taskId);
 	}
 }
@@ -139,7 +145,7 @@ vscode.commands.registerCommand('clickup.deleteToken', async () => {
 });
 
 vscode.commands.registerCommand('clickup.getToken', async () => {
-	var token = await tokenManager.getToken();
+	const token = await tokenManager.getToken();
 	if (token) {
 		vscode.window.showInformationMessage(l10n.t('No token was found'));
 		return;
@@ -215,7 +221,7 @@ vscode.commands.registerCommand('clickup.statusChanger', async () => {
 		return;
 	}
 
-	var status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
+	const status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
 	if (status === undefined) {
 		vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
 		return;
@@ -225,7 +231,8 @@ vscode.commands.registerCommand('clickup.statusChanger', async () => {
 
 vscode.commands.registerCommand('clickup.taskChooser', async () => {
 	if (selectedTaskData === undefined) {
-		var taskData = selectedTaskData = await statusChanger.showTaskChooserQuickPick();
+		const taskData = await statusChanger.showTaskChooserQuickPick();
+		selectedTaskData = taskData;
 		taskFound(taskData.id, taskData.label, taskData.listId);
 	}
 });
@@ -234,6 +241,19 @@ vscode.commands.registerCommand('clickup.removeTask', async () => {
 	if (await statusChanger.removeTaskQuickPick() === 1) {
 		forgetTask();
 	}
+});
+
+// Time manager
+
+vscode.commands.registerCommand('clickup.startTimer', () => {
+	console.log('clickup command', 'start timer');
+	isPausedManually = false;
+	timer.start();
+});
+vscode.commands.registerCommand('clickup.stopTimer', () => {
+	console.log('clickup command', 'stopTimer timer');
+	isPausedManually = true;
+	timer.stop();
 });
 
 // this method is called when your extension is deactivated
