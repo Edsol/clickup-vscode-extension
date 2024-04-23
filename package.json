@@ -245,7 +245,8 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "translate": "npx @vscode/l10n-dev export -0 ./l10n ./src",
-    "deploy": "vsce publish"
+    "deploy": "vsce publish",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
@@ -257,6 +258,7 @@
     "@vscode/test-electron": "^2.1.2",
     "eslint": "^8.9.0",
     "glob": "^7.2.0",
+    "husky": "^9.0.11",
     "mocha": "^9.2.1",
     "typescript": "^4.7.2"
   },
