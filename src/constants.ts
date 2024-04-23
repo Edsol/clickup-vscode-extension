@@ -17,12 +17,12 @@ export const PRIORITIES_STORED_KEY = 'clicup_priority_list';
 // extension.ts
 export const NO_CLICKUP_TOKEN_SET = l10n.t('No clickup token has been set!');
 export const TASK_TOOLTIP = l10n.t("ClickUp Task you are working on");
-export const TASK_REMOVED = l10n.t(`Task was removed`);
+export const TASK_REMOVED = l10n.t("Task was removed");
 export const SET_TOKEN = l10n.t('Your token has been successfully saved');
 export const DELETE_TOKEN = l10n.t('Your token has been successfully deleted');
-export const NO_TASK_SELECTED = l10n.t(`No ClickUp task has been selected`);
-export const NO_LIST_ID = l10n.t(`Impossible to retrieve states from reference list`);
-export const STATUS_READ_ERROR = l10n.t(`I couldn't read the status`);
+export const NO_TASK_SELECTED = l10n.t("No ClickUp task has been selected");
+export const NO_LIST_ID = l10n.t("Impossible to retrieve states from reference list");
+export const STATUS_READ_ERROR = l10n.t("I couldn't read the status");
 
 
 export const TASK_SAVE_ERROR_MESSAGE = l10n.t('An error occurred while saving');

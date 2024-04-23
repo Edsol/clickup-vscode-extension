@@ -1,11 +1,3 @@
-export type SelectedTaskData = {
-    id: string,
-    label: string,
-    listId: number,
-    teamId: number
-};
-
-
 // Clickup Types
 export type Task = {
     archived: boolean,
@@ -40,7 +32,7 @@ export type Task = {
     startDate: string,
     status: Status,
     tags: Tag[],
-    teamId: string,
+    team_id: string,
     textContent: string,
     timeSpend: number,
     url: string,
@@ -224,21 +216,12 @@ export type Tracking = {
     user: User
 };
 
-export type RequestCreateTime = {
-    start: number,
-    stop?: number,
-    end?: number,
-    billable?: boolean,
-    duration: number,
-    assignee?: number
-};
-
-export type ResponseCreateTime = {
+export type CreateTime = {
     description: string,
-    tags: Tag[],
-    start: number,
-    billable: boolean,
-    duration: number,
-    assignee: number,
+    tags?: Tag[],
+    start?: number,
+    billable?: boolean,
+    duration?: number,
+    assignee?: number,
     tid: string
 };

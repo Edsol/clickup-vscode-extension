@@ -5,7 +5,8 @@ import {
   env,
   StatusBarAlignment,
 } from "vscode";
-import { ApiWrapper } from "./lib/apiWrapper";
+import { ApiWrapper } from "./apiWrapper";
+import { CreateTime, Task } from "../types";
 
 export default class Timer {
   private _statusBarItem!: StatusBarItem;
@@ -13,13 +14,13 @@ export default class Timer {
   private _statusBarPauseButton!: StatusBarItem;
   private _timer!: NodeJS.Timeout;
 
-  private taskId: string;
+  private task: Task;
   private apiWrapper: ApiWrapper;
 
   branchName: string | undefined;
   total = 0;
-  constructor(taskId: string, apiWrapper: ApiWrapper) {
-    this.taskId = taskId;
+  constructor(task: Task, apiWrapper: ApiWrapper) {
+    this.task = task;
     this.apiWrapper = apiWrapper;
 
     // create status bar items
@@ -63,7 +64,12 @@ export default class Timer {
     this._statusBarStartButton.hide();
     this._statusBarPauseButton.show();
 
-    this.apiWrapper.startTime(this.teamId,);
+    const data: CreateTime = {
+      description: "test",
+      tid: this.task.id,
+      start: Date.now()
+    };
+    this.apiWrapper.startTime(this.task.team_id, undefined, data);
     this._timer = setInterval(() => {
       this.total++;
       const t = secondsToHms(this.total);

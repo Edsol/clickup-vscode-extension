@@ -12,10 +12,9 @@ import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './lib/configuration';
 import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
-import { Team, User, SelectedTaskData } from './types';
+import { Team, User, Task } from './types';
 import { MyTaskListProvider } from './tree_view/mytaskListProvider';
-import { TeamItem } from './tree_view/items/team_item';
-import Timer from './timer';
+import Timer from './lib/timer';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
@@ -33,7 +32,7 @@ let timesListProvider: TimesListProvider;
 let myTaskProvider: MyTaskListProvider;
 let statusChanger: StatusChanger;
 let taskStatusBarItem: TaskStatusBarItem;
-let selectedTaskData: SelectedTaskData | undefined;
+let selectedTaskData: Task | undefined;
 let taskListProvider: TaskListProvider;
 let timer: Timer;
 let isPausedManually: boolean;
@@ -50,7 +49,7 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	// initialize the statusBarItem
 	taskStatusBarItem = new TaskStatusBarItem();
 	if (selectedTaskData !== undefined) {
-		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
+		taskFound(selectedTaskData);
 
 	}
 
@@ -74,31 +73,28 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	});
 
 	if (selectedTaskData !== undefined) {
-		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
+		taskFound(selectedTaskData);
 	}
 	isPausedManually = false;
 
 }
 
-function taskFound(taskId: string, label: string, listId: number) {
-	let message = `#${taskId}`;
-	if (label && configuration.get("showTaskTitle")) {
-		message += `(${label})`;
+function taskFound(task: Task) {
+	console.log('taskFound', task);
+	let message = `#${task.id}`;
+	if (task.name && configuration.get("showTaskTitle")) {
+		message += `(${task.name})`;
 	}
 	taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
 	taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
 	taskStatusBarItem.setCommand("clickup.removeTask");
 
 	//save last TaskId and ListId value
-	storageManager.setValue('selectedTaskData', {
-		id: taskId,
-		label: label,
-		listId: listId
-	});
+	storageManager.setValue('selectedTaskData', task);
 
 	if (wrapper) {
-		timer = new Timer(taskId, wrapper);
-		initTimeTrakerTree(taskId);
+		timer = new Timer(task, wrapper);
+		initTimeTrakerTree(task.id);
 	}
 }
 
@@ -178,7 +174,7 @@ vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
 
 vscode.commands.registerCommand('clickup.workOnTask', (taskItem) => {
 	const task = taskItem.task;
-	taskFound(task.id, task.name, task.list.id);
+	taskFound(task);
 });
 
 vscode.commands.registerCommand('clickup.addSpace', (teamItem) => {
@@ -218,12 +214,12 @@ vscode.commands.registerCommand('clickup.statusChanger', async () => {
 		vscode.window.showInformationMessage(constants.NO_TASK_SELECTED);
 		return;
 	}
-	if (selectedTaskData.listId === undefined) {
+	if (selectedTaskData.list.id === undefined) {
 		vscode.window.showInformationMessage(constants.NO_LIST_ID);
 		return;
 	}
 
-	const status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
+	const status = await statusChanger.showStatusQuickPick(selectedTaskData.list.id);
 	if (status === undefined) {
 		vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
 		return;
@@ -235,7 +231,7 @@ vscode.commands.registerCommand('clickup.taskChooser', async () => {
 	if (selectedTaskData === undefined) {
 		const taskData = await statusChanger.showTaskChooserQuickPick();
 		selectedTaskData = taskData;
-		taskFound(taskData.id, taskData.label, taskData.listId);
+		taskFound(taskData);
 	}
 });
 

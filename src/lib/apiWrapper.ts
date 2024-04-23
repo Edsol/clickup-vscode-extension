@@ -1,7 +1,7 @@
 const clickup = require('clickup.js');
 const buildSearchParams = require('clickup.js/src/utils/buildSearchParams');
 
-import { Task, Member, Statuses, Tag, Team, Tracking, ResponseCreateTime, RequestCreateTime } from '../types';
+import { Task, Member, Statuses, Tag, Team, Tracking, CreateTime } from '../types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -123,9 +123,9 @@ export class ApiWrapper {
         return body.data;
     }
 
-    async startTime(teamId: string, data: RequestCreateTime, options: unknown): Promise<ResponseCreateTime> {
+    async startTime(teamId: string, data?: CreateTime, options?: unknown): Promise<CreateTime> {
+        console.log('createTime data', teamId, data, options);
         const { body } = await this.clickup.teams.createTimeEntry(teamId, data, options);
-        console.log('createTime data', data);
         console.log('createTime body', body);
         return body.data;
     }
