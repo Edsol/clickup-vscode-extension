@@ -12,9 +12,9 @@ import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './lib/configuration';
 import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
-import { Team, User, Task } from './types';
+import { Team, User, Task, Time } from './types';
 import { MyTaskListProvider } from './tree_view/mytaskListProvider';
-import Timer from './lib/timer';
+import Timer, { unixtimeToDate } from './lib/timer';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
@@ -75,12 +75,9 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	if (selectedTaskData !== undefined) {
 		taskFound(selectedTaskData);
 	}
-	isPausedManually = false;
-
 }
 
-function taskFound(task: Task) {
-	console.log('taskFound', task);
+async function taskFound(task: Task) {
 	let message = `#${task.id}`;
 	if (task.name && configuration.get("showTaskTitle")) {
 		message += `(${task.name})`;
@@ -94,8 +91,18 @@ function taskFound(task: Task) {
 
 	if (wrapper) {
 		timer = new Timer(task, wrapper);
+		restoreTimer(task.team_id, task.id);
 		initTimeTrakerTree(task.id);
 	}
+}
+
+function restoreTimer(teamId: string, taskId: string) {
+	wrapper.getRunningTime(teamId).then((time: Time) => {
+		console.log("restoreTimer", time);
+		if (time && time.task.id === taskId) {
+			timer.restore(parseInt(time.start), true);
+		}
+	});
 }
 
 function forgetTask() {

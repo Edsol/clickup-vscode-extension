@@ -39,6 +39,12 @@ export type Task = {
     watchers: Watcher[]
 };
 
+export type TaskLocation = {
+    folder_id: string,
+    list_id: string,
+    space_id: string
+};
+
 export type Assignee = {
     id: number,
     username: string,
@@ -217,11 +223,29 @@ export type Tracking = {
 };
 
 export type CreateTime = {
-    description: string,
+    description?: string,
     tags?: Tag[],
     start?: number,
     billable?: boolean,
     duration?: number,
     assignee?: number,
-    tid: string
+    tid: string,
+    fromTimesheet?: boolean
 };
+
+export type Time = {
+    at: string,
+    billable: boolean,
+    description: string,
+    duration: number,
+    id: string,
+    is_locked: boolean,
+    source: "string",
+    start: string,
+    tags: Tag[],
+    task: Task,
+    task_location: TaskLocation,
+    task_url: string,
+    user: User,
+    wid: string
+}

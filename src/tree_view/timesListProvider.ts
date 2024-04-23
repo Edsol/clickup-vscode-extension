@@ -3,6 +3,7 @@ import { ApiWrapper } from '../lib/apiWrapper';
 import { TrackingItem } from './timesItem/trackingItem';
 import { IntervalItem } from './timesItem/intervalItem';
 import { Interval, Tracking } from '../types';
+import { unixtimeToString } from '../lib/timer';
 
 const collapsedConst = vscode.TreeItemCollapsibleState.Collapsed;
 const noCollapsedConst = vscode.TreeItemCollapsibleState.None;
@@ -41,22 +42,15 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
         if (element instanceof TrackingItem) {
             console.log('element', element);
             resolve = Object.values(element.trackingItem.intervals).map((interval: Interval) => {
-                return new IntervalItem(interval, this.unixtimeToString(parseFloat(interval.start)), this.unixtimeToString(parseFloat(interval.end)), noCollapsedConst);
+                return new IntervalItem(
+                    interval,
+                    unixtimeToString(parseFloat(interval.start)),
+                    unixtimeToString(parseFloat(interval.end)),
+                    noCollapsedConst
+                );
             });
         }
 
         return Promise.resolve(resolve);
-    }
-    /**
-     *
-     *
-     * @private
-     * @param {number} unixtime
-     * @return {*} 
-     * @memberof TimesListProvider
-     */
-    private unixtimeToString(unixtime: number) {
-        const date = new Date(unixtime * 1);
-        return date.toLocaleString(vscode.env.language);
     }
 }
