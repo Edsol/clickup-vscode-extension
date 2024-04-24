@@ -100,7 +100,7 @@ function restoreTimer(teamId: string, taskId: string) {
 	wrapper.getRunningTime(teamId).then((time: Time) => {
 		console.log("restoreTimer", time);
 		if (time && time.task.id === taskId) {
-			timer.restore(parseInt(time.start), true);
+			timer.restore(parseInt(time.start));
 		}
 	});
 }

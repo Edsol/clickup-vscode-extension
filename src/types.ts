@@ -237,15 +237,16 @@ export type Time = {
     at: string,
     billable: boolean,
     description: string,
-    duration: number,
     id: string,
     is_locked: boolean,
     source: "string",
     start: string,
+    end?: string,
+    duration: number,
     tags: Tag[],
     task: Task,
     task_location: TaskLocation,
     task_url: string,
     user: User,
     wid: string
-}
+};

@@ -21,7 +21,7 @@ export default class Timer {
 	private _statusBarPauseButton!: StatusBarItem;
 
 	private _timer!: NodeJS.Timeout;
-	private startDate: number | undefined;
+	private startDate: number;
 
 	private task: Task;
 	private apiWrapper: ApiWrapper;
@@ -29,6 +29,7 @@ export default class Timer {
 	constructor(task: Task, apiWrapper: ApiWrapper) {
 		this.task = task;
 		this.apiWrapper = apiWrapper;
+		this.startDate = 0;
 
 		// create status bar items
 		if (!this._statusBarItem) {
@@ -67,17 +68,18 @@ export default class Timer {
 	private startCount(from = Date.now()) {
 		this.startDate = from;
 
-		this.stop();
+		if (this.startDate === undefined) {
+			return;
+		}
+
 		this._statusBarItem.show();
 		this._statusBarStartButton.hide();
 		this._statusBarPauseButton.show();
 
 		this._timer = setInterval(() => {
-			if (this.startDate) {
-				this.startDate++;
-				const durationFormatted = getFormattedDuration(this.startDate);
-				this._statusBarItem.text = durationFormatted;
-			}
+			this.startDate++;
+			const durationFormatted = getFormattedDuration(this.startDate);
+			this._statusBarItem.text = durationFormatted;
 		}, 1000);
 	}
 	/**
@@ -96,9 +98,9 @@ export default class Timer {
 		this.apiWrapper.startTime(this.task.team_id, data)
 			.then((response) => {
 				this.startCount();
-				console.log('start counter', response);
+				console.log('start function response', response);
 			}).catch((error) => {
-				console.log(`error: ${error}`);
+				console.log(`error start function: ${error}`);
 			});
 	}
 
@@ -108,10 +110,15 @@ export default class Timer {
 	 * @memberof Timer
 	 */
 	public stop() {
-		//TODO: API call to stop time
-		this._statusBarStartButton.show();
-		this._statusBarPauseButton.hide();
-		clearInterval(this._timer);
+		this.apiWrapper.stopTime(this.task.team_id)
+			.then((response) => {
+				console.log('stop function response', response);
+				this._statusBarStartButton.show();
+				this._statusBarPauseButton.hide();
+				clearInterval(this._timer);
+			}).catch((error) => {
+				console.log(`stop end function: ${error}`);
+			});
 	}
 
 	/**

@@ -113,6 +113,14 @@ export class ApiWrapper {
         return body;
     }
 
+    // endpoint calls for times
+    /**
+     * Get tracked time for a task
+     *
+     * @param {string} taskId
+     * @return {*}  {Promise<Array<Tracking>>}
+     * @memberof ApiWrapper
+     */
     async getTrackedTime(taskId: string): Promise<Array<Tracking>> {
         const { body } = await this.clickup.tasks.getTrackedTime(taskId);
         return body.data;
@@ -123,8 +131,27 @@ export class ApiWrapper {
         return body.data;
     }
 
-    async startTime(teamId: string, data?: CreateTime): Promise<CreateTime> {
+    /**
+     * Start a timer for the authenticated user.
+     *
+     * @param {string} teamId
+     * @param {CreateTime} [data]
+     * @return {*}  {Promise<Time>}
+     * @memberof ApiWrapper
+     */
+    async startTime(teamId: string, data?: CreateTime): Promise<Time> {
         const { body } = await this.clickup.teams.startTimeEntry(teamId, data);
+        return body.data;
+    }
+    /**
+     * Stop a timer that's currently running for the authenticated user.
+     *
+     * @param {string} teamId
+     * @return {*}  {Promise<CreateTime>}
+     * @memberof ApiWrapper
+     */
+    async stopTime(teamId: string): Promise<Time> {
+        const { body } = await this.clickup.teams.stopTimeEntry(teamId);
         return body.data;
     }
 
@@ -134,11 +161,11 @@ export class ApiWrapper {
     }
 
     /**
- * @param taskId {string}
- * @param data {Object}
- * 
- * @returns object
- */
+     * @param taskId {string}
+     * @param data {Object}
+     * 
+     * @returns object
+     */
     async updateTask(taskId: string, data: unknown): Promise<unknown> {
         const { body } = await this.clickup.tasks.update(taskId, data);
         return body;
