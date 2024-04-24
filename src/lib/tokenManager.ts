@@ -12,7 +12,12 @@ export default class TokenManager {
         this.storageManager = storageManager;
 
     }
-
+    /**
+     *
+     *
+     * @return {*}  {(Promise<string | undefined>)}
+     * @memberof TokenManager
+     */
     async init(): Promise<string | undefined> {
         this.token = await this.getToken();
         if (await this.isValid()) {
@@ -21,7 +26,12 @@ export default class TokenManager {
 
         return undefined;
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async askToken() {
         const token = await vscode.window.showInputBox({
             ignoreFocusOut: true,
@@ -34,16 +44,32 @@ export default class TokenManager {
 
         return await this.setToken(token);
     }
-
+    /**
+     *
+     *
+     * @param {(string | undefined)} token
+     * @return {*}  {Promise<boolean>}
+     * @memberof TokenManager
+     */
     async setToken(token: string | undefined): Promise<boolean> {
         this.storageManager?.setValue('token', token);
         return true;
     }
-
+    /**
+     *
+     *
+     * @return {*}  {Promise<string>}
+     * @memberof TokenManager
+     */
     async getToken(): Promise<string> {
         return await this.storageManager?.getValue('token');
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async hasToken() {
         const token = await this.getToken();
         if (token) {
@@ -51,12 +77,22 @@ export default class TokenManager {
         }
         return false;
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async delete() {
         const response = await this.storageManager?.setValue('token', undefined);
         return true;
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async isValid() {
         // If token doesn't exists show error message
         if (this.token === undefined) {

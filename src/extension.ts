@@ -14,7 +14,7 @@ import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
 import { Team, User, Task, Time } from './types';
 import { MyTaskListProvider } from './tree_view/mytaskListProvider';
-import Timer, { unixtimeToDate } from './lib/timer';
+import Timer from './lib/timer';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
@@ -35,8 +35,14 @@ let taskStatusBarItem: TaskStatusBarItem;
 let selectedTaskData: Task | undefined;
 let taskListProvider: TaskListProvider;
 let timer: Timer;
-let isPausedManually: boolean;
 
+/**
+ *
+ *
+ * @export
+ * @param {vscode.ExtensionContext} cntx
+ * @return {*} 
+ */
 export async function activate(cntx: vscode.ExtensionContext) {
 	context = cntx;
 	storageManager = new LocalStorageService(context.workspaceState);
@@ -48,10 +54,6 @@ export async function activate(cntx: vscode.ExtensionContext) {
 
 	// initialize the statusBarItem
 	taskStatusBarItem = new TaskStatusBarItem();
-	if (selectedTaskData !== undefined) {
-		taskFound(selectedTaskData);
-
-	}
 
 	if (!token) {
 		return;
@@ -76,35 +78,58 @@ export async function activate(cntx: vscode.ExtensionContext) {
 		taskFound(selectedTaskData);
 	}
 }
-
+/**
+ *
+ *
+ * @param {Task} task
+ */
 async function taskFound(task: Task) {
-	let message = `#${task.id}`;
+	let localTask = task;
+	// Checks that the saved task data is complete, if not, reloads it
+	if (!Object.prototype.hasOwnProperty.call(task, 'url')) {
+		const remoteTask = await wrapper.getTask(task.id);
+		//save last TaskId and ListId value
+		storageManager.setValue('selectedTaskData', remoteTask);
+		localTask = remoteTask;
+	}
+	let message = `#${localTask.id}`;
 	if (task.name && configuration.get("showTaskTitle")) {
-		message += `(${task.name})`;
+		message += `(${localTask.name})`;
 	}
 	taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
 	taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
 	taskStatusBarItem.setCommand("clickup.removeTask");
 
 	//save last TaskId and ListId value
-	storageManager.setValue('selectedTaskData', task);
+	storageManager.setValue('selectedTaskData', localTask);
 
 	if (wrapper) {
-		timer = new Timer(task, wrapper);
-		restoreTimer(task.team_id, task.id);
-		initTimeTrakerTree(task.id);
+		timer = new Timer(localTask, wrapper);
+		restoreTimer(localTask.team_id, localTask.id);
+		initTimeTrakerTree(localTask.id);
 	}
 }
-
+/**
+ *
+ *
+ * @param {string} teamId
+ * @param {string} taskId
+ */
 function restoreTimer(teamId: string, taskId: string) {
+	if (!teamId) {
+		console.log("No `teamId` found to restore time");
+		return;
+	}
 	wrapper.getRunningTime(teamId).then((time: Time) => {
-		console.log("restoreTimer", time);
 		if (time && time.task.id === taskId) {
 			timer.restore(parseInt(time.start));
 		}
 	});
 }
-
+/**
+ *
+ *
+ */
 function forgetTask() {
 	taskStatusBarItem.setDefaults();
 	selectedTaskData = undefined;
@@ -116,7 +141,11 @@ function forgetTask() {
 	timer.stop();
 	timer.destroy();
 }
-
+/**
+ *
+ *
+ * @param {string} [taskId]
+ */
 function initTimeTrakerTree(taskId?: string) {
 	timesListProvider = new TimesListProvider(wrapper, taskId);
 	vscode.window.createTreeView('timeTracker', {
@@ -124,7 +153,12 @@ function initTimeTrakerTree(taskId?: string) {
 		showCollapseAll: true
 	});
 }
-
+/**
+ *
+ *
+ * @param {Array<Team>} teams
+ * @param {string} userId
+ */
 function initMyTaskTree(teams: Array<Team>, userId: string) {
 	myTaskProvider = new MyTaskListProvider(wrapper, teams, userId);
 	vscode.window.createTreeView('myTask', {
@@ -252,12 +286,10 @@ vscode.commands.registerCommand('clickup.removeTask', async () => {
 
 vscode.commands.registerCommand('clickup.startTimer', () => {
 	console.log('clickup command', 'start timer');
-	isPausedManually = false;
 	timer.start();
 });
 vscode.commands.registerCommand('clickup.stopTimer', () => {
 	console.log('clickup command', 'stopTimer timer');
-	isPausedManually = true;
 	timer.stop();
 });
 
