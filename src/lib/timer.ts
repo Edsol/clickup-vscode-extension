@@ -196,7 +196,7 @@ export function unixtimeToDate(unixtime: number) {
  * @param {number} from
  * @return {*} 
  */
-function getFormattedDuration(from: number) {
+export function getFormattedDuration(from: number) {
 	const millisecDurationToNow = dayjs(Date.now()).diff(dayjs(from));
 	const duration = dayjs.duration(millisecDurationToNow);
 
