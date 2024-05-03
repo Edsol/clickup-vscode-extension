@@ -104,9 +104,12 @@ async function taskFound(task: Task) {
 	storageManager.setValue('selectedTaskData', localTask);
 
 	if (wrapper) {
-		timer = new Timer(localTask, wrapper);
+		timer = new Timer(localTask, wrapper, undefined, () => {
+			console.log('stopCallback');
+
+		});
 		restoreTimer(localTask.team_id, localTask.id);
-		initTimeTrakerTree(localTask.id);
+		initTimeTrakerTree(localTask);
 	}
 }
 /**
@@ -146,8 +149,8 @@ function forgetTask() {
  *
  * @param {string} [taskId]
  */
-function initTimeTrakerTree(taskId?: string) {
-	timesListProvider = new TimesListProvider(wrapper, taskId);
+function initTimeTrakerTree(task?: Task) {
+	timesListProvider = new TimesListProvider(wrapper, task);
 	vscode.window.createTreeView('timeTracker', {
 		treeDataProvider: timesListProvider,
 		showCollapseAll: true

@@ -242,7 +242,7 @@ export type Time = {
     source: "string",
     start: string,
     end?: string,
-    duration: number,
+    duration: string,
     tags: Tag[],
     task: Task,
     task_location: TaskLocation,

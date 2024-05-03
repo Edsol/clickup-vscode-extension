@@ -283,6 +283,11 @@ export class ApiWrapper {
         return body.data;
     }
 
+    async getTimeEntries(teamId: string, options = {}): Promise<Array<Time>> {
+        const { body } = await this.clickup.teams.getTimeEntries(teamId, options);
+        return body.data;
+    }
+
     /**
      * Start a timer for the authenticated user.
      *

@@ -26,10 +26,16 @@ export default class Timer {
 	private task: Task;
 	private apiWrapper: ApiWrapper;
 
-	constructor(task: Task, apiWrapper: ApiWrapper) {
+	private startCallback?: CallableFunction;
+	private stopCallback?: CallableFunction;
+
+	constructor(task: Task, apiWrapper: ApiWrapper, startCallback?: CallableFunction, stopCallback?: CallableFunction) {
 		this.task = task;
 		this.apiWrapper = apiWrapper;
 		this.startDate = 0;
+
+		this.startCallback = startCallback;
+		this.stopCallback = stopCallback;
 
 		// create status bar items
 		if (!this._statusBarItem) {
@@ -78,7 +84,7 @@ export default class Timer {
 
 		this._timer = setInterval(() => {
 			this.startDate++;
-			const durationFormatted = getFormattedDuration(this.startDate);
+			const durationFormatted = getFormattedDurationBetween(this.startDate);
 			this._statusBarItem.text = durationFormatted;
 		}, 1000);
 	}
@@ -99,6 +105,9 @@ export default class Timer {
 			.then((response) => {
 				this.startCount();
 				console.log('start function response', response);
+				if (this.startCallback) {
+					this.startCallback();
+				}
 			}).catch((error) => {
 				console.log(`error start function: ${error}`);
 			});
@@ -116,6 +125,9 @@ export default class Timer {
 				this._statusBarStartButton.show();
 				this._statusBarPauseButton.hide();
 				clearInterval(this._timer);
+				if (this.stopCallback) {
+					this.stopCallback();
+				}
 			}).catch((error) => {
 				console.log(`stop end function: ${error}`);
 			});
@@ -140,7 +152,7 @@ export default class Timer {
 	 * @memberof Timer
 	 */
 	public restore(startFrom: number) {
-		const durationFormatted = getFormattedDuration(startFrom);
+		const durationFormatted = getFormattedDurationBetween(startFrom);
 		this.showTimer(durationFormatted);
 		this.startCount(startFrom);
 	}
@@ -194,11 +206,16 @@ export function unixtimeToDate(unixtime: number) {
  *
  *
  * @param {number} from
+ * @param {number} to
  * @return {*} 
  */
-export function getFormattedDuration(from: number) {
-	const millisecDurationToNow = dayjs(Date.now()).diff(dayjs(from));
-	const duration = dayjs.duration(millisecDurationToNow);
+export function getFormattedDurationBetween(from: number, to: number = Date.now()) {
+	const millisecDurationToNow = dayjs(to).diff(dayjs(from));
+	return formatDuration(millisecDurationToNow);
+}
+
+export function formatDuration(inputDuration: number) {
+	const duration = dayjs.duration(inputDuration);
 
 	if (!dayjs.isDuration(duration)) {
 		return DEFAULT_TIME;
