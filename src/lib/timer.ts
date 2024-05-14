@@ -108,7 +108,7 @@ export default class Timer {
 					this.startCallback();
 				}
 			}).catch((error) => {
-				console.log(`error start function: ${error}`);
+				console.log(`start time error: ${error}`);
 			});
 	}
 
@@ -128,7 +128,7 @@ export default class Timer {
 					this.stopCallback();
 				}
 			}).catch((error) => {
-				console.log(`stop end function: ${error}`);
+				console.log(`stop time error: ${error}`);
 			});
 	}
 
