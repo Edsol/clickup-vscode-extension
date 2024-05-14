@@ -83,6 +83,15 @@ Implemented new "My Task" section (thanks to [@HeIIow2](https://github.com/HeIIo
 
 ![commit_message](./docs/my_task_section.png)
 
+### Time tracker
+
+Added functionality to track time on tasks, you can view the list of times by user
+
+> [!IMPORTANT]  
+> Time tracker is on by default, it can be turned off in the extension setting menu.
+
+![time_tracker](./docs/time_tracker.png)
+
 ## How to configure the extension
 
 Go to `Settings > Extension > ClickUp` and change the parameters to configure to your liking the extension.

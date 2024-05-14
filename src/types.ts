@@ -1,10 +1,3 @@
-export type selectedTaskData = {
-    id: string,
-    label: string,
-    listId: number
-};
-
-
 // Clickup Types
 export type Task = {
     archived: boolean,
@@ -39,11 +32,17 @@ export type Task = {
     startDate: string,
     status: Status,
     tags: Tag[],
-    teamId: string,
+    team_id: string,
     textContent: string,
     timeSpend: number,
     url: string,
     watchers: Watcher[]
+};
+
+export type TaskLocation = {
+    folder_id: string,
+    list_id: string,
+    space_id: string
 };
 
 export type Assignee = {
@@ -54,7 +53,7 @@ export type Assignee = {
     email: string
 };
 
-export type Checklist = {};
+export type Checklist = undefined;
 
 export type Creator = {
     id: number,
@@ -64,9 +63,9 @@ export type Creator = {
     profilePicture: string
 };
 
-export type CustomField = {};
-export type Dependecie = {};
-export type Parent = {};
+export type CustomField = undefined;
+export type Dependecie = undefined;
+export type Parent = undefined;
 
 export type Status = {
     status: string,
@@ -77,9 +76,9 @@ export type Status = {
 };
 
 export type List = {
-    archived: Boolean,
+    archived: boolean,
     assignee: boolean,
-    deleted: Boolean,
+    deleted: boolean,
     id: string,
     inbound_adress: string,
     name: string,
@@ -155,7 +154,7 @@ export type Tag = {
     creator: number
 };
 
-export type Watcher = {};
+export type Watcher = undefined;
 
 export type StoredMembers = {
     time: number,
@@ -166,7 +165,7 @@ export type Team = {
     id: string,
     name: string,
     color: string,
-    avatar: any,
+    avatar: unknown,
     members: Member[]
 };
 
@@ -203,7 +202,8 @@ export type User = {
     initials: string,
     profilePicture?: string,
     username: string
-}
+};
+
 export type Interval = {
     billable: boolean,
     date_added: string,
@@ -214,10 +214,39 @@ export type Interval = {
     start: string,
     tags?: Tag[],
     time: string
-}
+};
 
 export type Tracking = {
     intervals: Interval[],
     time: number,
     user: User
-}
+};
+
+export type CreateTime = {
+    description?: string,
+    tags?: Tag[],
+    start?: number,
+    billable?: boolean,
+    duration?: number,
+    assignee?: number,
+    tid: string,
+    fromTimesheet?: boolean
+};
+
+export type Time = {
+    at: string,
+    billable: boolean,
+    description: string,
+    id: string,
+    is_locked: boolean,
+    source: "string",
+    start: string,
+    end?: string,
+    duration: string,
+    tags: Tag[],
+    task: Task,
+    task_location: TaskLocation,
+    task_url: string,
+    user: User,
+    wid: string
+};

@@ -9,7 +9,7 @@ export class MyTaskListProvider implements vscode.TreeDataProvider<vscode.TreeIt
     teams: types.Team[];
     userId: string;
 
-    constructor(apiWrapper: any, teams: Array<types.Team>, userId: string) {
+    constructor(apiWrapper: ApiWrapper, teams: Array<types.Team>, userId: string) {
         this.apiwrapper = apiWrapper;
         this.userId = userId;
         this.teams = teams;
@@ -20,10 +20,10 @@ export class MyTaskListProvider implements vscode.TreeDataProvider<vscode.TreeIt
     }
 
     async getChildren(element?: (types.Space)): Promise<(vscode.TreeItem)[]> {
-        let resolve: any = [];
+        const resolve: Array<TaskItem> = [];
 
         for (const team of this.teams) {
-            var tasks: Array<types.Task> = await this.apiwrapper.getMyTask(team.id, this.userId);
+            const tasks: Array<types.Task> = await this.apiwrapper.getMyTask(team.id, this.userId);
             for (const task of tasks) {
                 resolve.push(new TaskItem(task));
             }

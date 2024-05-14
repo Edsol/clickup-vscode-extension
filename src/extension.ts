@@ -12,29 +12,37 @@ import { TaskStatusBarItem } from './lib/taskStatusBarItem';
 import { Configuration } from './lib/configuration';
 import * as l10n from '@vscode/l10n';
 import { TimesListProvider } from './tree_view/timesListProvider';
-import { Team, selectedTaskData } from './types';
+import { Team, User, Task, Time } from './types';
 import { MyTaskListProvider } from './tree_view/mytaskListProvider';
-import { TeamItem } from './tree_view/items/team_item';
+import Timer from './lib/timer';
 
 if (vscode.l10n.uri?.fsPath) {
 	l10n.config({
 		fsPath: vscode.l10n.uri?.fsPath
 	});
 }
-var me;
-var configuration: Configuration = new Configuration();
-var tokenManager: TokenManager;
-var context: vscode.ExtensionContext;
-var storageManager: LocalStorageService;
-var wrapper: ApiWrapper;
-var utils = new Utils(vscode.window);
-var timesListProvider: TimesListProvider;
-var myTaskProvider: MyTaskListProvider;
-var statusChanger: StatusChanger;
-var taskStatusBarItem: TaskStatusBarItem;
-var selectedTaskData: selectedTaskData | undefined;
-var taskListProvider: TaskListProvider;
+let me: User;
+const configuration: Configuration = new Configuration();
+let tokenManager: TokenManager;
+let context: vscode.ExtensionContext;
+let storageManager: LocalStorageService;
+let wrapper: ApiWrapper;
+const utils = new Utils(vscode.window);
+let timesListProvider: TimesListProvider;
+let myTaskProvider: MyTaskListProvider;
+let statusChanger: StatusChanger;
+let taskStatusBarItem: TaskStatusBarItem;
+let selectedTaskData: Task | undefined;
+let taskListProvider: TaskListProvider;
+let timer: Timer;
 
+/**
+ *
+ *
+ * @export
+ * @param {vscode.ExtensionContext} cntx
+ * @return {*} 
+ */
 export async function activate(cntx: vscode.ExtensionContext) {
 	context = cntx;
 	storageManager = new LocalStorageService(context.workspaceState);
@@ -46,10 +54,6 @@ export async function activate(cntx: vscode.ExtensionContext) {
 
 	// initialize the statusBarItem
 	taskStatusBarItem = new TaskStatusBarItem();
-	if (selectedTaskData !== undefined) {
-		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
-
-	}
 
 	if (!token) {
 		return;
@@ -61,9 +65,9 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	statusChanger = new StatusChanger(wrapper);
 
 	// inizialize the TaskList tree
-	var teams = await wrapper.getTeams();
+	const teams = await wrapper.getTeams();
 	taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
-	initMyTaskTree(teams, me.id);
+	initMyTaskTree(teams, `${me.id}`);
 
 	vscode.window.createTreeView('tasksViewer', {
 		treeDataProvider: taskListProvider,
@@ -71,31 +75,71 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	});
 
 	if (selectedTaskData !== undefined) {
-		taskFound(selectedTaskData.id, selectedTaskData.label, selectedTaskData.listId);
+		taskFound(selectedTaskData);
 	}
 }
-
-function taskFound(taskId: string, label: string = '', listId: number) {
-	var message = `#${taskId}`;
-	if (label && configuration.get("showTaskTitle")) {
-		message += `(${label})`;
+/**
+ *
+ *
+ * @param {Task} task
+ */
+async function taskFound(task: Task) {
+	let localTask = task;
+	// Checks that the saved task data is complete, if not, reloads it
+	if (!Object.prototype.hasOwnProperty.call(task, 'url')) {
+		const remoteTask = await wrapper.getTask(task.id);
+		//save last TaskId and ListId value
+		storageManager.setValue('selectedTaskData', remoteTask);
+		localTask = remoteTask;
+	}
+	let message = `#${localTask.id}`;
+	if (task.name && configuration.get("showTaskTitle")) {
+		message += `(${localTask.name})`;
 	}
 	taskStatusBarItem.setText(taskStatusBarItem.defaultIconTaskSetted + message);
 	taskStatusBarItem.setTooltip(constants.TASK_TOOLTIP);
 	taskStatusBarItem.setCommand("clickup.removeTask");
 
 	//save last TaskId and ListId value
-	storageManager.setValue('selectedTaskData', {
-		id: taskId,
-		label: label,
-		listId: listId
-	});
+	storageManager.setValue('selectedTaskData', localTask);
 
 	if (wrapper) {
-		initTimeTrakerTree(taskId);
+		if (configuration.get("trackTaskTime")) {
+			timer = new Timer(
+				localTask,
+				wrapper,
+				// start time callback
+				() => { },
+				// stop time callback
+				() => {
+					timesListProvider.refresh();
+				});
+			restoreTimer(localTask.team_id, localTask.id);
+		}
+		initTimeTrakerTree(localTask);
 	}
 }
-
+/**
+ *
+ *
+ * @param {string} teamId
+ * @param {string} taskId
+ */
+function restoreTimer(teamId: string, taskId: string) {
+	if (!teamId) {
+		console.log("No `teamId` found to restore time");
+		return;
+	}
+	wrapper.getRunningTime(teamId).then((time: Time) => {
+		if (time && time.task.id === taskId) {
+			timer.restore(parseInt(time.start));
+		}
+	});
+}
+/**
+ *
+ *
+ */
 function forgetTask() {
 	taskStatusBarItem.setDefaults();
 	selectedTaskData = undefined;
@@ -104,20 +148,34 @@ function forgetTask() {
 	storageManager.setValue('listOfTaskId', undefined);
 	vscode.window.showInformationMessage(constants.TASK_REMOVED);
 	initTimeTrakerTree();
+	timer.stop();
+	timer.destroy();
 }
 
-function initTimeTrakerTree(taskId?: string) {
-	timesListProvider = new TimesListProvider(wrapper, taskId);
-	vscode.window.createTreeView('timeTracker', {
-		treeDataProvider: timesListProvider,
-		showCollapseAll: true
-	});
-}
-
+/**
+ *
+ *
+ * @param {Array<Team>} teams
+ * @param {string} userId
+ */
 function initMyTaskTree(teams: Array<Team>, userId: string) {
 	myTaskProvider = new MyTaskListProvider(wrapper, teams, userId);
 	vscode.window.createTreeView('myTask', {
 		treeDataProvider: myTaskProvider,
+		showCollapseAll: true
+	});
+
+}
+
+/**
+ *
+ *
+ * @param {string} [taskId]
+ */
+function initTimeTrakerTree(task?: Task) {
+	timesListProvider = new TimesListProvider(wrapper, task);
+	vscode.window.createTreeView('timeTracker', {
+		treeDataProvider: timesListProvider,
 		showCollapseAll: true
 	});
 }
@@ -139,7 +197,7 @@ vscode.commands.registerCommand('clickup.deleteToken', async () => {
 });
 
 vscode.commands.registerCommand('clickup.getToken', async () => {
-	var token = await tokenManager.getToken();
+	const token = await tokenManager.getToken();
 	if (token) {
 		vscode.window.showInformationMessage(l10n.t('No token was found'));
 		return;
@@ -170,7 +228,7 @@ vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
 
 vscode.commands.registerCommand('clickup.workOnTask', (taskItem) => {
 	const task = taskItem.task;
-	taskFound(task.id, task.name, task.list.id);
+	taskFound(task);
 });
 
 vscode.commands.registerCommand('clickup.addSpace', (teamItem) => {
@@ -210,12 +268,12 @@ vscode.commands.registerCommand('clickup.statusChanger', async () => {
 		vscode.window.showInformationMessage(constants.NO_TASK_SELECTED);
 		return;
 	}
-	if (selectedTaskData.listId === undefined) {
+	if (selectedTaskData.list.id === undefined) {
 		vscode.window.showInformationMessage(constants.NO_LIST_ID);
 		return;
 	}
 
-	var status = await statusChanger.showStatusQuickPick(selectedTaskData.listId);
+	const status = await statusChanger.showStatusQuickPick(selectedTaskData.list.id);
 	if (status === undefined) {
 		vscode.window.showInformationMessage(constants.STATUS_READ_ERROR);
 		return;
@@ -225,8 +283,9 @@ vscode.commands.registerCommand('clickup.statusChanger', async () => {
 
 vscode.commands.registerCommand('clickup.taskChooser', async () => {
 	if (selectedTaskData === undefined) {
-		var taskData = selectedTaskData = await statusChanger.showTaskChooserQuickPick();
-		taskFound(taskData.id, taskData.label, taskData.listId);
+		const taskData = await statusChanger.showTaskChooserQuickPick();
+		selectedTaskData = taskData;
+		taskFound(taskData);
 	}
 });
 
@@ -234,6 +293,17 @@ vscode.commands.registerCommand('clickup.removeTask', async () => {
 	if (await statusChanger.removeTaskQuickPick() === 1) {
 		forgetTask();
 	}
+});
+
+// Time manager
+
+vscode.commands.registerCommand('clickup.startTimer', () => {
+	console.log('clickup command', 'start timer');
+	timer.start();
+});
+vscode.commands.registerCommand('clickup.stopTimer', () => {
+	console.log('clickup command', 'stopTimer timer');
+	timer.stop();
 });
 
 // this method is called when your extension is deactivated

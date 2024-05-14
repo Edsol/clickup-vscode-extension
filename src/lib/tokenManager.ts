@@ -5,15 +5,20 @@ import * as l10n from '@vscode/l10n';
 
 export default class TokenManager {
     storageManager?: LocalStorageService;
-    token?: String = undefined;
+    token?: string = undefined;
     regex = /^[a-z]{2}[_]\d+[_].{32}/g;
 
     constructor(storageManager: LocalStorageService) {
         this.storageManager = storageManager;
 
     }
-
-    async init() {
+    /**
+     *
+     *
+     * @return {*}  {(Promise<string | undefined>)}
+     * @memberof TokenManager
+     */
+    async init(): Promise<string | undefined> {
         this.token = await this.getToken();
         if (await this.isValid()) {
             return this.token;
@@ -21,7 +26,12 @@ export default class TokenManager {
 
         return undefined;
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async askToken() {
         const token = await vscode.window.showInputBox({
             ignoreFocusOut: true,
@@ -34,30 +44,55 @@ export default class TokenManager {
 
         return await this.setToken(token);
     }
-
-    async setToken(token: String | undefined): Promise<boolean> {
+    /**
+     *
+     *
+     * @param {(string | undefined)} token
+     * @return {*}  {Promise<boolean>}
+     * @memberof TokenManager
+     */
+    async setToken(token: string | undefined): Promise<boolean> {
         this.storageManager?.setValue('token', token);
         return true;
     }
-
+    /**
+     *
+     *
+     * @return {*}  {Promise<string>}
+     * @memberof TokenManager
+     */
     async getToken(): Promise<string> {
         return await this.storageManager?.getValue('token');
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async hasToken() {
-        var token = await this.getToken();
+        const token = await this.getToken();
         if (token) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async delete() {
         const response = await this.storageManager?.setValue('token', undefined);
         return true;
     }
-
+    /**
+     *
+     *
+     * @return {*} 
+     * @memberof TokenManager
+     */
     async isValid() {
         // If token doesn't exists show error message
         if (this.token === undefined) {

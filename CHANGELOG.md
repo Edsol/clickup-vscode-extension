@@ -3,7 +3,8 @@
 ### 0.1.2
 
 - tasks are not displayed in folders (issue [#5](https://github.com/Edsol/clickup-vscode-extension/issues/5))
-- 
+-
+
 ### 0.1.1
 
 - added task counter
@@ -11,6 +12,7 @@
 ### 0.1.0
 
 - show folders and tasks inside a space (issue [#4](https://github.com/Edsol/clickup-vscode-extension/issues/4))
+
 ### 0.0.9
 
 - Fixed issues [#2](https://github.com/Edsol/clickup-vscode-extension/issues/2) and [#3](https://github.com/Edsol/clickup-vscode-extension/issues/3)
@@ -35,6 +37,7 @@
 - collapse all treeView button
 
 ### 0.0.5
+
 - redesigned treeview to view nested Space, List and Task
 - add dedicated icon for Space, List and Task
 - fetch Members, Tags and Priority data when task opened
@@ -43,23 +46,23 @@
 
 ### 0.0.4
 
-* load [Vue.js 3](https://vuejs.org), [Bootstrap 5](https://github.com/twbs/bootstrap) and [Tagify](https://github.com/yairEO/tagify) from local file
-* code refactoring
-* add status select in edit webview
-* code cleanup of functions no longer used
-* move item classes in dedicated directory
-
+- load [Vue.js 3](https://vuejs.org), [Bootstrap 5](https://github.com/twbs/bootstrap) and [Tagify](https://github.com/yairEO/tagify) from local file
+- code refactoring
+- add status select in edit webview
+- code cleanup of functions no longer used
+- move item classes in dedicated directory
 
 ### 0.0.3
 
-* add AGL 3.0 licence
-* init new task webview
-* init edit task webview
+- add AGL 3.0 licence
+- init new task webview
+- init edit task webview
 
 ### 0.0.2
-* Show tasks by status
-* Added flag icon for priority level system (Urgent, High, Normal, Low).
-* Show task details
+
+- Show tasks by status
+- Added flag icon for priority level system (Urgent, High, Normal, Low).
+- Show task details
 
 ### 0.0.1
 

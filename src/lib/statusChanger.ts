@@ -97,14 +97,10 @@ export class StatusChanger {
                     }
                 });
         }
-        return {
-            id: this.itemsList.task.id,
-            label: this.itemsList.task.label,
-            listId: this.itemsList.list.id
-        };
+        return this.itemsList.task;
     }
 
-    async showStatusQuickPick(listId: number) {
+    async showStatusQuickPick(listId: number | string) {
         const statuses = await this.apiWrapper.getStatus(listId);
         const items = statuses.map((e: any) => {
             return {
