@@ -122,6 +122,7 @@ export default class Timer {
 			.then((response) => {
 				this._statusBarStartButton.show();
 				this._statusBarPauseButton.hide();
+				this._statusBarItem.text = DEFAULT_TIME;
 				clearInterval(this._timer);
 				if (this.stopCallback) {
 					this.stopCallback();
