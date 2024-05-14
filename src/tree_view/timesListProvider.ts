@@ -8,6 +8,9 @@ const collapsedConst = vscode.TreeItemCollapsibleState.Collapsed;
 const noCollapsedConst = vscode.TreeItemCollapsibleState.None;
 
 export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+    private readonly _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined> = new vscode.EventEmitter<vscode.TreeItem | undefined>();
+    readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined> = this._onDidChangeTreeData.event;
+
     task?: Task;
     apiwrapper: ApiWrapper;
 
@@ -43,5 +46,9 @@ export class TimesListProvider implements vscode.TreeDataProvider<vscode.TreeIte
         }
 
         return Promise.resolve(resolve);
+    }
+
+    refresh() {
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

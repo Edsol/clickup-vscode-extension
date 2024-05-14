@@ -104,7 +104,6 @@ export default class Timer {
 		this.apiWrapper.startTime(this.task.team_id, data)
 			.then((response) => {
 				this.startCount();
-				console.log('start function response', response);
 				if (this.startCallback) {
 					this.startCallback();
 				}
@@ -121,7 +120,6 @@ export default class Timer {
 	public stop() {
 		this.apiWrapper.stopTime(this.task.team_id)
 			.then((response) => {
-				console.log('stop function response', response);
 				this._statusBarStartButton.show();
 				this._statusBarPauseButton.hide();
 				clearInterval(this._timer);

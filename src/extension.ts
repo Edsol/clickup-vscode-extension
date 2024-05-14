@@ -104,10 +104,15 @@ async function taskFound(task: Task) {
 	storageManager.setValue('selectedTaskData', localTask);
 
 	if (wrapper) {
-		timer = new Timer(localTask, wrapper, undefined, () => {
-			console.log('stopCallback');
-
-		});
+		timer = new Timer(
+			localTask,
+			wrapper,
+			// start time callback
+			() => { },
+			// stop time callback
+			() => {
+				timesListProvider.refresh();
+			});
 		restoreTimer(localTask.team_id, localTask.id);
 		initTimeTrakerTree(localTask);
 	}
@@ -144,18 +149,7 @@ function forgetTask() {
 	timer.stop();
 	timer.destroy();
 }
-/**
- *
- *
- * @param {string} [taskId]
- */
-function initTimeTrakerTree(task?: Task) {
-	timesListProvider = new TimesListProvider(wrapper, task);
-	vscode.window.createTreeView('timeTracker', {
-		treeDataProvider: timesListProvider,
-		showCollapseAll: true
-	});
-}
+
 /**
  *
  *
@@ -166,6 +160,20 @@ function initMyTaskTree(teams: Array<Team>, userId: string) {
 	myTaskProvider = new MyTaskListProvider(wrapper, teams, userId);
 	vscode.window.createTreeView('myTask', {
 		treeDataProvider: myTaskProvider,
+		showCollapseAll: true
+	});
+
+}
+
+/**
+ *
+ *
+ * @param {string} [taskId]
+ */
+function initTimeTrakerTree(task?: Task) {
+	timesListProvider = new TimesListProvider(wrapper, task);
+	vscode.window.createTreeView('timeTracker', {
+		treeDataProvider: timesListProvider,
 		showCollapseAll: true
 	});
 }
