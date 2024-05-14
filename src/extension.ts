@@ -104,16 +104,18 @@ async function taskFound(task: Task) {
 	storageManager.setValue('selectedTaskData', localTask);
 
 	if (wrapper) {
-		timer = new Timer(
-			localTask,
-			wrapper,
-			// start time callback
-			() => { },
-			// stop time callback
-			() => {
-				timesListProvider.refresh();
-			});
-		restoreTimer(localTask.team_id, localTask.id);
+		if (configuration.get("trackTaskTime")) {
+			timer = new Timer(
+				localTask,
+				wrapper,
+				// start time callback
+				() => { },
+				// stop time callback
+				() => {
+					timesListProvider.refresh();
+				});
+			restoreTimer(localTask.team_id, localTask.id);
+		}
 		initTimeTrakerTree(localTask);
 	}
 }
