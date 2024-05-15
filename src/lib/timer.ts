@@ -101,6 +101,7 @@ export default class Timer {
 			start: Date.now(),
 			duration: -1,
 		};
+
 		this.apiWrapper.startTime(this.task.team_id, data)
 			.then((response) => {
 				this.startCount();
@@ -108,7 +109,7 @@ export default class Timer {
 					this.startCallback();
 				}
 			}).catch((error) => {
-				console.log(`start time error: ${error}`);
+				console.log('start time error:', error);
 			});
 	}
 
