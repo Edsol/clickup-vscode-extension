@@ -112,6 +112,7 @@ Go to `Settings > Extension > ClickUp` and change the parameters to configure to
 - [x] load task informations in real time
 - [x] translation support
 - [x] "my task" section
+- [x] official icons
 
 ## Translation
 
