@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path _ngcontent-ng-c1909134112="" clip-rule="evenodd" d="m4.707 20.707 16-16a1 1 0 0 0-1.414-1.414l-16 16a1 1 0 1 0 1.414 1.414ZM15 3v.343L13.343 5H13V3h2ZM5 13v.343L3.343 15H3v-2h2Zm4 8v-.343L10.657 19H11v2H9Zm10-10v-.343L20.657 9H21v2h-2Zm-2 10v-2h1a.99.99 0 0 0 .382-.075l.383.924.383.923A2.993 2.993 0 0 1 18 21h-1ZM7 3H6a2.98 2.98 0 0 0-1.148.228l.383.923.383.924A.991.991 0 0 1 6 5h1V3Zm-4 8h2V9H3v2Zm0-4h2V6c0-.14.027-.267.075-.382l-.924-.383-.923-.383A2.991 2.991 0 0 0 3 6v1Zm6-4v2h2V3H9Zm12 10h-2v2h2v-2Zm0 4h-2v1a.99.99 0 0 1-.075.382l.924.383.923.383A2.98 2.98 0 0 0 21 18v-1Zm-6 4v-2h-2v2h2Z" fill-rule="evenodd" style="color: inherit"/>
+</svg>

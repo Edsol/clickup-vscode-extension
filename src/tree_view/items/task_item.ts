@@ -1,6 +1,8 @@
 import path = require('path');
-import { TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { TreeItem, TreeItemCollapsibleState, ThemeIcon } from 'vscode';
 import * as types from '../../types';
+import { TASK_ICONAME } from '../../constants';
+import { getColoredIconPath, Utils } from '../../utils';
 
 export class TaskItem extends TreeItem {
     constructor(
@@ -13,22 +15,9 @@ export class TaskItem extends TreeItem {
         if (task.priority !== null) {
             priorityName = task.priority.priority;
         }
-        this.tooltip = `priority: ${priorityName}`;
-        var iconName = this.getIcon(task.priority);
-
-        this.iconPath = {
-            light: path.join(__filename, '..', '..', '..', '..', 'resources', 'taskItem', iconName),
-            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'taskItem', iconName)
-        };
+        this.tooltip = `status: ${task.status.status}\npriority: ${priorityName}`;
+        this.iconPath = getColoredIconPath(path.join(__filename, '..', '..', '..', '..', 'resources', 'official_icons', 'white', TASK_ICONAME), task.status.color);
     }
 
     contextValue = 'taskItem';
-
-    getIcon(priority: types.Priority | null) {
-        if (priority === undefined || priority === null) {
-            return 'priority-normal.png';
-        }
-
-        return `priority-${priority.priority}.png`;
-    }
 }

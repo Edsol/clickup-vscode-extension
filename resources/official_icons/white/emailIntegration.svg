@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path _ngcontent-ng-c1909134112="" clip-rule="evenodd" d="M14 7H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6.1a5.022 5.022 0 0 1-4-.9l-5 3.75-6.904-5.178A1 1 0 0 1 5 9h9.416A4.983 4.983 0 0 1 14 7ZM4 18v-6l6.4 4.8a1 1 0 0 0 1.2 0L18 12v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" fill-rule="evenodd" style="color: inherit"/>
+<path _ngcontent-ng-c1909134112="" class="['email-integration-billiard']" clip-rule="evenodd" d="M24 7.017a5 5 0 1 1-10-.034 5 5 0 0 1 10 .034Zm-7.503 1.696Zm0 0c.693.931 1.534 1.424 2.495 1.424.965 0 1.799-.496 2.468-1.434l-.928-.706c-.465.65-.967.948-1.54.948-.575 0-1.092-.302-1.579-.958l-.916.726Zm2.492-3.149-1.63 1.45-.753-.902 2.387-2.123 2.368 2.125-.757.899-1.615-1.449Z" fill="#FFFFFF" fill-rule="evenodd" style="color: inherit"/>
+</svg>

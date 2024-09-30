@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path _ngcontent-ng-c1909134112="" clip-rule="evenodd" d="M1 4a1 1 0 0 1 1-1h4a1 1 0 0 1 0 2H5v14h1a1 1 0 1 1 0 2H2a1 1 0 1 1 0-2h1V5H2a1 1 0 0 1-1-1Zm9 0a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-1v14h1a1 1 0 1 1 0 2h-4a1 1 0 1 1 0-2h1V5h-1a1 1 0 0 1-1-1Z" fill-rule="evenodd" style="color: inherit"/>
+<path _ngcontent-ng-c1909134112="" d="M5 11h7v2H5v-2Zm12 2.125c0-.621.504-1.125 1.125-1.125h3.75a1.125 1.125 0 0 1 0 2.25h-3.75A1.125 1.125 0 0 1 17 13.125Zm0 3.375c0-.621.504-1.125 1.125-1.125h3.75a1.125 1.125 0 0 1 0 2.25h-3.75A1.125 1.125 0 0 1 17 16.5Zm0 3.375c0-.621.504-1.125 1.125-1.125h3.75a1.125 1.125 0 0 1 0 2.25h-3.75A1.125 1.125 0 0 1 17 19.875Z" style="color: inherit"/>
+<path _ngcontent-ng-c1909134112="" d="M22 12a1 1 0 0 1 1 1v3.625a1 1 0 1 1-2 0V13a1 1 0 0 1 1-1Zm-4 3.375a1 1 0 0 1 1 1V20a1 1 0 1 1-2 0v-3.625a1 1 0 0 1 1-1Z" style="color: inherit"/>
+</svg>

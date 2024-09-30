@@ -4,6 +4,9 @@ import { TaskItem } from './items/task_item';
 import { ApiWrapper } from '../lib/apiWrapper';
 
 export class MyTaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+    private _onDidChangeTreeData: vscode.EventEmitter<TaskItem | undefined | null | void> = new vscode.EventEmitter<TaskItem | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<TaskItem | undefined | null | void> = this._onDidChangeTreeData.event;
+
 
     apiwrapper: ApiWrapper;
     teams: types.Team[];
@@ -13,6 +16,10 @@ export class MyTaskListProvider implements vscode.TreeDataProvider<vscode.TreeIt
         this.apiwrapper = apiWrapper;
         this.userId = userId;
         this.teams = teams;
+    }
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
     }
 
     getTreeItem(element: any): vscode.TreeItem {

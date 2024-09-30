@@ -1,6 +1,7 @@
 import path = require('path');
 import { TreeItem, TreeItemCollapsibleState, window } from 'vscode';
 import { List } from '../../types';
+import { LIST_ICONAME } from '../../constants';
 
 export class ListItem extends TreeItem {
     constructor(
@@ -14,8 +15,8 @@ export class ListItem extends TreeItem {
         super(list.name + ` (${taskCounter})`, collapsibleState);
         this.id = list.id;
         this.iconPath = {
-            light: path.join(__dirname, '..', '..', '..', '..', 'resources', 'listItem', 'document.png'),
-            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'listItem', 'document_white.png')
+            light: path.join(__dirname, '..', '..', '..', '..', 'resources', 'official_icons', 'dark', LIST_ICONAME),
+            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'official_icons', 'white', LIST_ICONAME)
         };
     }
     contextValue = 'listItem';

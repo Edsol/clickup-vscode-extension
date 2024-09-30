@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path _ngcontent-ng-c1909134112="" fill="#36C5F0" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M9.6 3a1.8 1.8 0 0 0-1.8 1.803c0 .995.805 1.803 1.8 1.803h1.8V4.804A1.802 1.802 0 0 0 9.6 3Zm0 4.81H4.8A1.8 1.8 0 0 0 3 9.613a1.802 1.802 0 0 0 1.8 1.804h4.8c.994 0 1.8-.808 1.8-1.803 0-.996-.806-1.804-1.8-1.804Z" />
+  <path _ngcontent-ng-c1909134112="" fill="#2EB67D" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M21 9.613a1.8 1.8 0 1 0-3.6 0v1.804h1.8c.995 0 1.8-.808 1.8-1.804Zm-4.8 0v-4.81c0-.994-.805-1.802-1.8-1.803-.995 0-1.8.808-1.8 1.803v4.81a1.802 1.802 0 0 0 1.8 1.804c.994 0 1.8-.808 1.8-1.804Z" />
+  <path _ngcontent-ng-c1909134112="" fill="#ECB22E" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M14.4 21.036a1.802 1.802 0 0 0 0-3.606h-1.8v1.803a1.8 1.8 0 0 0 1.8 1.803Zm0-4.81h4.8a1.802 1.802 0 0 0 1.8-1.803 1.802 1.802 0 0 0-1.8-1.805h-4.8c-.995.001-1.8.809-1.8 1.804s.804 1.803 1.8 1.804Z" />
+  <path _ngcontent-ng-c1909134112="" fill="#E01E5A" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M3 14.422a1.802 1.802 0 0 0 1.8 1.804 1.801 1.801 0 0 0 1.8-1.803v-1.804H4.8A1.801 1.801 0 0 0 3 14.422Zm4.8 0v4.81a1.802 1.802 0 0 0 1.8 1.804c.994 0 1.8-.808 1.8-1.803v-4.81a1.8 1.8 0 1 0-3.6-.001Z" />
+</svg>

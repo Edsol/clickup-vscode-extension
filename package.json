@@ -9,7 +9,7 @@
 		"url": "https://github.com/Edsol/clickup-vscode-extension/issues",
 		"email": "edoardo.soloperto@gmail.com"
 	},
-	"version": "1.0.1",
+	"version": "0.9.1",
 	"license": "AGPL 3.0",
 	"keywords": [
 		"clickup",
@@ -108,7 +108,7 @@
 				"command": "clickup.addFolder",
 				"title": "%addFolder.title%",
 				"category": "ClickUp",
-				"icon": "$(add)"
+				"icon": "/resources/official_icons/folder.svg"
 			},
 			{
 				"command": "clickup.deleteFolder",
@@ -261,7 +261,6 @@
 		"@typescript-eslint/eslint-plugin": "^5.12.1",
 		"@typescript-eslint/parser": "^5.12.1",
 		"@vscode/test-electron": "^2.1.2",
-		"drizzle-kit": "^0.21.1",
 		"eslint": "^8.9.0",
 		"glob": "^7.2.0",
 		"husky": "^9.0.11",

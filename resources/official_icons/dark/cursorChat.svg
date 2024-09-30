@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path _ngcontent-ng-c1909134112="" fill="var(--cu-background-primary)" style="color: inherit" d="M10.002 13.089c0-1.154.935-2.089 2.088-2.089h7.912a8 8 0 0 1 0 16h-1a9 9 0 0 1-9-9v-4.911Z" />
+  <path _ngcontent-ng-c1909134112="" stroke="var(--cu-content-default)" stroke-opacity=".169" stroke-width="1.5" style="color: inherit" d="M10.752 13.089c0-.74.599-1.339 1.338-1.339h7.912a7.25 7.25 0 0 1 0 14.5h-1a8.25 8.25 0 0 1-8.25-8.25v-4.911Z" />
+  <path _ngcontent-ng-c1909134112="" fill="var(--cu-content-default)" stroke="var(--cu-background-main)" style="color: inherit" d="m11.724 8.928 1.072-.44-1.055-.478-6.533-2.965-.91-.413.215.976 1.545 7 .25 1.129.652-.955 1.803-2.641 2.961-1.213Z" />
+  <path _ngcontent-ng-c1909134112="" stroke="var(--cu-content-on-dark)" stroke-linecap="round" stroke-opacity=".662" stroke-width="1.5" style="color: inherit" d="M15.752 17.03h6.5m-6.5 3.958h2.5" />
+</svg>

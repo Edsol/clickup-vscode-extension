@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path _ngcontent-ng-c1909134112="" fill="var(--checkbox-alt-icon-background-color, var(--cu-background-main-inverse))" fill-opacity=".055" style="color: inherit" d="M.667 2.667a2 2 0 0 1 2-2h10.666a2 2 0 0 1 2 2v10.666a2 2 0 0 1-2 2H2.667a2 2 0 0 1-2-2V2.667Z" />
+  <path _ngcontent-ng-c1909134112="" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M13.333 2H2.667A.667.667 0 0 0 2 2.667v10.666c0 .368.299.667.667.667h10.666a.667.667 0 0 0 .667-.667V2.667A.667.667 0 0 0 13.333 2ZM2.667.667a2 2 0 0 0-2 2v10.666a2 2 0 0 0 2 2h10.666a2 2 0 0 0 2-2V2.667a2 2 0 0 0-2-2H2.667Z" />
+  <path _ngcontent-ng-c1909134112="" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M13.138 4.417c.26.26.26.683 0 .943l-6.694 6.694L2.862 8.47a.667.667 0 1 1 .943-.942l2.64 2.64 5.75-5.752c.26-.26.683-.26.943 0Z" />
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path _ngcontent-ng-c1909134112="" fill="var(--cu-fab-icon-pink)" fill-rule="evenodd" clip-rule="evenodd" class="['fab-top-left']" style="color: inherit" d="M5 3.6H4a.4.4 0 0 0-.4.4v1c0 .22.18.4.4.4h1a.4.4 0 0 0 .4-.4V4a.4.4 0 0 0-.4-.4ZM4 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4Z" />
+  <path _ngcontent-ng-c1909134112="" fill="var(--cu-fab-icon-yellow)" fill-rule="evenodd" clip-rule="evenodd" class="['fab-top-right']" style="color: inherit" d="M12 3.6h-1a.4.4 0 0 0-.4.4v1c0 .22.18.4.4.4h1a.4.4 0 0 0 .4-.4V4a.4.4 0 0 0-.4-.4ZM11 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-1Z" />
+  <path _ngcontent-ng-c1909134112="" fill="var(--cu-fab-icon-mint)" fill-rule="evenodd" clip-rule="evenodd" class="['fab-bottom-left']" style="color: inherit" d="M5 10.6H4a.4.4 0 0 0-.4.4v1c0 .22.18.4.4.4h1a.4.4 0 0 0 .4-.4v-1a.4.4 0 0 0-.4-.4ZM4 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2H4Z" />
+  <path _ngcontent-ng-c1909134112="" fill="var(--cu-fab-icon-azure-blue)" fill-rule="evenodd" clip-rule="evenodd" class="['fab-bottom-right']" style="color: inherit" d="M12 10.6h-1a.4.4 0 0 0-.4.4v1c0 .22.18.4.4.4h1a.4.4 0 0 0 .4-.4v-1a.4.4 0 0 0-.4-.4ZM11 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2h-1Z" />
+</svg>

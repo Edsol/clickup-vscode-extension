@@ -38,3 +38,12 @@ export const LIST_DELETE_MESSAGE = l10n.t("Are you sure you want to eliminate th
 export const DEFAULT_TASK_DETAILS = [
     'id', 'name', 'description', 'url', 'status', 'priority', 'creator', 'tags', 'assignees'
 ];
+
+export const PROJECT_ICONAME = 'sidebarEverything.svg';
+export const TEAM_ICONAME = 'v4SidebarTeamsFilled.svg';
+export const FOLDER_ICONAME = 'folder.svg';
+export const LIST_ICONAME = 'listView.svg';
+export const TASK_ICONAME = 'record.svg';
+
+export const USER_TIMES_ICONAME = 'userCircle.svg';
+export const TIME_TIMES_ICONAME = 'timeTracking.svg';

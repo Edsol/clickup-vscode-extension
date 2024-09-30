@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path _ngcontent-ng-c1909134112="" clip-rule="evenodd" d="M17 3a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v3a1 1 0 1 1-2 0V8h-3a1 1 0 1 1 0-2h3V4a1 1 0 0 1 1-1Zm-13.707.707a1 1 0 0 1 1.414 0l15.586 15.586a1 1 0 0 1-1.414 1.414L18 19.828V20a1 1 0 1 1-2 0v-2H8v2a1 1 0 1 1-2 0v-2H4a1 1 0 1 1 0-2h2V8H4a1 1 0 0 1 0-2h.172l-.88-.879a1 1 0 0 1 0-1.414ZM8 9.828V16h6.172L8 9.828Z" fill-rule="evenodd" style="color: inherit"/>
+</svg>

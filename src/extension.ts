@@ -77,6 +77,11 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	if (selectedTaskData !== undefined) {
 		taskFound(selectedTaskData);
 	}
+
+	// update icons after theme change
+	vscode.window.onDidChangeActiveColorTheme(() => {
+		myTaskProvider.refresh();
+	});
 }
 /**
  *

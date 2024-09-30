@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path _ngcontent-ng-c1909134112="" clip-rule="evenodd" d="M4.8 5c-.488 0-.8.365-.8.714v8.572c0 .349.312.714.8.714h14.4c.488 0 .8-.365.8-.714V5.714c0-.349-.312-.714-.8-.714H4.8ZM2 5.714C2 4.17 3.3 3 4.8 3h14.4C20.7 3 22 4.17 22 5.714v8.572C22 15.83 20.7 17 19.2 17H4.8C3.3 17 2 15.83 2 14.286V5.714ZM5 20a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z" fill-rule="evenodd" style="color: inherit"/>
+</svg>

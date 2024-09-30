@@ -1,5 +1,6 @@
 import path = require('path');
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { PROJECT_ICONAME } from '../../constants';
 
 export class TeamItem extends TreeItem {
     constructor(
@@ -9,8 +10,8 @@ export class TeamItem extends TreeItem {
     ) {
         super(label, collapsibleState);
         this.iconPath = {
-            light: path.join(__filename, '..', '..', '..', '..', 'resources', 'teamItem', 'workspace.png'),
-            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'teamItem', 'workspace_white.png')
+            light: path.join(__filename, '..', '..', '..', '..', 'resources', 'official_icons', 'dark', PROJECT_ICONAME),
+            dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'official_icons', 'white', PROJECT_ICONAME)
         };
     }
     contextValue = 'teamItem';

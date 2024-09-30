@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path _ngcontent-ng-c1909134112="" d="M12 2a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm7.121 4.293a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM4.878 4.879a1 1 0 0 1 1.415 0l1.414 1.414a1 1 0 0 1-1.414 1.414L4.878 6.293a1 1 0 0 1 0-1.414Z" fill="#FFFFFF" style="color: inherit"/>
+<path _ngcontent-ng-c1909134112="" clip-rule="evenodd" d="M7 12a5 5 0 1 1 10 0 5 5 0 0 1-10 0Zm5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill="#FFFFFF" fill-rule="evenodd" style="color: inherit"/>
+<path _ngcontent-ng-c1909134112="" d="m17.707 16.293 1.414 1.414a1 1 0 0 1-1.414 1.414l-1.414-1.414a1 1 0 0 1 1.414-1.414ZM6.293 19.121l1.414-1.414a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2ZM2 12a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1Zm17-1a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2Z" fill="#FFFFFF" style="color: inherit"/>
+</svg>

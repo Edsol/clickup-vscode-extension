@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <path _ngcontent-ng-c1909134112="" fill-rule="evenodd" clip-rule="evenodd" style="color: inherit" d="M1 4a1 1 0 0 1 1-1h4a1 1 0 0 1 0 2H5v14h1a1 1 0 1 1 0 2H2a1 1 0 1 1 0-2h1V5H2a1 1 0 0 1-1-1Zm9 0a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-1v14h1a1 1 0 1 1 0 2h-4a1 1 0 1 1 0-2h1V5h-1a1 1 0 0 1-1-1Z" />
+  <path _ngcontent-ng-c1909134112="" style="color: inherit" d="M5 11h7v2H5v-2Zm12 5.5c0-.621.504-1.125 1.125-1.125h3.75a1.125 1.125 0 0 1 0 2.25h-3.75A1.125 1.125 0 0 1 17 16.5Z" />
+  <path _ngcontent-ng-c1909134112="" style="color: inherit" d="M18 12a1 1 0 0 1 1 1v3.625a1 1 0 1 1-2 0V13a1 1 0 0 1 1-1Zm3 0a1 1 0 0 1 1 1v7a1 1 0 1 1-2 0v-7a1 1 0 0 1 1-1Z" />
+</svg>
