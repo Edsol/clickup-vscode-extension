@@ -49,7 +49,7 @@ function getColorTheme() {
 }
 
 const colorTheme = getColorTheme();
-const isDark = colorTheme === 'dark';
+export const isDark = colorTheme === 'dark';
 
 // Funzione per ottenere il percorso di un'icona SVG colorata
 export function getColoredIconPath(svgPath: string, color?: string): string {
