@@ -20,7 +20,7 @@ export default function TaskAssignees({ members, value }) {
         allowClear
         options={parsedMembers}
         style={{ width: "100%" }}
-        value={parsedSelectedMembers}
+        defaultValue={parsedSelectedMembers}
       />
     </div>
   );

@@ -7,7 +7,7 @@ export default function TaskName({ task }) {
   return (
     <div>
       <Text strong>Task name</Text>
-      <Input value={task.name} label="name" placeholder="task title" />
+      <Input defaultValue={task.name} label="name" placeholder="task title" />
     </div>
   );
 }

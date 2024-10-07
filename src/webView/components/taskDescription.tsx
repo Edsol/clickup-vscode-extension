@@ -7,7 +7,11 @@ export default function TaskDescription({ description }) {
   return (
     <div>
       <Text strong>Description</Text>
-      <TextArea rows={4} placeholder="Add a comment" value={description} />
+      <TextArea
+        rows={4}
+        placeholder="Add a comment"
+        defaultValue={description}
+      />
     </div>
   );
 }

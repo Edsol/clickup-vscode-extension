@@ -16,7 +16,7 @@ export default function TaskPriorities({ priorities, value }) {
       <Select
         options={parsedPriorities}
         style={{ width: "100%" }}
-        value={value}
+        defaultValue={value}
       />
     </div>
   );

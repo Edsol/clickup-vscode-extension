@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Task, Status, Priority, Tag, Assignee } from "../types";
 
-import { Skeleton } from "antd";
+import { Flex, Skeleton, Button } from "antd";
+
 import TaskButton from "./components/taskButton";
 import TaskName from "./components/taskName";
 import TaskStatus from "./components/taskStatus";
@@ -13,11 +14,10 @@ import TaskPriorities from "./components/taskPriorities";
 const vscode = (window as any).acquireVsCodeApi(); // Ottieni l'API di VS Code
 const app = () => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
+  const [disableSubmit, setDisabledSubmit] = React.useState<boolean>(true);
 
   const [task, setTask] = React.useState<Task>({});
-
   const [statuses, setStatuses] = React.useState<Array<Status>>({});
-
   const [priorities, setPriorities] = React.useState<Array<Priority>>({});
   const [members, setMembers] = React.useState<Array<Assignee>>({});
   const [tags, setTags] = React.useState<Array<Tag>>({});
@@ -54,7 +54,7 @@ const app = () => {
   }
 
   return (
-    <div>
+    <Flex gap="middle" vertical className="bg-white">
       <TaskButton task={task} />
       <TaskName task={task} />
       <TaskStatus statuses={statuses} value={task.status.id} />
@@ -62,7 +62,11 @@ const app = () => {
       <TaskAssignees members={members} value={task.assignees} />
       <TaskTags tags={tags} value={task.tags} />
       <TaskDescription description={task.description} />
-    </div>
+
+      <Button type="primary" disabled={disableSubmit}>
+        Save
+      </Button>
+    </Flex>
   );
 };
 

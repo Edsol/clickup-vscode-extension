@@ -13,7 +13,11 @@ export default function TaskStatus({ statuses, value }) {
   return (
     <div>
       <Text strong>Status</Text>
-      <Select options={parsedStatuses} style={{ width: "100%" }} value={value} />
+      <Select
+        options={parsedStatuses}
+        style={{ width: "100%" }}
+        defaultValue={value}
+      />
     </div>
   );
 }
