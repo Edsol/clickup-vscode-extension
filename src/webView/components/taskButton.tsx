@@ -1,17 +1,12 @@
 import * as React from "react";
 import { Button, Dropdown } from "antd";
 
-export function TaskButton({ task }) {
+export default function TaskButton({ task }) {
   const items = [
     {
       key: "1",
       label: (
-        <a
-          href="#"
-          onClick={(e) => {
-            navigator.clipboard.writeText(task.id);
-          }}
-        >
+        <a href="#" onClick={() => navigator.clipboard.writeText(task.id)}>
           Copy
         </a>
       )
