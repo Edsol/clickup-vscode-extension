@@ -251,7 +251,8 @@
     "test": "node ./out/test/runTest.js",
     "translate": "npx @vscode/l10n-dev export -0 ./l10n ./src",
     "deploy": "vsce publish",
-    "prepare": "husky"
+    "prepare": "husky",
+    "serve": "npx webpack serve"
   },
   "devDependencies": {
     "@babel/core": "^7.25.7",

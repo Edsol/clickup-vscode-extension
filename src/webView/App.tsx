@@ -11,8 +11,7 @@ import TaskDescription from "./components/taskDescription";
 import TaskTags from "./components/taskTags";
 import TaskPriorities from "./components/taskPriorities";
 
-const vscode = (window as any).acquireVsCodeApi(); // Ottieni l'API di VS Code
-const app = () => {
+const app = ({ setDarkTheme, vscode }) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
   const [disableSubmit, setDisabledSubmit] = React.useState<boolean>(true);
 

@@ -23,7 +23,7 @@ export default function TaskButton({ task }) {
 
   return (
     <div>
-      <Dropdown menu={{ items }} placement="bottom">
+      <Dropdown menu={{ items }} placement="right">
         <Button type="primary">{task.id}</Button>
       </Dropdown>
     </div>

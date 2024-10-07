@@ -108,6 +108,11 @@ export class EditWebview {
 		this.panel.webview.onDidReceiveMessage(message => {
 			console.log('message', message);
 			switch (message.type) {
+				case 'init':
+					this.sendMessage('theme', {
+						isDark: false
+					});
+					break;
 				case 'ready':
 					this.sendMessage('init', {
 						task: this.task,
