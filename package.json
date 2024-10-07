@@ -1,294 +1,295 @@
 {
-	"name": "clickup",
-	"displayName": "%displayName%",
-	"publisher": "edsol",
-	"description": "%description%",
-	"repository": "https://github.com/Edsol/clickup-vscode-extension",
-	"icon": "images/icon.png",
-	"bugs": {
-		"url": "https://github.com/Edsol/clickup-vscode-extension/issues",
-		"email": "edoardo.soloperto@gmail.com"
-	},
-	"version": "1.1.0",
-	"license": "AGPL 3.0",
-	"keywords": [
-		"clickup",
-		"click up",
-		"click",
-		"up"
-	],
-	"engines": {
-		"vscode": "^1.83.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onStartupFinished"
-	],
-	"main": "./out/extension.js",
-	"l10n": "./l10n",
-	"contributes": {
-		"configuration": [
-			{
-				"title": "ClickUp",
-				"properties": {
-					"clickup.showTaskTitle": {
-						"type": "boolean",
-						"default": true,
-						"description": "show the task name in the statusbar when a task is selected"
-					},
-					"clickup.trackTaskTime": {
-						"type": "boolean",
-						"default": true,
-						"description": "tracking the timing of activities"
-					}
-				}
-			}
-		],
-		"commands": [
-			{
-				"command": "clickup.setToken",
-				"title": "%setToken.title%",
-				"category": "ClickUp"
-			},
-			{
-				"command": "clickup.getToken",
-				"title": "%getToken.title%",
-				"category": "ClickUp"
-			},
-			{
-				"command": "clickup.deleteToken",
-				"title": "%deleteToken.title%",
-				"category": "ClickUp"
-			},
-			{
-				"command": "clickup.addTask",
-				"title": "%addTask.title%",
-				"category": "ClickUp",
-				"icon": "$(add)"
-			},
-			{
-				"command": "clickup.editTask",
-				"title": "%editTask.title%",
-				"category": "ClickUp",
-				"icon": "$(pencil)"
-			},
-			{
-				"command": "clickup.deleteTask",
-				"title": "%deleteTask.title%",
-				"category": "ClickUp",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.workOnTask",
-				"title": "%addTask.title%",
-				"category": "ClickUp",
-				"icon": "$(pin)"
-			},
-			{
-				"command": "clickup.refresh",
-				"title": "%refreshTask.title%",
-				"category": "ClickUp",
-				"icon": "$(sync)"
-			},
-			{
-				"command": "clickup.addSpace",
-				"title": "%addSpace.title%",
-				"category": "ClickUp",
-				"icon": "$(add)"
-			},
-			{
-				"command": "clickup.deleteSpace",
-				"title": "%deleteSpace.title%",
-				"category": "ClickUp",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.addFolder",
-				"title": "%addFolder.title%",
-				"category": "ClickUp",
-				"icon": "/resources/official_icons/folder.svg"
-			},
-			{
-				"command": "clickup.deleteFolder",
-				"title": "%deleteFolder.title%",
-				"category": "ClickUp",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.addList",
-				"title": "%addList.title%",
-				"category": "ClickUp",
-				"icon": "$(add)"
-			},
-			{
-				"command": "clickup.deleteList",
-				"title": "%deleteList.title%",
-				"category": "ClickUp",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "clickup.statusChanger",
-				"title": "%statusChanger.title%",
-				"category": "ClickUp",
-				"icon": {
-					"dark": "./resources/bar/logo_white.svg",
-					"light": "./resources/bar/logo_dark.svg"
-				}
-			},
-			{
-				"command": "clickup.showTimer",
-				"title": "Enable Branch Timer"
-			}
-		],
-		"menus": {
-			"scm/title": [
-				{
-					"when": "scmProvider == git",
-					"command": "clickup.statusChanger",
-					"group": "navigation"
-				}
-			],
-			"view/title": [
-				{
-					"command": "clickup.refresh",
-					"when": "view == clickupTasksView",
-					"group": "navigation"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "clickup.editTask",
-					"when": "viewItem == taskItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteTask",
-					"when": "viewItem == taskItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.workOnTask",
-					"when": "viewItem == taskItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteSpace",
-					"when": "viewItem == spaceItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.addList",
-					"when": "viewItem == folderItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteFolder",
-					"when": "viewItem == folderItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.deleteList",
-					"when": "viewItem == listItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.addTask",
-					"when": "viewItem == listItem",
-					"group": "inline"
-				},
-				{
-					"command": "clickup.addSpace",
-					"when": "viewItem == teamItem",
-					"group": "inline"
-				}
-			]
-		},
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "clickup",
-					"title": "ClickUp",
-					"icon": "./resources/bar/logo_sidebar.svg"
-				},
-				{
-					"id": "clickup-timer",
-					"title": "ClickUp Timers",
-					"icon": "timer_icon.svg"
-				}
-			]
-		},
-		"views": {
-			"clickup": [
-				{
-					"id": "tasksViewer",
-					"name": "%taskList.name%"
-				},
-				{
-					"id": "myTask",
-					"name": "%myTask.name%"
-				},
-				{
-					"id": "timeTracker",
-					"name": "%timeTracker.name%"
-				}
-			]
-		},
-		"viewsWelcome": [
-			{
-				"view": "clickupTasksView",
-				"contents": "Generate a token to load tasks, [learn more](https://www.clickup.com).\n[Set token](command:clickup.setToken)"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js",
-		"translate": "npx @vscode/l10n-dev export -0 ./l10n ./src",
-		"deploy": "vsce publish",
-		"prepare": "husky"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.25.7",
-		"@babel/preset-env": "^7.25.7",
-		"@babel/preset-react": "^7.25.7",
-		"@types/glob": "^7.2.0",
-		"@types/inflection": "^1.13.0",
-		"@types/mocha": "^9.1.0",
-		"@types/vscode": "^1.83.0",
-		"@typescript-eslint/eslint-plugin": "^5.12.1",
-		"@typescript-eslint/parser": "^5.12.1",
-		"@vscode/test-electron": "^2.1.2",
-		"babel-loader": "^9.2.1",
-		"css-loader": "^7.1.2",
-		"eslint": "^8.9.0",
-		"glob": "^7.2.0",
-		"husky": "^9.0.11",
-		"mocha": "^9.2.1",
-		"prettier": "^3.2.5",
-		"ts-loader": "^9.5.1",
-		"typescript": "^4.7.2",
-		"webpack": "^5.95.0",
-		"webpack-cli": "^5.1.4",
-		"webpack-dev-server": "^5.1.0"
-	},
-	"dependencies": {
-		"@babel/preset-typescript": "^7.25.7",
-		"@fortawesome/fontawesome-free": "^6.1.1",
-		"@types/node": "^20.12.7",
-		"@vscode/l10n": "^0.0.16",
-		"@vscode/l10n-dev": "^0.0.29",
-		"@yaireo/tagify": "^4.11.0",
-		"axios": "^1.6.8",
-		"bootstrap": "^5.1.3",
-		"clickup.js": "^3.0.1",
-		"dayjs": "^1.11.10",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
-	}
+  "name": "clickup",
+  "displayName": "%displayName%",
+  "publisher": "edsol",
+  "description": "%description%",
+  "repository": "https://github.com/Edsol/clickup-vscode-extension",
+  "icon": "images/icon.png",
+  "bugs": {
+    "url": "https://github.com/Edsol/clickup-vscode-extension/issues",
+    "email": "edoardo.soloperto@gmail.com"
+  },
+  "version": "1.1.0",
+  "license": "AGPL 3.0",
+  "keywords": [
+    "clickup",
+    "click up",
+    "click",
+    "up"
+  ],
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "l10n": "./l10n",
+  "contributes": {
+    "configuration": [
+      {
+        "title": "ClickUp",
+        "properties": {
+          "clickup.showTaskTitle": {
+            "type": "boolean",
+            "default": true,
+            "description": "show the task name in the statusbar when a task is selected"
+          },
+          "clickup.trackTaskTime": {
+            "type": "boolean",
+            "default": true,
+            "description": "tracking the timing of activities"
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "clickup.setToken",
+        "title": "%setToken.title%",
+        "category": "ClickUp"
+      },
+      {
+        "command": "clickup.getToken",
+        "title": "%getToken.title%",
+        "category": "ClickUp"
+      },
+      {
+        "command": "clickup.deleteToken",
+        "title": "%deleteToken.title%",
+        "category": "ClickUp"
+      },
+      {
+        "command": "clickup.addTask",
+        "title": "%addTask.title%",
+        "category": "ClickUp",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.editTask",
+        "title": "%editTask.title%",
+        "category": "ClickUp",
+        "icon": "$(pencil)"
+      },
+      {
+        "command": "clickup.deleteTask",
+        "title": "%deleteTask.title%",
+        "category": "ClickUp",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.workOnTask",
+        "title": "%addTask.title%",
+        "category": "ClickUp",
+        "icon": "$(pin)"
+      },
+      {
+        "command": "clickup.refresh",
+        "title": "%refreshTask.title%",
+        "category": "ClickUp",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "clickup.addSpace",
+        "title": "%addSpace.title%",
+        "category": "ClickUp",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.deleteSpace",
+        "title": "%deleteSpace.title%",
+        "category": "ClickUp",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.addFolder",
+        "title": "%addFolder.title%",
+        "category": "ClickUp",
+        "icon": "/resources/official_icons/folder.svg"
+      },
+      {
+        "command": "clickup.deleteFolder",
+        "title": "%deleteFolder.title%",
+        "category": "ClickUp",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.addList",
+        "title": "%addList.title%",
+        "category": "ClickUp",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clickup.deleteList",
+        "title": "%deleteList.title%",
+        "category": "ClickUp",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clickup.statusChanger",
+        "title": "%statusChanger.title%",
+        "category": "ClickUp",
+        "icon": {
+          "dark": "./resources/bar/logo_white.svg",
+          "light": "./resources/bar/logo_dark.svg"
+        }
+      },
+      {
+        "command": "clickup.showTimer",
+        "title": "Enable Branch Timer"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "when": "scmProvider == git",
+          "command": "clickup.statusChanger",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "clickup.refresh",
+          "when": "view == clickupTasksView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "clickup.editTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.workOnTask",
+          "when": "viewItem == taskItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteSpace",
+          "when": "viewItem == spaceItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.addList",
+          "when": "viewItem == folderItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteFolder",
+          "when": "viewItem == folderItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.deleteList",
+          "when": "viewItem == listItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.addTask",
+          "when": "viewItem == listItem",
+          "group": "inline"
+        },
+        {
+          "command": "clickup.addSpace",
+          "when": "viewItem == teamItem",
+          "group": "inline"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "clickup",
+          "title": "ClickUp",
+          "icon": "./resources/bar/logo_sidebar.svg"
+        },
+        {
+          "id": "clickup-timer",
+          "title": "ClickUp Timers",
+          "icon": "timer_icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "clickup": [
+        {
+          "id": "tasksViewer",
+          "name": "%taskList.name%"
+        },
+        {
+          "id": "myTask",
+          "name": "%myTask.name%"
+        },
+        {
+          "id": "timeTracker",
+          "name": "%timeTracker.name%"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "clickupTasksView",
+        "contents": "Generate a token to load tasks, [learn more](https://www.clickup.com).\n[Set token](command:clickup.setToken)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "translate": "npx @vscode/l10n-dev export -0 ./l10n ./src",
+    "deploy": "vsce publish",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.7",
+    "@babel/preset-env": "^7.25.7",
+    "@babel/preset-react": "^7.25.7",
+    "@types/glob": "^7.2.0",
+    "@types/inflection": "^1.13.0",
+    "@types/mocha": "^9.1.0",
+    "@types/vscode": "^1.83.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "@vscode/test-electron": "^2.1.2",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "eslint": "^8.9.0",
+    "glob": "^7.2.0",
+    "husky": "^9.0.11",
+    "mocha": "^9.2.1",
+    "prettier": "^3.2.5",
+    "ts-loader": "^9.5.1",
+    "typescript": "^4.7.2",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.25.7",
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "@types/node": "^20.12.7",
+    "@vscode/l10n": "^0.0.16",
+    "@vscode/l10n-dev": "^0.0.29",
+    "@yaireo/tagify": "^4.11.0",
+    "antd": "^5.21.2",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.1.3",
+    "clickup.js": "^3.0.1",
+    "dayjs": "^1.11.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
 }

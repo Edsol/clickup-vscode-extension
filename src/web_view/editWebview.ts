@@ -1,9 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import { WebviewHelper } from './webviewHelper';
 import { Task } from '../types';
 import { ApiWrapper } from '../lib/apiWrapper';
-import * as constant from '../constants';
 import { TaskListProvider } from '../tree_view/taskListProvider';
 import { isDark } from '../utils';
 
@@ -11,8 +8,10 @@ export class EditWebview {
 	context: vscode.ExtensionContext;
 	wrapper: ApiWrapper;
 	panel: vscode.WebviewPanel;
+	task: Task;
 	webviewhelper: any;
 	htmlFile: string;
+	promises: any;
 
 	dependecies: any;
 	statuses: any;
@@ -21,12 +20,34 @@ export class EditWebview {
 	priorities: any;
 
 	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: TaskListProvider) {
-		// this.context = context;
-		// this.wrapper = wrapper;
+		this.context = context;
+		this.wrapper = wrapper;
+		this.task = task;
+
+		this.promises = [
+			new Promise(async (resolve) => {
+				resolve(await wrapper.getMembers(task.list.id));
+			}),
+			new Promise(async (resolve) => {
+				resolve(await wrapper.getStatus(task.list.id));
+			}),
+			new Promise(async (resolve) => {
+				resolve(await wrapper.getTags(task.space.id));
+			}),
+			new Promise(async (resolve) => {
+				resolve(await wrapper.getPriorities(task.space.id));
+			}),
+		];
+
+		Promise.all(this.promises).then((values) => {
+			[this.members, this.statuses, this.tags, this.priorities] = values;
+			console.log("ALL PROMISE RESOLVED");
+		});
+
 
 		console.log('isDark', isDark);
 
-		const panel = vscode.window.createWebviewPanel(
+		this.panel = vscode.window.createWebviewPanel(
 			'editTask',
 			task.name,
 			vscode.ViewColumn.One,
@@ -35,22 +56,27 @@ export class EditWebview {
 			}
 		);
 
+		this.initPanel(task);
+		this.messageHandler();
+	}
+
+	private initPanel(task) {
 		const updateWebview = () => {
-			panel!.webview.html = this.getWebviewContent();
+			this.panel!.webview.html = this.getWebviewContent();
 		};
 
 		updateWebview();
 
 		// Crea un watcher per ricaricare la WebView quando il file cambia
 		const watcher = vscode.workspace.createFileSystemWatcher(
-			new vscode.RelativePattern(context.extensionPath, '**/*.{ts,js,tsx}')
+			new vscode.RelativePattern(this.context.extensionPath, '**/*.{ts,js,tsx}')
 		);
 
 		watcher.onDidChange(() => {
 			updateWebview();  // Ricarica la WebView
 		});
 
-		context.subscriptions.push(watcher);
+		this.context.subscriptions.push(watcher);
 	}
 
 	private getWebviewContent(scriptUri?: vscode.Uri) {
@@ -70,4 +96,32 @@ export class EditWebview {
 		</html>`;
 	}
 
+	private async sendMessage(type: string, data: Object) {
+		console.log('sended', type, data);
+		return await this.panel.webview.postMessage({
+			type: type,
+			data: data
+		});
+	}
+
+	private messageHandler() {
+		this.panel.webview.onDidReceiveMessage(message => {
+			console.log('message', message);
+			switch (message.type) {
+				case 'ready':
+					this.sendMessage('init', {
+						task: this.task,
+						statuses: this.statuses,
+						tags: this.tags,
+						priorities: this.priorities,
+						members: this.members
+					});
+
+					break;
+				case 'apiData':
+					console.log("message from webview", message.data);
+					break;
+			}
+		});
+	}
 }

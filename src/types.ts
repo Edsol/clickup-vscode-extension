@@ -68,6 +68,7 @@ export type Dependecie = undefined;
 export type Parent = undefined;
 
 export type Status = {
+    id: string,
     status: string,
     color: string,
     hide_label: true,
