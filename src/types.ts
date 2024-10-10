@@ -1,4 +1,5 @@
-// Clickup Types
+/* eslint-disable @typescript-eslint/naming-convention */
+
 export type Task = {
     archived: boolean,
     assignees: Assignee[],
@@ -37,6 +38,30 @@ export type Task = {
     timeSpend: number,
     url: string,
     watchers: Watcher[]
+};
+
+export type TaskUpdate = {
+    name?: string,
+    description?: string,
+    status?: string,
+    priority?: number,
+    due_date?: number,
+    due_date_time?: number,
+    parent?: string,
+    time_estimate?: number,
+    start_date?: number,
+    start_date_time?: number,
+    points?: number,
+    assignees?: AssigneesUpdate,
+    group_assignees?: {
+        add: string[],
+        rem: string[]
+    },
+    archived?: boolean
+};
+
+export type AssigneesUpdate = {
+    add: number[], rem: number[]
 };
 
 export type TaskLocation = {
@@ -251,3 +276,5 @@ export type Time = {
     user: User,
     wid: string
 };
+
+/* eslint-enable @typescript-eslint/naming-convention */

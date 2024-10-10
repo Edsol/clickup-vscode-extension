@@ -14,8 +14,9 @@ export default function TaskAssignees({ members, value, setValue }) {
   });
 
   const handleChange = (value) => {
+    console.log("assignees", value);
     setValue(() => ({
-      priority: Number.parseInt(value)
+      assignees: value
     }));
   };
 

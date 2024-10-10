@@ -8,6 +8,7 @@ import * as constant from '../constants';
 export class EditWebview {
 	context: vscode.ExtensionContext;
 	wrapper: ApiWrapper;
+	listProvider: TaskListProvider;
 	panel: vscode.WebviewPanel;
 	task: Task;
 	webviewhelper: any;
@@ -23,6 +24,7 @@ export class EditWebview {
 	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: TaskListProvider) {
 		this.context = context;
 		this.wrapper = wrapper;
+		this.listProvider = provider;
 		this.task = task;
 
 		this.promises = [
@@ -42,11 +44,7 @@ export class EditWebview {
 
 		Promise.all(this.promises).then((values) => {
 			[this.members, this.statuses, this.tags, this.priorities] = values;
-			console.log("ALL PROMISE RESOLVED");
 		});
-
-
-		console.log('isDark', isDark);
 
 		this.panel = vscode.window.createWebviewPanel(
 			'editTask',
@@ -106,7 +104,6 @@ export class EditWebview {
 
 	private messageHandler() {
 		this.panel.webview.onDidReceiveMessage(message => {
-			console.log('message', message);
 			switch (message.type) {
 				case 'init':
 					this.sendMessage('theme', {
@@ -118,7 +115,6 @@ export class EditWebview {
 
 					break;
 				case 'save':
-					console.log("message from webview", message.data);
 					this.updateTask(this.task, message.data.task);
 					break;
 			}
@@ -136,46 +132,14 @@ export class EditWebview {
 	}
 
 	private async updateTask(task: Task, data: any) {
-		console.log("TO SAVE", data);
-		// var taskData = WebviewHelper.normalize(data, constant.DEFAULT_TASK_DETAILS);
 		const response = await this.wrapper.updateTask(task, data);
-		console.log('response', response, typeof response);
 		if (response) {
 			vscode.window.showInformationMessage(constant.TASK_UPDATE_MESSAGE);
 			this.task = response;
 			this.pushToWebview(); // update data in webview
+			this.listProvider.refresh();
 		} else {
 			vscode.window.showErrorMessage(constant.TASK_UPDATE_ERROR_MESSAGE);
 		}
-	}
-
-	private normalize(data: any, mapField: Array<String>) {
-		if (data.assignees) {
-			data.assignees = data.assignees.map((member: any) => {
-				return member.id;
-			});
-		}
-		if (data.status) {
-			data.status = data.status.value;
-		}
-		if (data.priority) {
-			data.priority = parseInt(data.priority.id);
-		}
-		if (data.tags) {
-			data.tags = data.tags.map((tag: any) => {
-				return tag.name;
-			});
-		}
-
-		var filteredData: any = {};
-
-		Object.entries(data).map((element: any) => {
-			var key = element[0];
-			var value = element[1];
-			if (mapField.includes(key) && value !== null) {
-				filteredData[key] = value;
-			}
-		});
-		return filteredData;
 	}
 }

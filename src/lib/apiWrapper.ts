@@ -1,7 +1,7 @@
 const clickup = require('clickup.js');
 const buildSearchParams = require('clickup.js/src/utils/buildSearchParams');
 
-import { Task, Member, Statuses, Tag, Team, Tracking, CreateTime, Time } from '../types';
+import { Task, Member, Statuses, Tag, Team, Tracking, CreateTime, Time, Assignee, TaskUpdate, AssigneesUpdate } from '../types';
 
 export class ApiWrapper {
     clickup: typeof clickup;
@@ -323,14 +323,42 @@ export class ApiWrapper {
      * 
      * @returns object
      */
-    async updateTask(task: Task, data: Task): Promise<Task | undefined> {
-        const { body } = await this.clickup.tasks.update(task.id, data);
+    async updateTask(task: Task, data: any): Promise<Task | undefined> {
+        let taskUpdate = this.mapTaskToTaskUpdate(data);
+        if (data.assignees) {
+            taskUpdate.assignees = await this.parseAssignees(task.assignees, data.assignees);
+        }
+
+        const { body } = await this.clickup.tasks.update(task.id, taskUpdate);
         if (data.tags) {
-            console.log('body', body);
             await this.updateTaskTags(task.id, task.tags, data.tags);
         }
+
         return body;
     }
+
+    /* eslint-disable @typescript-eslint/naming-convention */
+    private mapTaskToTaskUpdate(task: Task): TaskUpdate {
+        const fieldsToMap: Partial<TaskUpdate> = {
+            name: task.name,
+            description: task.description,
+            status: task.status?.id,
+            priority: task.priority?.id,
+            due_date: task.dueDate ? new Date(task.dueDate).getTime() : undefined,
+            start_date: task.startDate ? new Date(task.startDate).getTime() : undefined,
+            archived: task.archived,
+        };
+
+        const taskUpdate = Object.entries(fieldsToMap).reduce((acc, [key, value]) => {
+            if (value !== null && value !== undefined) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {} as TaskUpdate);
+
+        return taskUpdate;
+    }
+    /* eslint-enable @typescript-eslint/naming-convention */
 
     /**
      *
@@ -341,7 +369,6 @@ export class ApiWrapper {
      * @return {*} 
      * @memberof ApiWrapper
      */
-    //TODO: refactoring function
     async updateTaskTags(taskId: string, previousTags: Array<Tag>, tags?: Array<string | Tag>) {
         if (!tags || tags.length === 0) {
             // remove all tags
@@ -366,6 +393,38 @@ export class ApiWrapper {
             }
         }
     }
+    /**
+     *
+     *
+     * @param {Assignee[]} previousAssignees
+     * @param {Assignee[]} [newAssignees]
+     * @return {*} 
+     * @memberof ApiWrapper
+     */
+    async parseAssignees(previousAssignees: Assignee[], newAssignees?: number[]): Promise<AssigneesUpdate> {
+        // Se `newAssignees` è undefined o un array vuoto, rimuovi tutti gli assegnatari
+        if (!newAssignees || newAssignees.length === 0) {
+            return {
+                add: [],
+                rem: previousAssignees.map(assignee => assignee.id), // Rimuovi tutti gli assegnatari precedenti
+            };
+        }
+
+        // Ottieni gli ID degli assegnatari precedenti
+        const previousAssigneeIds = previousAssignees.map(assignee => assignee.id);
+
+        // Crea Set per una verifica rapida degli ID
+        const newAssigneeSet = new Set(newAssignees);
+        const previousAssigneeSet = new Set(previousAssigneeIds);
+
+        // Trova gli ID degli assegnatari da aggiungere (presenti in `newAssignees` ma non in `previousAssigneeSet`)
+        const add = newAssignees.filter(id => !previousAssigneeSet.has(id));
+
+        // Trova gli ID degli assegnatari da rimuovere (presenti in `previousAssigneeIds` ma non in `newAssigneeSet`)
+        const rem = previousAssigneeIds.filter(id => !newAssigneeSet.has(id));
+
+        return { add, rem };
+    }
 
     /**
      *
@@ -386,6 +445,7 @@ export class ApiWrapper {
      * @return {*} 
      * @memberof ApiWrapper
      */
+    /* eslint-disable @typescript-eslint/naming-convention */
     async getMyTask(teamId: string, assignId: string) {
         const options = {
             "assignees[]": [
@@ -397,4 +457,5 @@ export class ApiWrapper {
         const { body } = await this.clickup.teams.getFilteredTasks(teamId, options);
         return body.tasks;
     }
+    /* eslint-enable @typescript-eslint/naming-convention */
 }
