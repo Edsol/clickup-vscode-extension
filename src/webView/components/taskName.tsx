@@ -5,7 +5,8 @@ const { Text } = Typography;
 
 export default function TaskName({ task, setValue }) {
   const handleChange = (value) => {
-    setValue(() => ({
+    setValue((prevFields) => ({
+      ...prevFields,
       name: value.currentTarget.value
     }));
   };

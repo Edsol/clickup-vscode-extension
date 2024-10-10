@@ -3,23 +3,28 @@ import { Select, Typography } from "antd";
 const { Text } = Typography;
 
 export default function TaskTags({ tags, value, setValue }) {
-  const parseTags =
-    tags.map((tag, key) => {
+  let parseTags = [];
+  if (tags) {
+    parseTags = tags.map((tag, key) => {
       return {
         id: key,
         value: tag.name,
         label: tag.name
       };
-    }) || {};
+    });
+  }
 
-  const parsedSelectedTags =
-    value.map((tag) => {
+  let parsedSelectedTags = [];
+
+  if (value) {
+    parsedSelectedTags = value.map((tag) => {
       return tag.name;
-    }) || {};
+    });
+  }
 
   const handleChange = (value) => {
-    console.log("tags value", value);
-    setValue(() => ({
+    setValue((prevFields) => ({
+      ...prevFields,
       tags: value
     }));
   };

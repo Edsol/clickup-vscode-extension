@@ -3,19 +3,27 @@ import { Select, Typography } from "antd";
 const { Text } = Typography;
 
 export default function TaskAssignees({ members, value, setValue }) {
-  const parsedMembers = members.map((member) => {
-    return {
-      value: member.id,
-      label: member.username
-    };
-  });
-  const parsedSelectedMembers = value.map((member) => {
-    return member.id;
-  });
+  let parsedMembers = [];
+
+  if (parsedMembers) {
+    parsedMembers = members.map((member) => {
+      return {
+        value: member.id,
+        label: member.username
+      };
+    });
+  }
+  let parsedSelectedMembers = [];
+
+  if (value) {
+    parsedSelectedMembers = value.map((member) => {
+      return member.id;
+    });
+  }
 
   const handleChange = (value) => {
-    console.log("assignees", value);
-    setValue(() => ({
+    setValue((prevFields) => ({
+      ...prevFields,
       assignees: value
     }));
   };

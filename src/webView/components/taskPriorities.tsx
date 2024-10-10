@@ -3,15 +3,22 @@ import { Input, Select, Typography } from "antd";
 const { Text } = Typography;
 
 export default function TaskPriorities({ priorities, value, setValue }) {
-  const parsedPriorities = priorities.map((priority) => {
-    return {
-      value: priority.id,
-      label: priority.priority
-    };
-  });
+  let parsedPriorities = [];
+
+  if (priorities) {
+    parsedPriorities = priorities.map((priority) => {
+      return {
+        value: priority.id,
+        label: priority.priority
+      };
+    });
+  }
 
   const handleChange = (value) => {
-    setValue(() => ({
+    console.log("priority handle", value);
+
+    setValue((prevFields) => ({
+      ...prevFields,
       priority: Number.parseInt(value)
     }));
   };

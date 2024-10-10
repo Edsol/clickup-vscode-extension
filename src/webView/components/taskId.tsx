@@ -2,6 +2,9 @@ import * as React from "react";
 import { Button, Dropdown } from "antd";
 
 export default function TaskId({ task }) {
+  if (task !== undefined) {
+    return;
+  }
   const items = [
     {
       key: "1",

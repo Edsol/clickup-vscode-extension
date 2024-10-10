@@ -55,11 +55,11 @@ export class EditWebview {
 			}
 		);
 
-		this.initPanel(task);
+		this.initPanel();
 		this.messageHandler();
 	}
 
-	private initPanel(task) {
+	private initPanel() {
 		const updateWebview = () => {
 			this.panel!.webview.html = this.getWebviewContent();
 		};

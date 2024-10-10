@@ -53,7 +53,6 @@ const app = ({ setDarkTheme, vscode }) => {
   }
 
   function submit() {
-    console.log("SUBMIT DATA", modifiedFields);
     vscode.postMessage({
       type: "save",
       data: {
@@ -68,7 +67,7 @@ const app = ({ setDarkTheme, vscode }) => {
       <TaskName task={task} setValue={setModifiedFields} />
       <TaskStatus
         statuses={statuses}
-        value={task.status.status}
+        value={task.status ? task.status.status : {}}
         setValue={setModifiedFields}
       />
       <TaskPriorities

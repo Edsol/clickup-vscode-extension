@@ -373,7 +373,7 @@ export class ApiWrapper {
         if (!tags || tags.length === 0) {
             // remove all tags
             for (const tag of previousTags) {
-                await this.clickup.tasks.removeTag(taskId, tag.name);
+                const res = await this.clickup.tasks.removeTag(taskId, tag.name);
             }
             return;
         }

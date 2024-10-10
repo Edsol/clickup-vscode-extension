@@ -3,15 +3,19 @@ import { Input, Select, Typography } from "antd";
 const { Text } = Typography;
 
 export default function TaskStatus({ statuses, value, setValue }) {
-  const parsedStatuses = statuses.map((status) => {
-    return {
-      value: status.status,
-      label: status.status
-    };
-  });
+  let parsedStatuses = [];
+  if (statuses) {
+    parsedStatuses = statuses.map((status) => {
+      return {
+        value: status.status,
+        label: status.status
+      };
+    });
+  }
 
   const handleChange = (value) => {
-    setValue(() => ({
+    setValue((prevFields) => ({
+      ...prevFields,
       status: value
     }));
   };
