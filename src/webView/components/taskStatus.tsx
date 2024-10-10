@@ -2,13 +2,19 @@ import * as React from "react";
 import { Input, Select, Typography } from "antd";
 const { Text } = Typography;
 
-export default function TaskStatus({ statuses, value }) {
+export default function TaskStatus({ statuses, value, setValue }) {
   const parsedStatuses = statuses.map((status) => {
     return {
-      value: status.id,
+      value: status.status,
       label: status.status
     };
   });
+
+  const handleChange = (value) => {
+    setValue(() => ({
+      status: value
+    }));
+  };
 
   return (
     <div>
@@ -17,6 +23,7 @@ export default function TaskStatus({ statuses, value }) {
         options={parsedStatuses}
         style={{ width: "100%" }}
         defaultValue={value}
+        onChange={handleChange}
       />
     </div>
   );

@@ -3,7 +3,7 @@ import { Task, Status, Priority, Tag, Assignee } from "../types";
 
 import { Flex, Skeleton, Button } from "antd";
 
-import TaskButton from "./components/taskButton";
+import TaskId from "./components/taskId";
 import TaskName from "./components/taskName";
 import TaskStatus from "./components/taskStatus";
 import TaskAssignees from "./components/taskAssignees";
@@ -13,9 +13,9 @@ import TaskPriorities from "./components/taskPriorities";
 
 const app = ({ setDarkTheme, vscode }) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
-  const [disableSubmit, setDisabledSubmit] = React.useState<boolean>(true);
 
   const [task, setTask] = React.useState<Task>({});
+  const [modifiedFields, setModifiedFields] = React.useState<Task>({});
   const [statuses, setStatuses] = React.useState<Array<Status>>({});
   const [priorities, setPriorities] = React.useState<Array<Priority>>({});
   const [members, setMembers] = React.useState<Array<Assignee>>({});
@@ -27,8 +27,8 @@ const app = ({ setDarkTheme, vscode }) => {
     const handleMessage = async (event: MessageEvent) => {
       const { type, data } = event.data;
 
-      if (type === "init") {
-        console.log("init message", data);
+      if (type === "task") {
+        console.log("task message", data);
 
         setTask(data.task);
         setStatuses(data.statuses);
@@ -52,17 +52,39 @@ const app = ({ setDarkTheme, vscode }) => {
     return <Skeleton />;
   }
 
+  function submit() {
+    console.log("SUBMIT DATA", modifiedFields);
+    vscode.postMessage({
+      type: "save",
+      data: {
+        task: modifiedFields
+      }
+    });
+  }
+
   return (
     <Flex gap="middle" vertical className="bg-white">
-      <TaskButton task={task} />
-      <TaskName task={task} />
-      <TaskStatus statuses={statuses} value={task.status.id} />
-      <TaskPriorities priorities={priorities} value={task.priority} />
-      <TaskAssignees members={members} value={task.assignees} />
-      <TaskTags tags={tags} value={task.tags} />
-      <TaskDescription description={task.description} />
+      <TaskId task={task} />
+      <TaskName task={task} setValue={setModifiedFields} />
+      <TaskStatus
+        statuses={statuses}
+        value={task.status.status}
+        setValue={setModifiedFields}
+      />
+      <TaskPriorities
+        priorities={priorities}
+        value={task.priority}
+        setValue={setModifiedFields}
+      />
+      <TaskAssignees
+        members={members}
+        value={task.assignees}
+        setValue={setModifiedFields}
+      />
+      <TaskTags tags={tags} value={task.tags} setValue={setModifiedFields} />
+      <TaskDescription value={task.description} setValue={setModifiedFields} />
 
-      <Button type="primary" disabled={disableSubmit}>
+      <Button color="default" variant="filled" onClick={submit}>
         Save
       </Button>
     </Flex>

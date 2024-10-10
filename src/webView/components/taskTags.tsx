@@ -2,7 +2,7 @@ import * as React from "react";
 import { Select, Typography } from "antd";
 const { Text } = Typography;
 
-export default function TaskTags({ tags, value }) {
+export default function TaskTags({ tags, value, setValue }) {
   const parseTags =
     tags.map((tag, key) => {
       return {
@@ -17,6 +17,13 @@ export default function TaskTags({ tags, value }) {
       return tag.name;
     }) || {};
 
+  const handleChange = (value) => {
+    console.log("tags value", value);
+    setValue(() => ({
+      tags: value
+    }));
+  };
+
   return (
     <div>
       <Text strong>Tags</Text>
@@ -26,6 +33,7 @@ export default function TaskTags({ tags, value }) {
         options={parseTags}
         style={{ width: "100%" }}
         defaultValue={parsedSelectedTags}
+        onChange={handleChange}
       />
     </div>
   );

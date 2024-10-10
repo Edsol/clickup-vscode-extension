@@ -323,8 +323,12 @@ export class ApiWrapper {
      * 
      * @returns object
      */
-    async updateTask(taskId: string, data: unknown): Promise<unknown> {
-        const { body } = await this.clickup.tasks.update(taskId, data);
+    async updateTask(task: Task, data: Task): Promise<Task | undefined> {
+        const { body } = await this.clickup.tasks.update(task.id, data);
+        if (data.tags) {
+            console.log('body', body);
+            await this.updateTaskTags(task.id, task.tags, data.tags);
+        }
         return body;
     }
 
@@ -338,28 +342,27 @@ export class ApiWrapper {
      * @memberof ApiWrapper
      */
     //TODO: refactoring function
-    async updateTaskTags(taskId: string, previousTags: Array<Tag>, tags: Array<string>) {
-        if (tags === undefined) {
-            //remove all tags
-            Object.values(previousTags).map((tag: Tag) => {
-                this.clickup.tasks.removeTag(taskId, tag.name);
-            });
+    async updateTaskTags(taskId: string, previousTags: Array<Tag>, tags?: Array<string | Tag>) {
+        if (!tags || tags.length === 0) {
+            // remove all tags
+            for (const tag of previousTags) {
+                await this.clickup.tasks.removeTag(taskId, tag.name);
+            }
             return;
         }
 
-        Object.values(previousTags).map((tag: Tag) => {
-            if (tag.name in tags) {
-                this.clickup.tasks.removeTag(taskId, tag.name);
-            }
-            // if (Object.values(tags).includes(tag.name) === false) {
-            //     this.clickup.tasks.removeTag(taskId, tag.name);
-            // }
-        });
+        const newTagNames = tags.map(tag => typeof tag === 'string' ? tag : tag.name);
 
-        for (const tagName of tags) {
-            const tagFound = previousTags.filter((obj: Tag) => obj.name === tagName);
-            if (tagFound.length === 0) {
-                this.clickup.tasks.addTag(taskId, tagName);
+        for (const tag of previousTags) {
+            if (!newTagNames.includes(tag.name)) {
+                await this.clickup.tasks.removeTag(taskId, tag.name);
+            }
+        }
+
+        for (const tagName of newTagNames) {
+            const tagExists = previousTags.some(tag => tag.name === tagName);
+            if (!tagExists) {
+                await this.clickup.tasks.addTag(taskId, tagName);
             }
         }
     }

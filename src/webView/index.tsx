@@ -5,6 +5,8 @@ import App from "./App";
 import { ConfigProvider, theme } from "antd";
 import itIT from "antd/locale/it_IT";
 
+// import "./app.css";
+
 const vscode = (window as any).acquireVsCodeApi();
 vscode.postMessage({ type: "init", text: "init react app!" });
 // Trasforma build in un componente React
@@ -22,7 +24,9 @@ const RootComponent: React.FC = () => {
     <ConfigProvider
       locale={itIT}
       theme={{
-        algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm
+        // algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        algorithm: theme.defaultAlgorithm,
+        cssVar: true
       }}
     >
       <App setDarkTheme={setIsDarkTheme} vscode={vscode} />

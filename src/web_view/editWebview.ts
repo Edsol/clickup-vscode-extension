@@ -3,6 +3,7 @@ import { Task } from '../types';
 import { ApiWrapper } from '../lib/apiWrapper';
 import { TaskListProvider } from '../tree_view/taskListProvider';
 import { isDark } from '../utils';
+import * as constant from '../constants';
 
 export class EditWebview {
 	context: vscode.ExtensionContext;
@@ -97,7 +98,6 @@ export class EditWebview {
 	}
 
 	private async sendMessage(type: string, data: Object) {
-		console.log('sended', type, data);
 		return await this.panel.webview.postMessage({
 			type: type,
 			data: data
@@ -114,19 +114,68 @@ export class EditWebview {
 					});
 					break;
 				case 'ready':
-					this.sendMessage('init', {
-						task: this.task,
-						statuses: this.statuses,
-						tags: this.tags,
-						priorities: this.priorities,
-						members: this.members
-					});
+					this.pushToWebview();
 
 					break;
-				case 'apiData':
+				case 'save':
 					console.log("message from webview", message.data);
+					this.updateTask(this.task, message.data.task);
 					break;
 			}
 		});
+	}
+
+	private pushToWebview() {
+		this.sendMessage('task', {
+			task: this.task,
+			statuses: this.statuses,
+			tags: this.tags,
+			priorities: this.priorities,
+			members: this.members
+		});
+	}
+
+	private async updateTask(task: Task, data: any) {
+		console.log("TO SAVE", data);
+		// var taskData = WebviewHelper.normalize(data, constant.DEFAULT_TASK_DETAILS);
+		const response = await this.wrapper.updateTask(task, data);
+		console.log('response', response, typeof response);
+		if (response) {
+			vscode.window.showInformationMessage(constant.TASK_UPDATE_MESSAGE);
+			this.task = response;
+			this.pushToWebview(); // update data in webview
+		} else {
+			vscode.window.showErrorMessage(constant.TASK_UPDATE_ERROR_MESSAGE);
+		}
+	}
+
+	private normalize(data: any, mapField: Array<String>) {
+		if (data.assignees) {
+			data.assignees = data.assignees.map((member: any) => {
+				return member.id;
+			});
+		}
+		if (data.status) {
+			data.status = data.status.value;
+		}
+		if (data.priority) {
+			data.priority = parseInt(data.priority.id);
+		}
+		if (data.tags) {
+			data.tags = data.tags.map((tag: any) => {
+				return tag.name;
+			});
+		}
+
+		var filteredData: any = {};
+
+		Object.entries(data).map((element: any) => {
+			var key = element[0];
+			var value = element[1];
+			if (mapField.includes(key) && value !== null) {
+				filteredData[key] = value;
+			}
+		});
+		return filteredData;
 	}
 }
