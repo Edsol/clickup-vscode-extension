@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Input, Select, Typography } from "antd";
-const { Text } = Typography;
+import { Select, Button, Space } from "antd";
+import CheckBold from "@resources/official_icons/dark/checkBold.svg";
 
 export default function TaskStatus({ statuses, value, setValue }) {
   let parsedStatuses = [];
@@ -21,14 +21,20 @@ export default function TaskStatus({ statuses, value, setValue }) {
   };
 
   return (
-    <div>
-      <Text strong>Status</Text>
+    <Space.Compact direction="orizontal" width="100%">
       <Select
         options={parsedStatuses}
         style={{ width: "100%" }}
         defaultValue={value}
         onChange={handleChange}
       />
-    </div>
+      <Button>
+        <CheckBold
+          width="15"
+          height="15"
+          title="Contrassegna come completato"
+        />
+      </Button>
+    </Space.Compact>
   );
 }

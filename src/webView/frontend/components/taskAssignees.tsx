@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Select, Typography } from "antd";
-const { Text } = Typography;
+import { Select } from "antd";
 
 export default function TaskAssignees({ members, value, setValue }) {
   let parsedMembers = [];
@@ -30,7 +29,6 @@ export default function TaskAssignees({ members, value, setValue }) {
 
   return (
     <div>
-      <Text strong>Assignees</Text>
       <Select
         mode="multiple"
         allowClear

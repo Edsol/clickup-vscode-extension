@@ -1,7 +1,5 @@
 import * as React from "react";
-import { Task } from "../../../types";
-import { Input, Typography, Form } from "antd";
-const { Text } = Typography;
+import { Input } from "antd";
 
 export default function TaskName({ task, setValue }) {
   const handleChange = (value) => {
@@ -13,7 +11,6 @@ export default function TaskName({ task, setValue }) {
 
   return (
     <div>
-      <Text strong>Task name</Text>
       <Input
         defaultValue={task.name}
         label="name"

@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, Badge } from "antd";
 
 export default function TaskId({ task }) {
-  if (task !== undefined) {
+  if (task === undefined) {
     return;
   }
   const items = [
@@ -27,7 +27,10 @@ export default function TaskId({ task }) {
   return (
     <div>
       <Dropdown menu={{ items }} placement="right">
-        <Button type="primary">{task.id}</Button>
+        <Badge
+          count={task.id}
+          style={{ backgroundColor: "#FFF", color: "#000", cursor: "pointer" }}
+        />
       </Dropdown>
     </div>
   );

@@ -15,7 +15,7 @@ export default function TaskDescription({ value, setValue }) {
     <div>
       <Text strong>Description</Text>
       <TextArea
-        rows={4}
+        rows={10}
         placeholder="Add a comment"
         defaultValue={value}
         onChange={handleChange}

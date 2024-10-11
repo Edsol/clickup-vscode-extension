@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Input, Select, Typography } from "antd";
-const { Text } = Typography;
+import { Select, Space } from "antd";
+import PriorityIcon from "@resources/official_icons/dark/priority.svg";
 
 export default function TaskPriorities({ priorities, value, setValue }) {
   let parsedPriorities = [];
@@ -9,7 +9,8 @@ export default function TaskPriorities({ priorities, value, setValue }) {
     parsedPriorities = priorities.map((priority) => {
       return {
         value: priority.id,
-        label: priority.priority
+        label: priority.priority,
+        color: priority.color
       };
     });
   }
@@ -25,13 +26,23 @@ export default function TaskPriorities({ priorities, value, setValue }) {
 
   return (
     <div>
-      <Text strong>Priority</Text>
       <Select
         options={parsedPriorities}
         style={{ width: "100%" }}
         defaultValue={value ? value.id : null}
         onChange={handleChange}
         allowClear
+        placeholder="select a priority"
+        optionRender={(option) => (
+          <Space>
+            <PriorityIcon
+              width="15"
+              height="15"
+              style={{ color: option.data.color }}
+            />
+            <span>{option.data.label}</span>
+          </Space>
+        )}
       />
     </div>
   );

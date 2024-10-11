@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Task, Status, Priority, Tag, Assignee } from "../../types";
 
-import { Flex, Skeleton, Button } from "antd";
+import { Flex, Skeleton, Button, Col, Divider, Row } from "antd";
 
 import TaskId from "./components/taskId";
 import TaskName from "./components/taskName";
@@ -62,31 +62,65 @@ const app = ({ setDarkTheme, vscode }) => {
   }
 
   return (
-    <Flex gap="middle" vertical className="bg-white">
+    <div>
+      <Divider></Divider>
       <TaskId task={task} />
+      <Divider></Divider>
       <TaskName task={task} setValue={setModifiedFields} />
-      <TaskStatus
-        statuses={statuses}
-        value={task.status ? task.status.status : {}}
-        setValue={setModifiedFields}
-      />
-      <TaskPriorities
-        priorities={priorities}
-        value={task.priority}
-        setValue={setModifiedFields}
-      />
-      <TaskAssignees
-        members={members}
-        value={task.assignees}
-        setValue={setModifiedFields}
-      />
-      <TaskTags tags={tags} value={task.tags} setValue={setModifiedFields} />
+      <Divider></Divider>
+      <Row align="middle">
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          Status:
+        </Col>
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          <TaskStatus
+            statuses={statuses}
+            value={task.status ? task.status.status : {}}
+            setValue={setModifiedFields}
+          />
+        </Col>
+      </Row>
+      <Row align="middle">
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          Priority:
+        </Col>
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          <TaskPriorities
+            priorities={priorities}
+            value={task.priority}
+            setValue={setModifiedFields}
+          />
+        </Col>
+      </Row>
+      <Row align="middle">
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          Assignees:
+        </Col>
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          <TaskAssignees
+            members={members}
+            value={task.assignees}
+            setValue={setModifiedFields}
+          />
+        </Col>
+      </Row>
+      <Row align="middle">
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          Tags:
+        </Col>
+        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          <TaskTags
+            tags={tags}
+            value={task.tags}
+            setValue={setModifiedFields}
+          />
+        </Col>
+      </Row>
       <TaskDescription value={task.description} setValue={setModifiedFields} />
-
       <Button color="default" variant="filled" onClick={submit}>
         Save
       </Button>
-    </Flex>
+    </div>
   );
 };
 

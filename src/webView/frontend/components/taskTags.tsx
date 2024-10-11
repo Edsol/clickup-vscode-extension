@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Select, Typography } from "antd";
-const { Text } = Typography;
+import { Select } from "antd";
 
 export default function TaskTags({ tags, value, setValue }) {
   let parseTags = [];
@@ -31,7 +30,6 @@ export default function TaskTags({ tags, value, setValue }) {
 
   return (
     <div>
-      <Text strong>Tags</Text>
       <Select
         mode="multiple"
         allowClear
