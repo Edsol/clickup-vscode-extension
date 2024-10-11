@@ -1,6 +1,4 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import { WebviewHelper } from '../web_view/webviewHelper';
 import { ApiWrapper } from '../lib/apiWrapper';
 import { ListItem } from '../tree_view/items/list_item';
 import * as constants from './../constants';
@@ -8,47 +6,10 @@ import { TaskListProvider } from '../tree_view/taskListProvider';
 import TaskWebview from './taskWebview';
 
 export class NewTaskWebview extends TaskWebview {
-    context: vscode.ExtensionContext;
-    wrapper: ApiWrapper;
-    panel: vscode.WebviewPanel;
-    htmlFile: string;
-    promises: any;
     listId: string;
-    spaceId: string;
-
-    dependecies: any;
-    statuses: any;
-    members: any;
-    tags: any;
-    priorities: any;
 
     constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: TaskListProvider) {
-        super();
-
-        this.context = context;
-        this.wrapper = wrapper;
-        this.listId = listItem.list.id;
-        this.spaceId = listItem.list.space.id;
-
-        this.promises = [
-            new Promise(async (resolve) => {
-                resolve(await wrapper.getMembers(this.listId));
-            }),
-            new Promise(async (resolve) => {
-                resolve(await wrapper.getStatus(this.listId));
-            }),
-            new Promise(async (resolve) => {
-                resolve(await wrapper.getTags(this.spaceId));
-            }),
-            new Promise(async (resolve) => {
-                resolve(await wrapper.getPriorities(this.spaceId));
-            }),
-        ];
-
-        Promise.all(this.promises).then((values) => {
-            [this.members, this.statuses, this.tags, this.priorities] = values;
-        });
-
+        super(context, wrapper, provider);
 
         this.panel = vscode.window.createWebviewPanel(
             'newTask',
@@ -59,6 +20,9 @@ export class NewTaskWebview extends TaskWebview {
             }
         );
 
+        const list = listItem.list;
+        this.listId = list.id;
+        this.fetchExtraData(list.id, list.space.id);
         this.initPanel();
         this.messageHandler();
     }

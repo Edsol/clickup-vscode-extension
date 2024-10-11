@@ -7,46 +7,11 @@ import * as constant from '../constants';
 import TaskWebview from './taskWebview';
 
 export class EditWebview extends TaskWebview {
-	context: vscode.ExtensionContext;
-	wrapper: ApiWrapper;
-	listProvider: TaskListProvider;
-	panel: vscode.WebviewPanel;
 	task: Task;
-	webviewhelper: any;
-	htmlFile: string;
-	promises: any;
-
-	dependecies: any;
-	statuses: any;
-	members: any;
-	tags: any;
-	priorities: any;
 
 	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: TaskListProvider) {
-		super();
-		this.context = context;
-		this.wrapper = wrapper;
-		this.listProvider = provider;
+		super(context, wrapper, provider);
 		this.task = task;
-
-		this.promises = [
-			new Promise(async (resolve) => {
-				resolve(await wrapper.getMembers(task.list.id));
-			}),
-			new Promise(async (resolve) => {
-				resolve(await wrapper.getStatus(task.list.id));
-			}),
-			new Promise(async (resolve) => {
-				resolve(await wrapper.getTags(task.space.id));
-			}),
-			new Promise(async (resolve) => {
-				resolve(await wrapper.getPriorities(task.space.id));
-			}),
-		];
-
-		Promise.all(this.promises).then((values) => {
-			[this.members, this.statuses, this.tags, this.priorities] = values;
-		});
 
 		this.panel = vscode.window.createWebviewPanel(
 			'editTask',
@@ -57,6 +22,7 @@ export class EditWebview extends TaskWebview {
 			}
 		);
 
+		this.fetchExtraData(task.list.id, task.space.id);
 		this.initPanel();
 		this.messageHandler();
 	}

@@ -1,15 +1,14 @@
 import * as vscode from 'vscode';
+import { ApiWrapper } from '../lib/apiWrapper';
+import { TaskListProvider } from '../tree_view/taskListProvider';
+import { Member, Priority, Status, Tag } from '../types';
 
-/**
- *
- *
- * @interface TaskWebvieInterface
- */
-interface TaskWebvieInterface {
-    initPanel(): void;
-    getWebviewContent(scriptUri?: vscode.Uri): void;
-    sendMessage(type: string, data: Object): void;
-    messageHandler(): void;
+abstract class TaskWebviewInterface {
+    // Metodo astratto che le classi derivate devono implementare
+    public abstract initPanel(): void;
+    public abstract getWebviewContent(scriptUri?: vscode.Uri): void;
+    public abstract sendMessage(type: string, data: Object): void;
+    public abstract messageHandler(): void;
 }
 
 /**
@@ -19,7 +18,7 @@ interface TaskWebvieInterface {
  * @class TaskWebview
  * @implements {TaskWebvieInterface}
  */
-export default class TaskWebview implements TaskWebvieInterface {
+export default class TaskWebview implements TaskWebviewInterface {
 
     /**
     * @memberof TaskWebview
@@ -29,13 +28,24 @@ export default class TaskWebview implements TaskWebvieInterface {
     /**
      * @memberof TaskWebview
      */
-    public context = undefined;
+    public context: vscode.ExtensionContext;
+    public wrapper: ApiWrapper;
+    public listProvider: TaskListProvider;
+
+    public members: Member[] | {};
+    public statuses: Status[] | {};
+    public tags: Tag[] | {};
+    public priorities: Priority[] | {};
 
     /**
      * Creates an instance of TaskWebview.
      * @memberof TaskWebview
      */
-    constructor() { }
+    constructor(context: vscode.ExtensionContext, wrapper: ApiWrapper, provider: TaskListProvider) {
+        this.context = context;
+        this.wrapper = wrapper;
+        this.listProvider = provider;
+    }
 
     /**
      * @memberof TaskWebview
@@ -47,13 +57,13 @@ export default class TaskWebview implements TaskWebvieInterface {
 
         updateWebview();
 
-        // Crea un watcher per ricaricare la WebView quando il file cambia
+        // watcher
         const watcher = vscode.workspace.createFileSystemWatcher(
             new vscode.RelativePattern(this.context.extensionPath, '**/*.{ts,js,tsx}')
         );
 
         watcher.onDidChange(() => {
-            updateWebview();  // Ricarica la WebView
+            updateWebview();  // reload WebView when files are changed
         });
 
         this.context.subscriptions.push(watcher);
@@ -107,5 +117,26 @@ export default class TaskWebview implements TaskWebvieInterface {
      * @memberof TaskWebview
      */
     public messageHandler() { }
+
+    public fetchExtraData(listId: string, spaceId: string) {
+        const promises = [
+            new Promise(async (resolve) => {
+                resolve(await this.wrapper.getMembers(listId));
+            }),
+            new Promise(async (resolve) => {
+                resolve(await this.wrapper.getStatus(listId));
+            }),
+            new Promise(async (resolve) => {
+                resolve(await this.wrapper.getTags(spaceId));
+            }),
+            new Promise(async (resolve) => {
+                resolve(await this.wrapper.getPriorities(spaceId));
+            }),
+        ];
+
+        Promise.all(promises).then((values) => {
+            [this.members, this.statuses, this.tags, this.priorities] = values;
+        });
+    }
 
 }
