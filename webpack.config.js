@@ -2,13 +2,13 @@ const path = require('path');
 
 module.exports = {
     mode: 'development',
-    entry: './src/webView/index.tsx',
+    entry: './src/webView/frontend/index.tsx',
     output: {
         path: path.resolve(__dirname, 'out'),
         filename: 'webview.js',
     },
     resolve: {
-        extensions: ['.ts', '.js', '.tsx', 'jsx'],
+        extensions: ['.js', '.tsx', 'jsx'],
     },
     module: {
         rules: [

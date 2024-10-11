@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Task, Status, Priority, Tag, Assignee } from "../types";
+import { Task, Status, Priority, Tag, Assignee } from "../../types";
 
 import { Flex, Skeleton, Button } from "antd";
 

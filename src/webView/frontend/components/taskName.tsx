@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Task } from "../../types";
+import { Task } from "../../../types";
 import { Input, Typography, Form } from "antd";
 const { Text } = Typography;
 

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { ApiWrapper } from '../lib/apiWrapper';
-import { TaskListProvider } from '../tree_view/taskListProvider';
-import { Member, Priority, Status, Tag } from '../types';
+import { ApiWrapper } from '../../lib/apiWrapper';
+import { TaskListProvider } from '../../tree_view/taskListProvider';
+import { Member, Priority, Status, Tag } from '../../types';
 
 abstract class TaskWebviewInterface {
     // Metodo astratto che le classi derivate devono implementare

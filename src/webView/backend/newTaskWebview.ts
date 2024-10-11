@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ApiWrapper } from '../lib/apiWrapper';
-import { ListItem } from '../tree_view/items/list_item';
-import * as constants from './../constants';
-import { TaskListProvider } from '../tree_view/taskListProvider';
+import { ApiWrapper } from '../../lib/apiWrapper';
+import { ListItem } from '../../tree_view/items/list_item';
+import * as constants from '../../constants';
+import { TaskListProvider } from '../../tree_view/taskListProvider';
 import TaskWebview from './taskWebview';
 
 export class NewTaskWebview extends TaskWebview {
