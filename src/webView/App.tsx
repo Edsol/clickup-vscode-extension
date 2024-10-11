@@ -22,12 +22,12 @@ const app = ({ setDarkTheme, vscode }) => {
   const [tags, setTags] = React.useState<Array<Tag>>({});
 
   React.useEffect(() => {
-    vscode.postMessage({ type: "ready", text: "React App is ready!" });
+    vscode.postMessage({ command: "ready", text: "React App is ready!" });
 
     const handleMessage = async (event: MessageEvent) => {
-      const { type, data } = event.data;
+      const { command, data } = event.data;
 
-      if (type === "task") {
+      if (command === "task") {
         console.log("task message", data);
 
         setTask(data.task);
@@ -54,7 +54,7 @@ const app = ({ setDarkTheme, vscode }) => {
 
   function submit() {
     vscode.postMessage({
-      type: "save",
+      command: "save",
       data: {
         task: modifiedFields
       }

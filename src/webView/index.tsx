@@ -14,8 +14,8 @@ const RootComponent: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false); // Usa useState all'interno di un componente React
 
   window.addEventListener("message", (event) => {
-    const { type, data } = event.data;
-    if (type === "theme") {
+    const { command, data } = event.data;
+    if (command === "theme") {
       setIsDarkTheme(data.isDark);
     }
   });

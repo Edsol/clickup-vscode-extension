@@ -5,8 +5,9 @@ import { ApiWrapper } from '../lib/apiWrapper';
 import { ListItem } from '../tree_view/items/list_item';
 import * as constants from './../constants';
 import { TaskListProvider } from '../tree_view/taskListProvider';
+import TaskWebview from './taskWebview';
 
-export class NewTaskWebview {
+export class NewTaskWebview extends TaskWebview {
     context: vscode.ExtensionContext;
     wrapper: ApiWrapper;
     panel: vscode.WebviewPanel;
@@ -22,6 +23,8 @@ export class NewTaskWebview {
     priorities: any;
 
     constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: TaskListProvider) {
+        super();
+
         this.context = context;
         this.wrapper = wrapper;
         this.listId = listItem.list.id;
@@ -60,52 +63,9 @@ export class NewTaskWebview {
         this.messageHandler();
     }
 
-    private initPanel() {
-        const updateWebview = () => {
-            this.panel!.webview.html = this.getWebviewContent();
-        };
-
-        updateWebview();
-
-        // Crea un watcher per ricaricare la WebView quando il file cambia
-        const watcher = vscode.workspace.createFileSystemWatcher(
-            new vscode.RelativePattern(this.context.extensionPath, '**/*.{ts,js,tsx}')
-        );
-
-        watcher.onDidChange(() => {
-            updateWebview();  // Ricarica la WebView
-        });
-
-        this.context.subscriptions.push(watcher);
-    }
-
-    private getWebviewContent(scriptUri?: vscode.Uri) {
-        const devServerUri = `http://localhost:3000/webview.js?v=${new Date().getTime()}`;
-
-        return `<!DOCTYPE html>
-		<html lang="en">
-		<head>
-		  <meta charset="UTF-8">
-		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		  <title>React Webview</title>
-		</head>
-		<body>
-		  <div id="app"></div>
-		  <script src="${devServerUri}"></script>
-		</body>
-		</html>`;
-    }
-
-    private async sendMessage(type: string, data: Object) {
-        return await this.panel.webview.postMessage({
-            type: type,
-            data: data
-        });
-    }
-
-    private messageHandler() {
+    messageHandler() {
         this.panel.webview.onDidReceiveMessage(message => {
-            switch (message.type) {
+            switch (message.command) {
                 case 'init':
                     this.sendMessage('theme', {
                         isDark: false
