@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Select, Button, Space } from "antd";
-import CheckBold from "@resources/official_icons/dark/checkBold.svg";
+import CheckBoldIcon from "@resources/official_icons/dark/checkBold.svg";
+import RecordIcon from "@resources/official_icons/dark/record.svg";
 
 export default function TaskStatus({ statuses, value, setValue }) {
   let parsedStatuses = [];
@@ -8,7 +9,8 @@ export default function TaskStatus({ statuses, value, setValue }) {
     parsedStatuses = statuses.map((status) => {
       return {
         value: status.status,
-        label: status.status
+        label: status.status,
+        color: status.color
       };
     });
   }
@@ -20,16 +22,26 @@ export default function TaskStatus({ statuses, value, setValue }) {
     }));
   };
 
+  const doneButtonHandle = (value) => {
+    console.log("DoneButtonHandle", value);
+  };
+
   return (
-    <Space.Compact direction="orizontal" width="100%">
+    <Space.Compact direction="orizontal">
       <Select
+        style={{ width: "100%", minWidth: "200px" }}
         options={parsedStatuses}
-        style={{ width: "100%" }}
         defaultValue={value}
         onChange={handleChange}
+        optionRender={(option) => (
+          <Space>
+            <RecordIcon width="15" height="15" color={option.data.color} />
+            <span>{option.data.label}</span>
+          </Space>
+        )}
       />
-      <Button>
-        <CheckBold
+      <Button onClick={doneButtonHandle}>
+        <CheckBoldIcon
           width="15"
           height="15"
           title="Contrassegna come completato"
