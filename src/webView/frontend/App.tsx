@@ -27,6 +27,9 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   const hasModifiedFields = () => {
     return Object.keys(modifiedFields).length === 0 ? false : true;
   };
+  const notifyMessage = (text: string, type: string = "success") => {
+    vscode.postMessage({ command: "notification", text: text, type: type });
+  };
 
   React.useEffect(() => {
     vscode.postMessage({ command: "ready", text: "React App is ready!" });
@@ -70,10 +73,11 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
     color: isDarkTheme ? "#FFF" : "#000"
   };
 
+  const marginTop = "20px";
   return (
     <div>
       <Divider orientation="left">
-        <TaskId task={task} />
+        <TaskId task={task} notifyMessage={notifyMessage} />
       </Divider>
       <Text strong style={labelStyle}>
         Name
@@ -81,15 +85,18 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
       <TaskName task={task} setValue={setModifiedFields} />
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12}>
-          <Text strong style={labelStyle}>
-            Status
-          </Text>
-          <TaskStatus
-            statuses={statuses}
-            value={task.status ? task.status.status : {}}
-            setValue={setModifiedFields}
-          />
-          <div>
+          <div style={{ marginTop: marginTop }}>
+            <Text strong style={labelStyle}>
+              Status
+            </Text>
+            <TaskStatus
+              statuses={statuses}
+              value={task.status ? task.status.status : {}}
+              setValue={setModifiedFields}
+            />
+          </div>
+
+          <div style={{ marginTop: marginTop }}>
             <Text strong style={labelStyle}>
               Priority
             </Text>
@@ -101,28 +108,38 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
           </div>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12}>
-          <Text strong style={labelStyle}>
-            Assignees
-          </Text>
-          <TaskAssignees
-            members={members}
-            value={task.assignees}
-            setValue={setModifiedFields}
-          />
-          <Text strong style={labelStyle}>
-            Tags
-          </Text>
-          <TaskTags
-            tags={tags}
-            value={task.tags}
-            setValue={setModifiedFields}
-          />
+          <div style={{ marginTop: marginTop }}>
+            <Text strong style={labelStyle}>
+              Assignees
+            </Text>
+            <TaskAssignees
+              members={members}
+              value={task.assignees}
+              setValue={setModifiedFields}
+            />
+          </div>
+          <div style={{ marginTop: marginTop }}>
+            <Text strong style={labelStyle}>
+              Tags
+            </Text>
+            <TaskTags
+              tags={tags}
+              value={task.tags}
+              setValue={setModifiedFields}
+            />
+          </div>
         </Col>
       </Row>
-      <Text strong style={labelStyle}>
-        Description
-      </Text>
-      <TaskDescription value={task.description} setValue={setModifiedFields} />
+      <div style={{ marginTop: marginTop }}>
+        <Text strong style={labelStyle}>
+          Description
+        </Text>
+        <TaskDescription
+          value={task.description}
+          setValue={setModifiedFields}
+        />
+      </div>
+
       <Button
         color="primary"
         variant="filled"

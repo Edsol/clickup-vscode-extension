@@ -42,6 +42,13 @@ export class EditWebview extends TaskWebview {
 				case 'save':
 					await this.updateTask(this.task, message.data.task);
 					break;
+				case 'notification':
+					if (message.type === 'success') {
+						vscode.window.showInformationMessage(message.text);
+					} else {
+						vscode.window.showErrorMessage(message.text);
+					}
+					break;
 			}
 		});
 	}

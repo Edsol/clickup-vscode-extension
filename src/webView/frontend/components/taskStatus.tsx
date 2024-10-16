@@ -38,7 +38,7 @@ export default function TaskStatus({ statuses, value, setValue }) {
         defaultValue={value}
         value={selectedOption}
         onChange={handleChange}
-        style={{ minWidth: "90%" }}
+        style={{ minWidth: "70%" }}
         optionRender={(option) => (
           <Space>
             <RecordIcon width="15" height="15" color={option.data.color} />
@@ -47,11 +47,7 @@ export default function TaskStatus({ statuses, value, setValue }) {
         )}
       />
       <Button onClick={doneButtonHandle} style={{ marginLeft: "10px" }}>
-        <CheckBoldIcon
-          width="15"
-          height="15"
-          title="Contrassegna come completato"
-        />
+        <CheckBoldIcon width="15" height="15" title="Complete" />
       </Button>
     </div>
   );

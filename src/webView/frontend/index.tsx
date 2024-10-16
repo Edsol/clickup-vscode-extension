@@ -5,8 +5,6 @@ import App from "./App";
 import { ConfigProvider, theme } from "antd";
 import itIT from "antd/locale/it_IT";
 
-// import "./app.css";
-
 const vscode = (window as any).acquireVsCodeApi();
 vscode.postMessage({ command: "init", text: "init react app!" });
 // Trasforma build in un componente React

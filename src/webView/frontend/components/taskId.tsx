@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Button, Dropdown, Badge } from "antd";
+import { Dropdown, Badge } from "antd";
 
-export default function TaskId({ task }) {
+export default function TaskId({ task, notifyMessage }) {
   if (task === undefined) {
     return;
   }
@@ -9,7 +9,13 @@ export default function TaskId({ task }) {
     {
       key: "1",
       label: (
-        <a href="#" onClick={() => navigator.clipboard.writeText(task.id)}>
+        <a
+          href="#"
+          onClick={() => {
+            navigator.clipboard.writeText(task.id);
+            notifyMessage("Task ID copied!");
+          }}
+        >
           Copy
         </a>
       )
