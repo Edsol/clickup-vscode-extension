@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Select } from "antd";
+import { Select, Space, Tag } from "antd";
+import { Member } from "../../../types";
 
 export default function TaskAssignees({ members, value, setValue }) {
   let parsedMembers = [];
@@ -30,10 +31,10 @@ export default function TaskAssignees({ members, value, setValue }) {
   return (
     <div>
       <Select
+        style={{ minWidth: "100%" }}
         mode="multiple"
         allowClear
         options={parsedMembers}
-        style={{ width: "100%" }}
         defaultValue={parsedSelectedMembers}
         onChange={handleChange}
       />

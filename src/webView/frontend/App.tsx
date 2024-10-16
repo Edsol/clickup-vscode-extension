@@ -1,7 +1,10 @@
 import * as React from "react";
 import { Task, Status, Priority, Tag, Assignee } from "../../types";
 
-import { Flex, Skeleton, Button, Col, Divider, Row } from "antd";
+import { Skeleton, Button, Col, Divider, Row, Typography } from "antd";
+const { Text } = Typography;
+
+import { blue, lime } from "@ant-design/colors";
 
 import TaskId from "./components/taskId";
 import TaskName from "./components/taskName";
@@ -11,7 +14,7 @@ import TaskDescription from "./components/taskDescription";
 import TaskTags from "./components/taskTags";
 import TaskPriorities from "./components/taskPriorities";
 
-const app = ({ setDarkTheme, vscode }) => {
+const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
 
   const [task, setTask] = React.useState<Task>({});
@@ -21,6 +24,10 @@ const app = ({ setDarkTheme, vscode }) => {
   const [members, setMembers] = React.useState<Array<Assignee>>({});
   const [tags, setTags] = React.useState<Array<Tag>>({});
 
+  const hasModifiedFields = () => {
+    return Object.keys(modifiedFields).length === 0 ? false : true;
+  };
+
   React.useEffect(() => {
     vscode.postMessage({ command: "ready", text: "React App is ready!" });
 
@@ -28,8 +35,6 @@ const app = ({ setDarkTheme, vscode }) => {
       const { command, data } = event.data;
 
       if (command === "task") {
-        console.log("task message", data);
-
         setTask(data.task);
         setStatuses(data.statuses);
         setPriorities(data.priorities);
@@ -61,54 +66,52 @@ const app = ({ setDarkTheme, vscode }) => {
     });
   }
 
+  const labelStyle: React.CSSProperties = {
+    color: isDarkTheme ? "#FFF" : "#000"
+  };
+
   return (
     <div>
-      <Divider></Divider>
-      <TaskId task={task} />
-      <Divider></Divider>
+      <Divider orientation="left">
+        <TaskId task={task} />
+      </Divider>
+      <Text strong style={labelStyle}>
+        Name
+      </Text>
       <TaskName task={task} setValue={setModifiedFields} />
-      <Divider></Divider>
-      <Row align="middle">
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
-          Status:
-        </Col>
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={24} md={12} lg={12}>
+          <Text strong style={labelStyle}>
+            Status
+          </Text>
           <TaskStatus
             statuses={statuses}
             value={task.status ? task.status.status : {}}
             setValue={setModifiedFields}
           />
+          <div>
+            <Text strong style={labelStyle}>
+              Priority
+            </Text>
+            <TaskPriorities
+              priorities={priorities}
+              value={task.priority}
+              setValue={setModifiedFields}
+            />
+          </div>
         </Col>
-      </Row>
-      <Row align="middle">
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
-          Priority:
-        </Col>
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
-          <TaskPriorities
-            priorities={priorities}
-            value={task.priority}
-            setValue={setModifiedFields}
-          />
-        </Col>
-      </Row>
-      <Row align="middle">
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
-          Assignees:
-        </Col>
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+        <Col xs={24} sm={24} md={12} lg={12}>
+          <Text strong style={labelStyle}>
+            Assignees
+          </Text>
           <TaskAssignees
             members={members}
             value={task.assignees}
             setValue={setModifiedFields}
           />
-        </Col>
-      </Row>
-      <Row align="middle">
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
-          Tags:
-        </Col>
-        <Col xs={1} sm={6} md={6} lg={6} xl={6}>
+          <Text strong style={labelStyle}>
+            Tags
+          </Text>
           <TaskTags
             tags={tags}
             value={task.tags}
@@ -116,8 +119,23 @@ const app = ({ setDarkTheme, vscode }) => {
           />
         </Col>
       </Row>
+      <Text strong style={labelStyle}>
+        Description
+      </Text>
       <TaskDescription value={task.description} setValue={setModifiedFields} />
-      <Button color="default" variant="filled" onClick={submit}>
+      <Button
+        color="primary"
+        variant="filled"
+        onClick={submit}
+        style={{
+          marginTop: "10px",
+          position: "absolute",
+          right: "20px",
+          backgroundColor: lime[6],
+          color: "white"
+        }}
+        disabled={!hasModifiedFields()}
+      >
         Save
       </Button>
     </div>

@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Input, Typography } from "antd";
+import { Input } from "antd";
 const { TextArea } = Input;
-const { Text } = Typography;
 
 export default function TaskDescription({ value, setValue }) {
   const handleChange = (value) => {
@@ -13,7 +12,6 @@ export default function TaskDescription({ value, setValue }) {
 
   return (
     <div>
-      <Text strong>Description</Text>
       <TextArea
         rows={10}
         placeholder="Add a comment"

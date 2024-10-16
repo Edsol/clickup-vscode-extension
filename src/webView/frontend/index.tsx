@@ -8,10 +8,10 @@ import itIT from "antd/locale/it_IT";
 // import "./app.css";
 
 const vscode = (window as any).acquireVsCodeApi();
-vscode.postMessage({ type: "init", text: "init react app!" });
+vscode.postMessage({ command: "init", text: "init react app!" });
 // Trasforma build in un componente React
 const RootComponent: React.FC = () => {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false); // Usa useState all'interno di un componente React
+  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
   window.addEventListener("message", (event) => {
     const { command, data } = event.data;
@@ -24,12 +24,15 @@ const RootComponent: React.FC = () => {
     <ConfigProvider
       locale={itIT}
       theme={{
-        // algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
-        algorithm: theme.defaultAlgorithm,
+        algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
         cssVar: true
       }}
     >
-      <App setDarkTheme={setIsDarkTheme} vscode={vscode} />
+      <App
+        isDarkTheme={isDarkTheme}
+        setDarkTheme={setIsDarkTheme}
+        vscode={vscode}
+      />
     </ConfigProvider>
   );
 };

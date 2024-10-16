@@ -328,7 +328,7 @@ export class ApiWrapper {
         if (data.assignees) {
             taskUpdate.assignees = await this.parseAssignees(task.assignees, data.assignees);
         }
-
+        console.log('taskUpdate', taskUpdate);
         const { body } = await this.clickup.tasks.update(task.id, taskUpdate);
         if (data.tags) {
             await this.updateTaskTags(task.id, task.tags, data.tags);
@@ -338,11 +338,11 @@ export class ApiWrapper {
     }
 
     /* eslint-disable @typescript-eslint/naming-convention */
-    private mapTaskToTaskUpdate(task: Task): TaskUpdate {
+    private mapTaskToTaskUpdate(task: any): TaskUpdate {
         const fieldsToMap: Partial<TaskUpdate> = {
             name: task.name,
             description: task.description,
-            status: task.status?.id,
+            status: task?.status,
             priority: task.priority?.id,
             due_date: task.dueDate ? new Date(task.dueDate).getTime() : undefined,
             start_date: task.startDate ? new Date(task.startDate).getTime() : undefined,

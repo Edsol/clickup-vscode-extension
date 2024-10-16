@@ -4,6 +4,8 @@ import CheckBoldIcon from "@resources/official_icons/dark/checkBold.svg";
 import RecordIcon from "@resources/official_icons/dark/record.svg";
 
 export default function TaskStatus({ statuses, value, setValue }) {
+  const [selectedOption, setSelectedOption] = React.useState(value);
+
   let parsedStatuses = [];
   if (statuses) {
     parsedStatuses = statuses.map((status) => {
@@ -16,23 +18,27 @@ export default function TaskStatus({ statuses, value, setValue }) {
   }
 
   const handleChange = (value) => {
+    setSelectedOption(value);
     setValue((prevFields) => ({
       ...prevFields,
       status: value
     }));
   };
 
-  const doneButtonHandle = (value) => {
-    console.log("DoneButtonHandle", value);
+  const doneButtonHandle = (values) => {
+    const closedStatus = statuses.filter((status) => status.type === "closed");
+
+    handleChange(closedStatus[0].status);
   };
 
   return (
-    <Space.Compact direction="orizontal">
+    <div>
       <Select
-        style={{ width: "100%", minWidth: "200px" }}
         options={parsedStatuses}
         defaultValue={value}
+        value={selectedOption}
         onChange={handleChange}
+        style={{ minWidth: "90%" }}
         optionRender={(option) => (
           <Space>
             <RecordIcon width="15" height="15" color={option.data.color} />
@@ -40,13 +46,13 @@ export default function TaskStatus({ statuses, value, setValue }) {
           </Space>
         )}
       />
-      <Button onClick={doneButtonHandle}>
+      <Button onClick={doneButtonHandle} style={{ marginLeft: "10px" }}>
         <CheckBoldIcon
           width="15"
           height="15"
           title="Contrassegna come completato"
         />
       </Button>
-    </Space.Compact>
+    </div>
   );
 }

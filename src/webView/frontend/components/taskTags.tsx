@@ -32,7 +32,7 @@ export default function TaskTags({ tags, value, setValue }) {
     }));
   };
 
-  function extractColor(label: string) {
+  function extractBackgroundColor(label: string) {
     const res = tags.filter((tag: TagT) => tag.name === label)[0];
     if (!res) {
       return;
@@ -40,13 +40,16 @@ export default function TaskTags({ tags, value, setValue }) {
     return res.tag_bg;
   }
 
-  const tagRender: TagRender = (props) => {
+  const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
-    if (value) {
-      console.log("tag props", props);
-    }
     return (
-      <Tag style={{ marginInlineEnd: 4, backgroundColor: extractColor(value) }}>
+      <Tag
+        style={{
+          marginInlineEnd: 4,
+          backgroundColor: extractBackgroundColor(value),
+          color: "#FFF"
+        }}
+      >
         {label}
       </Tag>
     );
@@ -55,10 +58,11 @@ export default function TaskTags({ tags, value, setValue }) {
   return (
     <div>
       <Select
+        style={{ minWidth: "100%" }}
+        placeholder="Select a tag"
         mode="multiple"
         allowClear
         options={parseTags}
-        style={{ width: "100%" }}
         defaultValue={parsedSelectedTags}
         onChange={handleChange}
         optionRender={(option) => (

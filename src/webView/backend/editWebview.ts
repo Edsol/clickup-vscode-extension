@@ -32,7 +32,7 @@ export class EditWebview extends TaskWebview {
 			switch (message.command) {
 				case 'init':
 					this.sendMessage('theme', {
-						isDark: false
+						isDark: isDark
 					});
 					break;
 				case 'ready':
@@ -62,7 +62,7 @@ export class EditWebview extends TaskWebview {
 	 * @memberof EditWebview
 	 */
 	private async reloadTask(taskId: string) {
-		this.task = await this.wrapper.clickup.getTask(taskId);
+		this.task = await this.wrapper.getTask(taskId);
 	}
 
 	/**
