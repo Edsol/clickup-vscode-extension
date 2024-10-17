@@ -4,6 +4,7 @@ import { ListItem } from '../../tree_view/items/list_item';
 import * as constants from '../../constants';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
 import TaskWebview from './taskWebview';
+import { isDark } from '../../utils';
 
 export class NewTaskWebview extends TaskWebview {
     listId: string;
@@ -32,7 +33,7 @@ export class NewTaskWebview extends TaskWebview {
             switch (message.command) {
                 case 'init':
                     this.sendMessage('theme', {
-                        isDark: false
+                        isDark: isDark()
                     });
                     break;
                 case 'ready':

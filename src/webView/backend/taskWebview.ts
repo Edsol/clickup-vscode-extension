@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
 import { Member, Priority, Status, Tag } from '../../types';
+import { isDark } from '../../utils';
 
 abstract class TaskWebviewInterface {
     // Metodo astratto che le classi derivate devono implementare
@@ -45,6 +46,14 @@ export default class TaskWebview implements TaskWebviewInterface {
         this.context = context;
         this.wrapper = wrapper;
         this.listProvider = provider;
+
+        // update icons after theme change
+        vscode.window.onDidChangeActiveColorTheme((value) => {
+            console.log("CHANGE THEME", value, isDark());
+            this.sendMessage('theme', {
+                isDark: isDark()
+            });
+        });
     }
 
     /**

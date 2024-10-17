@@ -33,6 +33,10 @@ export default function TaskTags({ tags, value, setValue }) {
   };
 
   function extractBackgroundColor(label: string) {
+    if (!tags) {
+      return "#FFF";
+    }
+
     const res = tags.filter((tag: TagT) => tag.name === label)[0];
     if (!res) {
       return;

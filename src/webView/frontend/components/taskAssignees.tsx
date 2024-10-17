@@ -5,7 +5,7 @@ import { Member } from "../../../types";
 export default function TaskAssignees({ members, value, setValue }) {
   let parsedMembers = [];
 
-  if (parsedMembers) {
+  if (members) {
     parsedMembers = members.map((member) => {
       return {
         value: member.id,
