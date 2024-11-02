@@ -5,6 +5,7 @@ import { TaskListProvider } from '../../tree_view/taskListProvider';
 import { isDark } from '../../utils';
 import * as constant from '../../constants';
 import TaskWebview from './taskWebview';
+import path from 'path';
 
 export class EditWebview extends TaskWebview {
 	task: Task;

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
 import { Member, Priority, Status, Tag } from '../../types';
@@ -49,7 +50,6 @@ export default class TaskWebview implements TaskWebviewInterface {
 
         // update icons after theme change
         vscode.window.onDidChangeActiveColorTheme((value) => {
-            console.log("CHANGE THEME", value, isDark());
             this.sendMessage('theme', {
                 isDark: isDark()
             });
