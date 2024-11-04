@@ -33,6 +33,11 @@
 			{
 				"title": "ClickUp",
 				"properties": {
+					"clickup.debugMode": {
+						"type": "boolean",
+						"default": false,
+						"description": "Enable debug mode to analyze errors and problems in the extension"
+					},
 					"clickup.showTaskTitle": {
 						"type": "boolean",
 						"default": true,

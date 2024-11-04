@@ -142,7 +142,7 @@ export class ApiWrapper {
      * @return {*} 
      * @memberof ApiWrapper
      */
-    async getFolderLists(spaceId: string) {
+    async getFolderlessLists(spaceId: string) {
         const { body } = await this.clickup.spaces.getFolderlessLists(spaceId);
         return body.lists;
     }

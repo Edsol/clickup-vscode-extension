@@ -56,7 +56,6 @@ export function getColoredIconPath(svgPath: string, color?: string): string {
     // Leggi il contenuto dell'SVG originale
     const svgContent = fs.readFileSync(svgPath, 'utf8');
 
-    console.log('colorTheme', colorTheme);
     if (!color) {
         color = isDark ? "#FFFFFF" : "#4C4E52";
     }

@@ -10,13 +10,15 @@ import { ApiWrapper } from '../lib/apiWrapper';
 export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     teams: Array<any>;
     apiwrapper: ApiWrapper;
+    debugMode: boolean;
 
     collapsedConst = vscode.TreeItemCollapsibleState.Collapsed;
     noCollapsedConst = vscode.TreeItemCollapsibleState.None;
 
-    constructor(teams: Array<any>, propertyToShow: Array<string>, apiWrapper: any) {
+    constructor(teams: Array<any>, propertyToShow: Array<string>, apiWrapper: any, debugMode: boolean = false) {
         this.teams = teams;
         this.apiwrapper = apiWrapper;
+        this.debugMode = debugMode;
     }
 
     getTreeItem(element: any): vscode.TreeItem {
@@ -35,19 +37,34 @@ export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
         if (element instanceof TeamItem) {
             var spaces: Array<any> = await this.apiwrapper.getSpaces(element.id);
+
+            this.log(`spaces of ${element.label}`, {
+                projectId: element.id,
+                result: spaces,
+            });
             resolve = Object.values(spaces).map((space: any) => {
                 return new SpaceItem(space, this.collapsedConst);
             });
         }
 
         if (element instanceof SpaceItem) {
-            var folders: Array<types.Folder> = await this.apiwrapper.getFolders(element.id);
+            const folders: Array<types.Folder> = await this.apiwrapper.getFolders(element.id);
+            this.log(`folders of ${element.label}`, {
+                space: element.space,
+                result: folders,
+            });
             resolve = Object.values(folders).map((folder: types.Folder) => {
                 return new FolderItem(folder, this.collapsedConst);
             });
-            var lists: Array<types.List> = await this.apiwrapper.getFolderLists(element.id);
+            const folderlessList: Array<types.List> = await this.apiwrapper.getFolderlessLists(element.id);
+
+            this.log(`folderless list of ${element.label}`, {
+                space: element.space,
+                result: folderlessList,
+            });
+
             await Promise.all(
-                Object.values(lists).map(async (list: types.List) => {
+                Object.values(folderlessList).map(async (list: types.List) => {
                     var taskCount = await this.apiwrapper.countTasks(list.id);
                     resolve.push(new ListItem(list, this.collapsedConst, taskCount));
                 })
@@ -56,7 +73,11 @@ export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem
         }
 
         if (element instanceof FolderItem) {
-            var lists: Array<types.List> = await this.apiwrapper.getLists(element.folder.id);
+            const lists: Array<types.List> = await this.apiwrapper.getLists(element.folder.id);
+            this.log(`lists of ${element.label}`, {
+                folder: element.folder,
+                result: lists,
+            });
             await Promise.all(
                 Object.values(lists).map(async (list: types.List) => {
                     //* Fetches the task count for the list
@@ -67,7 +88,11 @@ export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem
         }
 
         if (element instanceof ListItem) {
-            var tasks: Array<types.Task> = await this.apiwrapper.getTasks(element.list.id);
+            const tasks: Array<types.Task> = await this.apiwrapper.getTasks(element.list.id);
+            this.log(`tasks of ${element.label}`, {
+                folder: element.list,
+                result: tasks,
+            });
             for (const task of tasks) {
                 resolve.push(new TaskItem(task, this.noCollapsedConst));
             }
@@ -81,6 +106,14 @@ export class TaskListProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
     refresh(): void {
         this._onDidChangeTreeData.fire();
+    }
+
+    log(text: string, datas: any): void {
+        if (this.debugMode === false) {
+            return;
+        }
+
+        console.log(text, datas);
     }
 
 }
