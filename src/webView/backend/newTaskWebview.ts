@@ -29,7 +29,7 @@ export class NewTaskWebview extends TaskWebview {
     }
 
     messageHandler() {
-        this.panel.webview.onDidReceiveMessage(message => {
+        this.panel.webview.onDidReceiveMessage(async (message) => {
             switch (message.command) {
                 case 'init':
                     this.sendMessage('theme', {
@@ -37,11 +37,11 @@ export class NewTaskWebview extends TaskWebview {
                     });
                     break;
                 case 'ready':
-                    this.pushToWebview();
+                    await this.pushToWebview();
 
                     break;
                 case 'save':
-                    this.saveTask(message.data.task);
+                    await this.saveTask(message.data.task);
                     break;
             }
         });
@@ -59,11 +59,12 @@ export class NewTaskWebview extends TaskWebview {
 
     private async saveTask(data: any) {
         var response = await this.wrapper.newTask(this.listId, data);
-        if (response.id) {
-            vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
-            this.panel.dispose();
-        } else {
+        if (!response) {
             vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
+            return false;
         }
+        vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
+        this.listProvider.refresh();
+        this.panel.dispose();
     }
 }
