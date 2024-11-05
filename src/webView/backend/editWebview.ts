@@ -24,7 +24,6 @@ export class EditWebview extends TaskWebview {
 		);
 
 		this.initPanel();
-		this.fetchExtraData(task.list.id, task.space.id);
 		this.messageHandler();
 	}
 
@@ -37,7 +36,7 @@ export class EditWebview extends TaskWebview {
 					});
 					break;
 				case 'ready':
-					this.pushToWebview();
+					await this.pushToWebview();
 
 					break;
 				case 'save':
@@ -54,7 +53,8 @@ export class EditWebview extends TaskWebview {
 		});
 	}
 
-	private pushToWebview() {
+	private async pushToWebview() {
+		await this.fetchExtraData(this.task.list.id, this.task.space.id);
 		this.sendMessage('task', {
 			task: this.task,
 			statuses: this.statuses,
@@ -88,7 +88,7 @@ export class EditWebview extends TaskWebview {
 
 		vscode.window.showInformationMessage(constant.TASK_UPDATE_MESSAGE);
 		this.reloadTask(this.task.id);
-		this.pushToWebview(); // update data in webview
+		await this.pushToWebview(); // update data in webview
 		this.listProvider.refresh();
 
 		return true;

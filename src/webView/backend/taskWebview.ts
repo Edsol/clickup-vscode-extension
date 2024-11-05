@@ -113,10 +113,6 @@ export default class TaskWebview implements TaskWebviewInterface {
      * @memberof TaskWebview
      */
     async sendMessage(command: string, data: Object) {
-        console.log('sendMessage', {
-            command: command,
-            data: data
-        });
         return await this.panel.webview.postMessage({
             command: command,
             data: data
@@ -131,7 +127,7 @@ export default class TaskWebview implements TaskWebviewInterface {
      */
     public messageHandler() { }
 
-    public fetchExtraData(listId: string, spaceId: string) {
+    public async fetchExtraData(listId: string, spaceId: string) {
         const promises = [
             new Promise(async (resolve) => {
                 resolve(await this.wrapper.getMembers(listId));
@@ -147,7 +143,7 @@ export default class TaskWebview implements TaskWebviewInterface {
             }),
         ];
 
-        Promise.all(promises).then((values) => {
+        await Promise.all(promises).then((values) => {
             [this.members, this.statuses, this.tags, this.priorities] = values;
         });
     }

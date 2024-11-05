@@ -132,7 +132,7 @@ async function taskFound(task: Task) {
  */
 function restoreTimer(teamId: string, taskId: string) {
 	if (!teamId) {
-		console.log("No `teamId` found to restore time");
+		// console.log("No `teamId` found to restore time");
 		return;
 	}
 	wrapper.getRunningTime(teamId).then((time: Time) => {
@@ -303,11 +303,9 @@ vscode.commands.registerCommand('clickup.removeTask', async () => {
 // Time manager
 
 vscode.commands.registerCommand('clickup.startTimer', () => {
-	console.log('clickup command', 'start timer');
 	timer.start();
 });
 vscode.commands.registerCommand('clickup.stopTimer', () => {
-	console.log('clickup command', 'stopTimer timer');
 	timer.stop();
 });
 

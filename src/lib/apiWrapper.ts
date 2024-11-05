@@ -328,7 +328,6 @@ export class ApiWrapper {
         if (data.assignees) {
             taskUpdate.assignees = await this.parseAssignees(task.assignees, data.assignees);
         }
-        console.log('taskUpdate', taskUpdate);
         const { body } = await this.clickup.tasks.update(task.id, taskUpdate);
         if (data.tags) {
             await this.updateTaskTags(task.id, task.tags, data.tags);
@@ -343,14 +342,14 @@ export class ApiWrapper {
             name: task.name,
             description: task.description,
             status: task?.status,
-            priority: task.priority?.id,
+            priority: task.priority,
             due_date: task.dueDate ? new Date(task.dueDate).getTime() : undefined,
             start_date: task.startDate ? new Date(task.startDate).getTime() : undefined,
             archived: task.archived,
         };
 
         const taskUpdate = Object.entries(fieldsToMap).reduce((acc, [key, value]) => {
-            if (value !== null && value !== undefined) {
+            if (value !== undefined) {
                 acc[key] = value;
             }
             return acc;
