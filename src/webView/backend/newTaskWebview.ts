@@ -66,5 +66,8 @@ export class NewTaskWebview extends TaskWebview {
         vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
         this.listProvider.refresh();
         this.panel.dispose();
+        if (this.configuration.get("openAfterCreated")) {
+
+        }
     }
 }

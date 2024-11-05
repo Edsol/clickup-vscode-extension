@@ -4,6 +4,7 @@ import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
 import { Member, Priority, Status, Tag } from '../../types';
 import { isDark } from '../../utils';
+import { Configuration } from '../../lib/configuration';
 
 abstract class TaskWebviewInterface {
     // Metodo astratto che le classi derivate devono implementare
@@ -38,6 +39,7 @@ export default class TaskWebview implements TaskWebviewInterface {
     public statuses: Status[] | {};
     public tags: Tag[] | {};
     public priorities: Priority[] | {};
+    protected configuration: Configuration = new Configuration();
 
     /**
      * Creates an instance of TaskWebview.

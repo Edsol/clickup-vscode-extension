@@ -48,7 +48,7 @@ export async function activate(cntx: vscode.ExtensionContext) {
 	storageManager = new LocalStorageService(context.workspaceState);
 	tokenManager = new TokenManager(storageManager);
 	const token = await tokenManager.init();
-
+	const debugMode = configuration.get("debugMode");
 	// initialize taskId an listId from storage
 	selectedTaskData = await storageManager.getValue('selectedTaskData');
 
@@ -66,7 +66,7 @@ export async function activate(cntx: vscode.ExtensionContext) {
 
 	// inizialize the TaskList tree
 	const teams = await wrapper.getTeams();
-	taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper);
+	taskListProvider = new TaskListProvider(teams, constants.DEFAULT_TASK_DETAILS, wrapper, debugMode);
 	initMyTaskTree(teams, `${me.id}`);
 
 	vscode.window.createTreeView('tasksViewer', {
