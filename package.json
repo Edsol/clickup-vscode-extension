@@ -38,6 +38,11 @@
             "default": false,
             "description": "Enable debug mode to analyze errors and problems in the extension"
           },
+          "clickup.openTaskAfterCreated": {
+            "type": "boolean",
+            "default": true,
+            "description": "Open the task after its creation"
+          },
           "clickup.showTaskTitle": {
             "type": "boolean",
             "default": true,

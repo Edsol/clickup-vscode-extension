@@ -47,3 +47,7 @@ export const TASK_ICONAME = 'record.svg';
 
 export const USER_TIMES_ICONAME = 'userCircle.svg';
 export const TIME_TIMES_ICONAME = 'timeTracking.svg';
+
+// extensions config
+
+export const OPEN_TASK_AFTER_CREATED = 'openTaskAfterCreated';

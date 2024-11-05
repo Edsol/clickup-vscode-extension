@@ -5,6 +5,7 @@ import * as constants from '../../constants';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
 import TaskWebview from './taskWebview';
 import { isDark } from '../../utils';
+import { EditWebview } from './editWebview';
 
 export class NewTaskWebview extends TaskWebview {
     listId: string;
@@ -58,7 +59,7 @@ export class NewTaskWebview extends TaskWebview {
     }
 
     private async saveTask(data: any) {
-        var response = await this.wrapper.newTask(this.listId, data);
+        const response = await this.wrapper.newTask(this.listId, data);
         if (!response) {
             vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
             return false;
@@ -66,8 +67,9 @@ export class NewTaskWebview extends TaskWebview {
         vscode.window.showInformationMessage(constants.TASK_SAVE_SUCCESS_MESSAGE);
         this.listProvider.refresh();
         this.panel.dispose();
-        if (this.configuration.get("openAfterCreated")) {
 
+        if (this.configuration.get(constants.OPEN_TASK_AFTER_CREATED)) {
+            new EditWebview(this.context, response, this.wrapper, this.listProvider);
         }
     }
 }
