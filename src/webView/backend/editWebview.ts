@@ -19,7 +19,11 @@ export class EditWebview extends TaskWebview {
 			task.name,
 			vscode.ViewColumn.One,
 			{
-				enableScripts: true
+				enableScripts: true,
+				localResourceRoots: [
+					vscode.Uri.file(path.join(context.extensionPath, 'out')),
+					vscode.Uri.file(path.join(context.extensionPath, 'node_modules'))
+				],
 			}
 		);
 

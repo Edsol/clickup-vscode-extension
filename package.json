@@ -254,7 +254,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && npx webpack",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
@@ -262,7 +262,9 @@
     "translate": "npx @vscode/l10n-dev export -0 ./l10n ./src",
     "deploy": "vsce publish",
     "prepare": "husky",
-    "serve": "npx webpack serve"
+    "build:dev": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
+    "start": "webpack serve --config webpack.dev.js"
   },
   "devDependencies": {
     "@babel/core": "^7.25.7",

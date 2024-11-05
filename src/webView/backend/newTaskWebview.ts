@@ -6,6 +6,7 @@ import { TaskListProvider } from '../../tree_view/taskListProvider';
 import TaskWebview from './taskWebview';
 import { isDark } from '../../utils';
 import { EditWebview } from './editWebview';
+import path from 'path';
 
 export class NewTaskWebview extends TaskWebview {
     listId: string;
@@ -18,7 +19,8 @@ export class NewTaskWebview extends TaskWebview {
             'new task',
             vscode.ViewColumn.One,
             {
-                enableScripts: true
+                enableScripts: true,
+                localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'out'))],
             }
         );
 

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as http from 'http';
 import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
 import { Member, Priority, Status, Tag } from '../../types';
@@ -62,8 +63,8 @@ export default class TaskWebview implements TaskWebviewInterface {
      * @memberof TaskWebview
      */
     public initPanel() {
-        const updateWebview = () => {
-            this.panel!.webview.html = this.getWebviewContent();
+        const updateWebview = async () => {
+            this.panel!.webview.html = await this.getWebviewContent();
         };
 
         updateWebview();
@@ -88,8 +89,18 @@ export default class TaskWebview implements TaskWebviewInterface {
      * @return {*} 
      * @memberof TaskWebview
      */
-    public getWebviewContent(scriptUri?: vscode.Uri) {
-        const devServerUri = `http://localhost:3000/webview.js?v=${new Date().getTime()}`;
+    public async getWebviewContent() {
+        const appPath = vscode.Uri.file(path.join(this.context.extensionPath, 'out', 'webview.js'));
+        let appUri = this.panel.webview.asWebviewUri(appPath);
+
+        // Determina se sei in modalità di debug
+        const isDevelopment = this.context.extensionMode === vscode.ExtensionMode.Development;
+        if (isDevelopment) {
+            if (await this.isDevServerRunning() === false) {
+                vscode.window.showErrorMessage('you are in development mode but a webpack server has not been started. Use `npm run start` to start one');
+            }
+            appUri = `http://localhost:3000/webview.js?v=${new Date().getTime()}`;
+        }
 
         return `<!DOCTYPE html>
 		<html lang="en">
@@ -97,10 +108,12 @@ export default class TaskWebview implements TaskWebviewInterface {
 		  <meta charset="UTF-8">
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		  <title>React Webview</title>
+            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${this.panel.webview.cspSource} https:; script-src ${this.panel.webview.cspSource} 'unsafe-inline' http: https:; style-src ${this.panel.webview.cspSource} 'unsafe-inline';">
+
 		</head>
 		<body>
 		  <div id="app"></div>
-		  <script src="${devServerUri}"></script>
+		  <script src="${appUri}"></script>
 		</body>
 		</html>`;
     }
@@ -149,5 +162,27 @@ export default class TaskWebview implements TaskWebviewInterface {
             [this.members, this.statuses, this.tags, this.priorities] = values;
         });
     }
+
+    isDevServerRunning = (): Promise<boolean> => {
+        return new Promise((resolve) => {
+            const options = {
+                host: 'localhost',
+                port: 3000,
+                path: '/webview.js',
+                timeout: 2000 // Timeout di 2 secondi
+            };
+
+            const req = http.request(options, (res) => {
+                resolve(res.statusCode === 200);
+            });
+
+            req.on('error', () => {
+                resolve(false);
+            });
+
+            req.end();
+        });
+    };
+
 
 }
