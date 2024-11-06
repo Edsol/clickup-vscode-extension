@@ -3,9 +3,9 @@ import * as vscode from 'vscode';
 import { ApiWrapper } from './lib/apiWrapper';
 import { LocalStorageService } from './lib/localStorageService';
 import TokenManager from './lib/tokenManager';
-import { EditWebview } from './web_view/editWebview';
+import { EditWebview } from './webView/backend/editWebview';
 import { TaskListProvider } from './tree_view/taskListProvider';
-import { NewTaskWebview } from './web_view/newTaskWebview';
+import { NewTaskWebview } from './webView/backend/newTaskWebview';
 import { Utils } from './utils';
 import { StatusChanger } from './lib/statusChanger';
 import { TaskStatusBarItem } from './lib/taskStatusBarItem';
@@ -132,7 +132,7 @@ async function taskFound(task: Task) {
  */
 function restoreTimer(teamId: string, taskId: string) {
 	if (!teamId) {
-		console.log("No `teamId` found to restore time");
+		// console.log("No `teamId` found to restore time");
 		return;
 	}
 	wrapper.getRunningTime(teamId).then((time: Time) => {
@@ -303,11 +303,9 @@ vscode.commands.registerCommand('clickup.removeTask', async () => {
 // Time manager
 
 vscode.commands.registerCommand('clickup.startTimer', () => {
-	console.log('clickup command', 'start timer');
 	timer.start();
 });
 vscode.commands.registerCommand('clickup.stopTimer', () => {
-	console.log('clickup command', 'stopTimer timer');
 	timer.stop();
 });
 

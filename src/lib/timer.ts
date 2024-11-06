@@ -109,7 +109,7 @@ export default class Timer {
 					this.startCallback();
 				}
 			}).catch((error) => {
-				console.log('start time error:', error);
+				// console.log('start time error:', error);
 			});
 	}
 
@@ -129,7 +129,7 @@ export default class Timer {
 					this.stopCallback();
 				}
 			}).catch((error) => {
-				console.log(`stop time error: ${error}`);
+				// console.log(`stop time error: ${error}`);
 			});
 	}
 
