@@ -172,9 +172,9 @@ export default class Timer {
 	 * @memberof Timer
 	 */
 	public destroy() {
-		this._statusBarItem.hide();
-		this._statusBarPauseButton.hide();
-		this._statusBarStartButton.hide();
+		this._statusBarItem.dispose();
+		this._statusBarPauseButton.dispose();
+		this._statusBarStartButton.dispose();
 	}
 }
 
