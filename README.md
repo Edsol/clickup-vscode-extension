@@ -128,3 +128,15 @@ Detailed Release Notes are available [here](CHANGELOG.md)
 ## Do you want to support my work? Buy me an espresso coffee (I'm Italian)
 
 <a href="https://www.buymeacoffee.com/edsol" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+## Special Thanks:
+
+### with the code:
+
+- [dfntlmb](https://github.com/definiteIymaybe)
+- [ILoomans](https://github.com/ILoomans)
+- [M97Chahboun](https://github.com/M97Chahboun)
+
+### with caffeine:
+
+- [gute1](https://github.com/gute1)
