@@ -58,13 +58,15 @@ export class EditWebview extends TaskWebview {
 	}
 
 	private async pushToWebview() {
-		await this.fetchExtraData(this.task.list.id, this.task.space.id);
+		await this.fetchExtraData(this.task.list.id, this.task.space.id, this.task.id);
+		console.log('comments', this.comments);
 		this.sendMessage('task', {
 			task: this.task,
 			statuses: this.statuses,
 			tags: this.tags,
 			priorities: this.priorities,
-			members: this.members
+			members: this.members,
+			comments: this.comments
 		});
 	}
 

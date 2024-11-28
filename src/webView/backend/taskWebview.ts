@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as http from 'http';
 import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
-import { Member, Priority, Status, Tag } from '../../types';
+import { Member, Priority, Status, Tag, Comment } from '../../types';
 import { isDark } from '../../utils';
 import { Configuration } from '../../lib/configuration';
 
@@ -37,6 +37,7 @@ export default class TaskWebview implements TaskWebviewInterface {
     public listProvider: TaskListProvider;
 
     public members: Member[] | {};
+    public comments: Comment[] | {};
     public statuses: Status[] | {};
     public tags: Tag[] | {};
     public priorities: Priority[] | {};
@@ -142,7 +143,7 @@ export default class TaskWebview implements TaskWebviewInterface {
      */
     public messageHandler() { }
 
-    public async fetchExtraData(listId: string, spaceId: string) {
+    public async fetchExtraData(listId: string, spaceId: string, taskId?: string) {
         const promises = [
             new Promise(async (resolve) => {
                 resolve(await this.wrapper.getMembers(listId));
@@ -156,10 +157,16 @@ export default class TaskWebview implements TaskWebviewInterface {
             new Promise(async (resolve) => {
                 resolve(await this.wrapper.getPriorities(spaceId));
             }),
+            new Promise(async (resolve) => {
+                if (!taskId) {
+                    return {};
+                }
+                resolve(await this.wrapper.getTaskComments(taskId));
+            }),
         ];
 
         await Promise.all(promises).then((values) => {
-            [this.members, this.statuses, this.tags, this.priorities] = values;
+            [this.members, this.statuses, this.tags, this.priorities, this.comments] = values;
         });
     }
 

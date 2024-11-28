@@ -78,6 +78,19 @@ export type Assignee = {
     email: string
 };
 
+export type Comment = {
+    id: string,
+    comment: string[],
+    comment_text: string,
+    user: User,
+    resolved: boolean,
+    assignee: Assignee,
+    assigned_by: Assignee,
+    reactions?: any[],
+    date: string,
+    reply_count: string
+};
+
 export type Checklist = undefined;
 
 export type Creator = {

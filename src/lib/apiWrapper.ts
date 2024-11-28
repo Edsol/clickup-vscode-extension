@@ -234,6 +234,10 @@ export class ApiWrapper {
         return space.features.priorities.priorities;
     }
 
+    async getTaskComments(taskId: string) {
+        const { body } = await this.clickup.tasks.getComments(taskId);
+        return body;
+    }
     /**
      *
      *
