@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Task, Status, Priority, Tag, Assignee } from "../../types";
+import { Task, Status, Priority, Tag, Assignee, Comment } from "../../types";
 
-import { Skeleton, Button, Col, Divider, Row, Typography, Layout } from "antd";
-const { Header, Sider, Content } = Layout;
+import { Skeleton, Button, Col, Divider, Row, Typography } from "antd";
 const { Text } = Typography;
 
 import { blue, lime } from "@ant-design/colors";
@@ -15,6 +14,8 @@ import TaskDescription from "./components/taskDescription";
 import TaskTags from "./components/taskTags";
 import TaskPriorities from "./components/taskPriorities";
 
+import Comments from "./comments";
+
 const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
 
@@ -24,6 +25,8 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   const [priorities, setPriorities] = React.useState<Array<Priority>>({});
   const [members, setMembers] = React.useState<Array<Assignee>>({});
   const [tags, setTags] = React.useState<Array<Tag>>({});
+
+  const [comments, setComments] = React.useState<Array<Comment>>({});
 
   const hasModifiedFields = () => {
     return Object.keys(modifiedFields).length === 0 ? false : true;
@@ -44,6 +47,7 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
         setPriorities(data.priorities);
         setMembers(data.members);
         setTags(data.tags);
+        setComments(data.comments);
 
         // hide skeleton
         setIsReady(true);
@@ -156,6 +160,8 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
       >
         Save
       </Button>
+      <Divider />
+      <Comments comments={comments} />
     </div>
   );
 };

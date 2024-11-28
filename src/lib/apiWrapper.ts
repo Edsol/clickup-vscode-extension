@@ -236,7 +236,7 @@ export class ApiWrapper {
 
     async getTaskComments(taskId: string) {
         const { body } = await this.clickup.tasks.getComments(taskId);
-        return body;
+        return body.comments;
     }
     /**
      *

@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client"; // Importa il nuovo API di React 18
 import TaskData from "./taskData";
-import Comments from "./comments";
 
 import { ConfigProvider, Divider, theme } from "antd";
 import itIT from "antd/locale/it_IT";
@@ -33,7 +32,6 @@ const RootComponent: React.FC = () => {
         vscode={vscode}
       />
       <Divider />
-      <Comments />
     </ConfigProvider>
   );
 };
