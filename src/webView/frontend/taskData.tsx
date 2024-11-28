@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Task, Status, Priority, Tag, Assignee } from "../../types";
 
-import { Skeleton, Button, Col, Divider, Row, Typography } from "antd";
+import { Skeleton, Button, Col, Divider, Row, Typography, Layout } from "antd";
+const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 
 import { blue, lime } from "@ant-design/colors";

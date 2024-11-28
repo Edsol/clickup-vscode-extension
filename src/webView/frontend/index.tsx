@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client"; // Importa il nuovo API di React 18
-import App from "./App";
+import TaskData from "./taskData";
+import Comments from "./comments";
 
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, Divider, theme } from "antd";
 import itIT from "antd/locale/it_IT";
 
 const vscode = (window as any).acquireVsCodeApi();
@@ -26,11 +27,13 @@ const RootComponent: React.FC = () => {
         cssVar: true
       }}
     >
-      <App
+      <TaskData
         isDarkTheme={isDarkTheme}
         setDarkTheme={setIsDarkTheme}
         vscode={vscode}
       />
+      <Divider />
+      <Comments />
     </ConfigProvider>
   );
 };
