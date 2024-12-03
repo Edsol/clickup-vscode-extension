@@ -3,7 +3,9 @@ import * as ReactDOM from "react-dom/client"; // Importa il nuovo API di React 1
 import TaskData from "./taskData";
 
 import { ConfigProvider, Divider, theme } from "antd";
-import itIT from "antd/locale/it_IT";
+import it_IT from "antd/locale/it_IT";
+
+import "./index.css";
 
 const vscode = (window as any).acquireVsCodeApi();
 vscode.postMessage({ command: "init", text: "init react app!" });
@@ -20,7 +22,7 @@ const RootComponent: React.FC = () => {
 
   return (
     <ConfigProvider
-      locale={itIT}
+      locale={it_IT}
       theme={{
         algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
         cssVar: true
