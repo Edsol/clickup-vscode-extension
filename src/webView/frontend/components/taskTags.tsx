@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Select, Space, Tag } from "antd";
 import TagIcon from "@resources/official_icons/dark/tag.svg";
-import TagT from "../../../types";
 
-export default function TaskTags({ tags, value, setValue }) {
+export default function taskTags({ tags, value, setValue }) {
   let parseTags = [];
   if (tags) {
     parseTags = tags.map((tag, key) => {
@@ -37,7 +36,7 @@ export default function TaskTags({ tags, value, setValue }) {
       return "#FFF";
     }
 
-    const res = tags.filter((tag: TagT) => tag.name === label)[0];
+    const res = tags.filter((tag) => tag.name === label)[0];
     if (!res) {
       return;
     }

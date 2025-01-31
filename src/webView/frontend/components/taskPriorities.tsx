@@ -3,7 +3,7 @@ import { Select, Space, Tag } from "antd";
 import PriorityIcon from "@resources/official_icons/dark/priority.svg";
 import { Priority } from "../../../types";
 
-export default function TaskPriorities({ priorities, value, setValue }) {
+export default function taskPriorities({ priorities, value, setValue }) {
   let parsedPriorities = [];
 
   if (priorities) {

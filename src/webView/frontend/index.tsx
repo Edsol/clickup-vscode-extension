@@ -33,7 +33,6 @@ const RootComponent: React.FC = () => {
         setDarkTheme={setIsDarkTheme}
         vscode={vscode}
       />
-      <Divider />
     </ConfigProvider>
   );
 };
