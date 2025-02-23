@@ -8,22 +8,27 @@ const commentsList = ({ comments, className = "" }) => {
     return "";
   }
   return (
-    <div className="h-full mb">
-      <div
-        className="h-screen overflow-y-auto space-y-2"
-        style={{
-          paddingBottom: "35px",
-          paddingTop: "10px",
-          paddingRight: 10
-        }}
-      >
-        {getCommentsCard(comments)}
+    <div className="relative">
+      <div className="mb pl-2">
+        <div
+          className="h-screen overflow-y-auto space-y-2"
+          style={{
+            paddingBottom: "35px",
+            paddingTop: "10px",
+            paddingRight: 10
+          }}
+        >
+          {getCommentsCard(comments)}
+        </div>
       </div>
-      <div>
-        <Space.Compact className="w-full absolute bottom-0 left-0 pl-2 pr-4">
+      <div
+        className="absolute bottom-0 p-1 w-full"
+        style={{ backgroundColor: "var(--vscode-editor-background)" }}
+      >
+        <div className="flex flex-row gap-1">
           <Input placeHolder="Write a comment" />
           <Button type="primary">send</Button>
-        </Space.Compact>
+        </div>
       </div>
     </div>
   );

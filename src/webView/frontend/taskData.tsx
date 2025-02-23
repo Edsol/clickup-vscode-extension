@@ -1,24 +1,12 @@
 import * as React from "react";
 import { Task, Status, Priority, Tag, Assignee, Comment } from "../../types";
 
-import {
-  Skeleton,
-  Button,
-  Col,
-  Divider,
-  Row,
-  Typography,
-  Flex,
-  Badge,
-  Tooltip,
-  Splitter
-} from "antd";
+import { Skeleton, Button, Col, Divider, Row, Typography } from "antd";
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Text } = Typography;
 
 import { lime } from "@ant-design/colors";
-
-import CommentIcon from "@resources/official_icons/dark/comment.svg";
 
 import TaskId from "./components/taskId";
 import TaskName from "./components/taskName";
@@ -30,7 +18,15 @@ import TaskPriorities from "./components/taskPriorities";
 
 import Comments from "./comments";
 
-const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
+const app = ({
+  isDarkTheme,
+  setDarkTheme,
+  vscode,
+  showComments,
+  setShowComments,
+  comments,
+  setComments
+}) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
 
   const [task, setTask] = React.useState<Task>({});
@@ -39,12 +35,6 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   const [priorities, setPriorities] = React.useState<Array<Priority>>({});
   const [members, setMembers] = React.useState<Array<Assignee>>({});
   const [tags, setTags] = React.useState<Array<Tag>>({});
-
-  const [comments, setComments] = React.useState<Array<Comment>>({});
-  const [showComments, setShowComments] = React.useState<boolean>(true);
-
-  const sidebarIconWidth = 24;
-  const sidebarIconHeight = 24;
 
   const hasModifiedFields = () => {
     return Object.keys(modifiedFields).length === 0 ? false : true;
@@ -96,144 +86,91 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
     color: isDarkTheme ? "#FFF" : "#000"
   };
 
-  const selectedItemBgColor = isDarkTheme ? "bg-zinc-500" : "bg-zinc-200";
-
   const marginTop = "20px";
+
   return (
     <div>
-      <Row gutter={[16, 16]}>
-        <Col
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: "20px",
-            padding: 0
-          }}
-        >
-          <div
-            className={
-              "cursor-pointer p-1 " +
-              (showComments ? selectedItemBgColor + " rounded" : "")
-            }
-            onClick={() => {
-              setShowComments(!showComments);
-            }}
-          >
-            <Tooltip title="Show Comments">
-              <Badge count={comments.length} size="small" color={"gray"}>
-                <CommentIcon
-                  width={sidebarIconWidth}
-                  height={sidebarIconHeight}
-                  style={{ marginLeft: "12px" }}
+      {showComments && <Comments comments={comments} />}
+      {!showComments && (
+        <div className={"p-2"}>
+          <Divider orientation="left">
+            <TaskId task={task} notifyMessage={notifyMessage} />
+          </Divider>
+          <Text strong style={labelStyle}>
+            Name
+          </Text>
+          <TaskName task={task} setValue={setModifiedFields} />
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={24} md={12} lg={12}>
+              <div style={{ marginTop: marginTop }}>
+                <Text strong style={labelStyle}>
+                  Status
+                </Text>
+                <TaskStatus
+                  statuses={statuses}
+                  value={task.status ? task.status.status : {}}
+                  setValue={setModifiedFields}
                 />
-              </Badge>
-              <Typography.Title style={{ margin: 0, fontSize: "10px" }}>
-                Comments
-              </Typography.Title>
-            </Tooltip>
+              </div>
+
+              <div style={{ marginTop: marginTop }}>
+                <Text strong style={labelStyle}>
+                  Priority
+                </Text>
+                <TaskPriorities
+                  priorities={priorities}
+                  value={task.priority}
+                  setValue={setModifiedFields}
+                />
+              </div>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12}>
+              <div style={{ marginTop: marginTop }}>
+                <Text strong style={labelStyle}>
+                  Assignees
+                </Text>
+                <TaskAssignees
+                  members={members}
+                  value={task.assignees}
+                  setValue={setModifiedFields}
+                />
+              </div>
+              <div style={{ marginTop: marginTop }}>
+                <Text strong style={labelStyle}>
+                  Tags
+                </Text>
+                <TaskTags
+                  tags={tags}
+                  value={task.tags}
+                  setValue={setModifiedFields}
+                />
+              </div>
+            </Col>
+          </Row>
+          <div style={{ marginTop: marginTop }}>
+            <Text strong style={labelStyle}>
+              Description
+            </Text>
+            <TaskDescription
+              value={task.description}
+              setValue={setModifiedFields}
+            />
           </div>
-        </Col>
 
-        <Divider
-          type="vertical"
-          style={{ borderColor: labelStyle }}
-          className="h-svh"
-        />
-        {showComments && (
-          <Col className="h-svh">
-            <Comments comments={comments} />
-          </Col>
-        )}
-
-        <Col span={16}>
-          <Splitter>
-            <Splitter.Panel className="bg-yellow-500">
-              <Flex vertical>
-                <div>
-                  <Divider orientation="left">
-                    <TaskId task={task} notifyMessage={notifyMessage} />
-                  </Divider>
-                  <Text strong style={labelStyle}>
-                    Name
-                  </Text>
-                  <TaskName task={task} setValue={setModifiedFields} />
-                  <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={24} md={12} lg={12}>
-                      <div style={{ marginTop: marginTop }}>
-                        <Text strong style={labelStyle}>
-                          Status
-                        </Text>
-                        <TaskStatus
-                          statuses={statuses}
-                          value={task.status ? task.status.status : {}}
-                          setValue={setModifiedFields}
-                        />
-                      </div>
-
-                      <div style={{ marginTop: marginTop }}>
-                        <Text strong style={labelStyle}>
-                          Priority
-                        </Text>
-                        <TaskPriorities
-                          priorities={priorities}
-                          value={task.priority}
-                          setValue={setModifiedFields}
-                        />
-                      </div>
-                    </Col>
-                    <Col xs={24} sm={24} md={12} lg={12}>
-                      <div style={{ marginTop: marginTop }}>
-                        <Text strong style={labelStyle}>
-                          Assignees
-                        </Text>
-                        <TaskAssignees
-                          members={members}
-                          value={task.assignees}
-                          setValue={setModifiedFields}
-                        />
-                      </div>
-                      <div style={{ marginTop: marginTop }}>
-                        <Text strong style={labelStyle}>
-                          Tags
-                        </Text>
-                        <TaskTags
-                          tags={tags}
-                          value={task.tags}
-                          setValue={setModifiedFields}
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <div style={{ marginTop: marginTop }}>
-                    <Text strong style={labelStyle}>
-                      Description
-                    </Text>
-                    <TaskDescription
-                      value={task.description}
-                      setValue={setModifiedFields}
-                    />
-                  </div>
-
-                  <Button
-                    color="primary"
-                    variant="filled"
-                    onClick={submit}
-                    style={{
-                      backgroundColor: lime[6],
-                      color: "white"
-                    }}
-                    disabled={!hasModifiedFields()}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </Flex>
-            </Splitter.Panel>
-          </Splitter>
-        </Col>
-      </Row>
+          <Button
+            color="primary"
+            variant="filled"
+            onClick={submit}
+            style={{
+              backgroundColor: lime[6],
+              color: "white"
+            }}
+            disabled={!hasModifiedFields()}
+          >
+            Save
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
