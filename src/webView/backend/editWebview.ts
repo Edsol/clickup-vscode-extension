@@ -10,25 +10,31 @@ import path from 'path';
 export class EditWebview extends TaskWebview {
 	task: Task;
 
-	constructor(context: vscode.ExtensionContext, task: Task, wrapper: ApiWrapper, provider: TaskListProvider) {
+	constructor(context: vscode.ExtensionContext, taskId: string, wrapper: ApiWrapper, provider: TaskListProvider) {
 		super(context, wrapper, provider);
-		this.task = task;
+		// this.task = task;
 
-		this.panel = vscode.window.createWebviewPanel(
-			'editTask',
-			task.name,
-			vscode.ViewColumn.One,
-			{
-				enableScripts: true,
-				localResourceRoots: [
-					vscode.Uri.file(path.join(context.extensionPath, 'out')),
-					vscode.Uri.file(path.join(context.extensionPath, 'node_modules'))
-				],
-			}
-		);
+		// workaround: recall getTask function to get Task with theirs subtasks
+		wrapper.getTask(taskId).then((task) => {
+			this.task = task;
 
-		this.initPanel();
-		this.messageHandler();
+			this.panel = vscode.window.createWebviewPanel(
+				'editTask',
+				task.name,
+				vscode.ViewColumn.One,
+				{
+					enableScripts: true,
+					localResourceRoots: [
+						vscode.Uri.file(path.join(context.extensionPath, 'out')),
+						vscode.Uri.file(path.join(context.extensionPath, 'node_modules'))
+					],
+				}
+			);
+
+			this.initPanel();
+			this.messageHandler();
+		});
+
 	}
 
 	messageHandler() {
@@ -45,6 +51,10 @@ export class EditWebview extends TaskWebview {
 					break;
 				case 'save':
 					await this.updateTask(this.task, message.data.task);
+					break;
+				case 'openTask':
+					console.log('openTask backend', message.data.task);
+					vscode.commands.executeCommand('clickup.editTask', message.data.task);
 					break;
 				case 'notification':
 					if (message.type === 'success') {

@@ -1,22 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client"; // Importa il nuovo API di React 18
 import TaskData from "./taskData";
+import Comments from "./comments";
+import Subtasks from "./subtasks";
 
-import { ConfigProvider, Divider, theme } from "antd";
-import {
-  Skeleton,
-  Button,
-  Col,
-  Row,
-  Typography,
-  Flex,
-  Badge,
-  Tooltip,
-  Splitter,
-  Layout
-} from "antd";
+import { ConfigProvider, theme } from "antd";
+import { Typography, Badge, Tooltip, Layout } from "antd";
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const { Header, Footer, Sider, Content } = Layout;
 import CommentIcon from "@resources/official_icons/dark/comment.svg";
+import SubtaskIcon from "@resources/official_icons/dark/subtask.svg";
 
 import it_IT from "antd/locale/it_IT";
 
@@ -25,10 +18,31 @@ import "./index.css";
 const vscode = (window as any).acquireVsCodeApi();
 vscode.postMessage({ command: "init", text: "init react app!" });
 // Trasforma build in un componente React
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const RootComponent: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-  const [showComments, setShowComments] = React.useState<boolean>(true);
+
   const [comments, setComments] = React.useState<Array<Comment>>({});
+  const [subtasks, setSubtasks] = React.useState<Array<Comment>>({});
+
+  type ActiveViewType = "comments" | "subtasks" | "taskdata";
+
+  const [activeView, setActiveView] =
+    React.useState<ActiveViewType>("taskdata");
+
+  const toggleSidebarElement = (selected: ActiveViewType) => {
+    setActiveView((prev) => (prev === selected ? "taskdata" : selected));
+  };
+
+  const openSubtask = (taskId) => {
+    vscode.postMessage({
+      command: "openTask",
+      taskItem: taskId,
+      data: {
+        task: taskId
+      }
+    });
+  };
 
   const sidebarIconWidth = 24;
   const sidebarIconHeight = 24;
@@ -75,10 +89,12 @@ const RootComponent: React.FC = () => {
           <div
             className={
               "cursor-pointer p-1 " +
-              (showComments ? selectedItemBgColor + " rounded" : "")
+              (activeView === "comments"
+                ? selectedItemBgColor + " rounded"
+                : "")
             }
             onClick={() => {
-              setShowComments(!showComments);
+              toggleSidebarElement("comments");
             }}
           >
             <Tooltip title="Show Comments">
@@ -95,18 +111,61 @@ const RootComponent: React.FC = () => {
               </div>
             </Tooltip>
           </div>
+          <div
+            className={
+              "cursor-pointer p-1 " +
+              (activeView === "subtasks"
+                ? selectedItemBgColor + " rounded"
+                : "")
+            }
+            onClick={() => {
+              toggleSidebarElement("subtasks");
+            }}
+          >
+            <Tooltip title="Show Subtasks">
+              <div className="mt-3">
+                <Badge
+                  count={subtasks ? subtasks.length : 0}
+                  size="small"
+                  color={"#AAA"}
+                >
+                  <SubtaskIcon
+                    width={sidebarIconWidth}
+                    height={sidebarIconHeight}
+                  />
+                </Badge>
+                <Typography.Title style={{ margin: 0, fontSize: "10px" }}>
+                  SubTasks
+                </Typography.Title>
+              </div>
+            </Tooltip>
+          </div>
         </Sider>
         <Layout>
           <Content style={contentStyle}>
-            <TaskData
-              isDarkTheme={isDarkTheme}
-              setDarkTheme={setIsDarkTheme}
-              vscode={vscode}
-              showComments={showComments}
-              setShowComments={setShowComments}
-              comments={comments}
-              setComments={setComments}
-            />
+            {activeView === "comments" && (
+              <Comments
+                comments={comments}
+                setComments={setComments}
+                sendComment={() => {}}
+              />
+            )}
+            {activeView === "subtasks" && (
+              <Subtasks
+                subtasks={subtasks}
+                setSubtasks={setSubtasks}
+                openSubtask={(taskId) => openSubtask(taskId)}
+              />
+            )}
+            {activeView === "taskdata" && (
+              <TaskData
+                isDarkTheme={isDarkTheme}
+                vscode={vscode}
+                setComments={setComments}
+                setSubtasks={setSubtasks}
+                openSubtask={(taskId) => openSubtask(taskId)}
+              />
+            )}
           </Content>
         </Layout>
       </Layout>

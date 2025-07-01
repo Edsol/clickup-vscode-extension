@@ -1,12 +1,36 @@
 import * as React from "react";
-import { Card, Avatar, Image, Badge, Input, Space, Button, Flex } from "antd";
+import { Card, Avatar, Image, Input, Button } from "antd";
 import { Comment } from "../../types";
 import TimeAgo from "react-timeago";
 
-const commentsList = ({ comments, className = "" }) => {
-  if (!comments) {
+const commentsList = ({
+  comments,
+  className = "",
+  setComments,
+  sendComment
+}) => {
+  if (comments.length === undefined) {
     return "";
   }
+  const [newComment, setNewComment] = React.useState(null);
+  const [readyToSend, setReadyToSend] = React.useState(false);
+
+  React.useEffect(() => {
+    if (newComment === null) {
+      return;
+    }
+    if (newComment.length > 0) {
+      setReadyToSend(true);
+    } else {
+      setReadyToSend(false);
+    }
+  }, [newComment]);
+
+  const sendNewComment = () => {
+    sendComment(newComment);
+    console.log("sended");
+  };
+
   return (
     <div className="relative">
       <div className="mb pl-2">
@@ -26,8 +50,17 @@ const commentsList = ({ comments, className = "" }) => {
         style={{ backgroundColor: "var(--vscode-editor-background)" }}
       >
         <div className="flex flex-row gap-1">
-          <Input placeHolder="Write a comment" />
-          <Button type="primary">send</Button>
+          <Input
+            placeHolder="Write a comment"
+            onChange={(e: any) => setNewComment(e.currentTarget.value)}
+          />
+          <Button
+            type="primary"
+            disabled={!readyToSend}
+            onClick={(e) => sendNewComment}
+          >
+            send
+          </Button>
         </div>
       </div>
     </div>

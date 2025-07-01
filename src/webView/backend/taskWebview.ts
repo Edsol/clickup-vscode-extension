@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as http from 'http';
 import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
-import { Member, Priority, Status, Tag, Comment } from '../../types';
+import { Member, Priority, Status, Tag, Comment, Task } from '../../types';
 import { isDark } from '../../utils';
 import { Configuration } from '../../lib/configuration';
 

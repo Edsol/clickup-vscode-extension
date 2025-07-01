@@ -24,12 +24,14 @@ export type Task = {
     name: string,
     orderId: string,
     orderindex: string;
-    parent: Parent,
+    parent: string,
+    top_level_parent: string,
     permissionLevel: string,
     points: null,
     priority: Priority,
     project: Project,
     space: Space,
+    subtasks?: Task[],
     startDate: string,
     status: Status,
     tags: Tag[],
@@ -103,7 +105,6 @@ export type Creator = {
 
 export type CustomField = undefined;
 export type Dependecie = undefined;
-export type Parent = undefined;
 
 export type Status = {
     id: string,

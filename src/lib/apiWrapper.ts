@@ -166,7 +166,12 @@ export class ApiWrapper {
      * @memberof ApiWrapper
      */
     async getTask(taskId: string): Promise<Task> {
-        const { body } = await this.clickup.tasks.get(taskId);
+        const options = {
+            // assignees: TODO: waiting to accept the PR to fix
+            "include_subtasks": true
+        };
+
+        const { body } = await this.clickup.tasks.get(taskId, options);
         return body;
     }
 
@@ -178,7 +183,14 @@ export class ApiWrapper {
      * @memberof ApiWrapper
      */
     async getTasks(listId: string) {
-        const { body } = await this.clickup.lists.getTasks(listId);
+        const options = {
+            "subtasks[]": [
+                // assignees: TODO: waiting to accept the PR to fix
+                true
+            ]
+        };
+        const { body } = await this.clickup.lists.getTasks(listId, options);
+        console.log({ body })
         const tasks: Array<Task> = body.tasks;
         return tasks;
     }
@@ -456,7 +468,6 @@ export class ApiWrapper {
                 assignId
             ]
         };
-
         const { body } = await this.clickup.teams.getFilteredTasks(teamId, options);
         return body.tasks;
     }

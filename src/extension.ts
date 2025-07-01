@@ -219,7 +219,8 @@ vscode.commands.registerCommand('clickup.addTask', (listItem) => {
 });
 
 vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
-	new EditWebview(context, taskItem.task, wrapper, taskListProvider);
+	const taskId = typeof taskItem === 'object' ? taskItem.task.id : taskItem;
+	new EditWebview(context, taskId, wrapper, taskListProvider);
 });
 
 vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
