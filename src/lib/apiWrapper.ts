@@ -250,6 +250,21 @@ export class ApiWrapper {
         const { body } = await this.clickup.tasks.getComments(taskId);
         return body.comments;
     }
+
+    async addComment(taskId: string, comment: string) {
+        const { body } = await this.clickup.tasks.addComment(taskId, {
+            "comment": [
+                {
+                    "text": comment
+                }
+            ]
+        });
+
+        if (!body && body.id) {
+            return true;
+        }
+        return false;
+    }
     /**
      *
      *

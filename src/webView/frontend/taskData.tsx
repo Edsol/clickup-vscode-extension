@@ -28,20 +28,32 @@ import TaskPriorities from "./components/taskPriorities";
 const app = ({
   isDarkTheme,
   vscode,
+  setTaskGlobal,
   setComments,
   setSubtasks,
   openSubtask
 }) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
 
-  const [task, setTask] = React.useState<Task>({});
-  const [modifiedFields, setModifiedFields] = React.useState<Task>({});
-  const [statuses, setStatuses] = React.useState<Array<Status>>({});
-  const [priorities, setPriorities] = React.useState<Array<Priority>>({});
-  const [members, setMembers] = React.useState<Array<Assignee>>({});
-  const [tags, setTags] = React.useState<Array<Tag>>({});
+  const [task, setTask] = React.useState<Task | undefined>(undefined);
+  const [modifiedFields, setModifiedFields] = React.useState<Task | undefined>(
+    undefined
+  );
+  const [statuses, setStatuses] = React.useState<Array<Status> | undefined>(
+    undefined
+  );
+  const [priorities, setPriorities] = React.useState<
+    Array<Priority> | undefined
+  >(undefined);
+  const [members, setMembers] = React.useState<Array<Assignee> | undefined>(
+    undefined
+  );
+  const [tags, setTags] = React.useState<Array<Tag> | undefined>(undefined);
 
   const hasModifiedFields = () => {
+    if (modifiedFields === undefined) {
+      return false;
+    }
     return Object.keys(modifiedFields).length === 0 ? false : true;
   };
   const notifyMessage = (text: string, type: string = "success") => {
@@ -56,14 +68,13 @@ const app = ({
 
       if (command === "task") {
         setTask(data.task);
+        setTaskGlobal(data.task);
         setStatuses(data.statuses);
         setPriorities(data.priorities);
         setMembers(data.members);
         setTags(data.tags);
         setComments(data.comments);
         setSubtasks(data.task.subtasks);
-
-        console.log("data task", data.task);
 
         // hide skeleton
         setIsReady(true);
@@ -82,12 +93,7 @@ const app = ({
   }
 
   function submit() {
-    vscode.postMessage({
-      command: "save",
-      data: {
-        task: modifiedFields
-      }
-    });
+    vscode.postMessage({ command: "save", data: { task: modifiedFields } });
   }
 
   const labelStyle: React.CSSProperties = {
@@ -178,10 +184,7 @@ const app = ({
         color="primary"
         variant="filled"
         onClick={submit}
-        style={{
-          backgroundColor: lime[6],
-          color: "white"
-        }}
+        style={{ backgroundColor: lime[6], color: "white" }}
         disabled={!hasModifiedFields()}
       >
         Save

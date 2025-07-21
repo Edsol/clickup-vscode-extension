@@ -10,8 +10,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.tsx', 'jsx'],
         alias: {
-            '@components': path.resolve(__dirname, 'src/components'),
-            '@resources': path.resolve(__dirname, 'resources'),
+            'components': path.resolve(__dirname, 'src/components'),
+            'resources': path.resolve(__dirname, 'resources'),
         },
     },
     module: {
@@ -25,10 +25,6 @@ module.exports = {
                         presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript']
                     }
                 }
-            },
-            {
-                test: /\.resources\/official_icons\/dark\/.svg$/,
-                use: ["style-loader", "css-loader"],
             },
             {
                 test: /\.svg$/,

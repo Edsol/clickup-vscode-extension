@@ -7,9 +7,10 @@ import * as constant from '../../constants';
 import TaskWebview from './taskWebview';
 import path from 'path';
 
+export enum CommandList { 'init', "ready", "save", "openTask", "notification", "comment" };
+
 export class EditWebview extends TaskWebview {
 	task: Task;
-
 	constructor(context: vscode.ExtensionContext, taskId: string, wrapper: ApiWrapper, provider: TaskListProvider) {
 		super(context, wrapper, provider);
 		// this.task = task;
@@ -53,7 +54,6 @@ export class EditWebview extends TaskWebview {
 					await this.updateTask(this.task, message.data.task);
 					break;
 				case 'openTask':
-					console.log('openTask backend', message.data.task);
 					vscode.commands.executeCommand('clickup.editTask', message.data.task);
 					break;
 				case 'notification':
@@ -61,6 +61,15 @@ export class EditWebview extends TaskWebview {
 						vscode.window.showInformationMessage(message.text);
 					} else {
 						vscode.window.showErrorMessage(message.text);
+					}
+					break;
+				case "addComment":
+					const response = await this.wrapper.addComment(message.data.taskId, message.data.comment);
+					console.log('addComment response', response);
+					if (response === true) {
+						this.sendMessage('updateCommentList', {
+							comments: await this.wrapper.getTaskComments(message.data.taskId)
+						});
 					}
 					break;
 			}

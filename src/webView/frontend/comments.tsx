@@ -4,6 +4,7 @@ import { Comment } from "../../types";
 import TimeAgo from "react-timeago";
 
 const commentsList = ({
+  taskId,
   comments,
   className = "",
   setComments,
@@ -27,8 +28,7 @@ const commentsList = ({
   }, [newComment]);
 
   const sendNewComment = () => {
-    sendComment(newComment);
-    console.log("sended");
+    sendComment(taskId, newComment);
   };
 
   return (
@@ -51,13 +51,16 @@ const commentsList = ({
       >
         <div className="flex flex-row gap-1">
           <Input
-            placeHolder="Write a comment"
+            placeholder="Write a comment"
             onChange={(e: any) => setNewComment(e.currentTarget.value)}
           />
           <Button
             type="primary"
             disabled={!readyToSend}
-            onClick={(e) => sendNewComment}
+            onClick={(e) => {
+              console.log("button handler");
+              sendNewComment();
+            }}
           >
             send
           </Button>
@@ -68,12 +71,12 @@ const commentsList = ({
 };
 
 function getCommentsCard(comments) {
-  return comments.map((comment: Comment) => {
-    return buildCard(comment);
+  return comments.map((comment: Comment, index: number) => {
+    return buildCard(comment, index);
   });
 }
 
-function buildCard(comment) {
+function buildCard(comment, index) {
   const parsedDate = new Date(parseInt(comment.date));
   let reply: Array<any> = [];
 
@@ -99,10 +102,7 @@ function buildAvatar(comment) {
   return (
     <div>
       <Avatar
-        style={{
-          backgroundColor: comment.user.color,
-          verticalAlign: "middle"
-        }}
+        style={{ backgroundColor: comment.user.color, verticalAlign: "middle" }}
         className="cursor-pointer"
         size="small"
       >
@@ -116,14 +116,15 @@ function buildAvatar(comment) {
 function buildContent(comment) {
   let content: Array<any> = [];
 
-  comment.forEach((commentElement) => {
+  comment.forEach((commentElement, index) => {
     if (!commentElement.hasOwnProperty("type")) {
-      content.push(<p>{commentElement.text}</p>);
+      content.push(<p key={index}>{commentElement.text}</p>);
       return;
     }
 
     content.push(
       <Image
+        key={index}
         width={200}
         src={commentElement.image.thumbnail_medium}
         // preview={{

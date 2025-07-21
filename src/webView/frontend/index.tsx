@@ -14,16 +14,22 @@ import SubtaskIcon from "@resources/official_icons/dark/subtask.svg";
 import it_IT from "antd/locale/it_IT";
 
 import "./index.css";
+import { Task } from "../../types";
 
 const vscode = (window as any).acquireVsCodeApi();
 vscode.postMessage({ command: "init", text: "init react app!" });
-// Trasforma build in un componente React
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const RootComponent: React.FC = () => {
+  const [task, setTask] = React.useState(undefined);
+
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-  const [comments, setComments] = React.useState<Array<Comment>>({});
-  const [subtasks, setSubtasks] = React.useState<Array<Comment>>({});
+  const [comments, setComments] = React.useState<Array<Comment> | undefined>(
+    undefined
+  );
+  const [subtasks, setSubtasks] = React.useState<Array<Task> | undefined>(
+    undefined
+  );
 
   type ActiveViewType = "comments" | "subtasks" | "taskdata";
 
@@ -38,19 +44,41 @@ const RootComponent: React.FC = () => {
     vscode.postMessage({
       command: "openTask",
       taskItem: taskId,
-      data: {
-        task: taskId
-      }
+      data: { task: taskId }
     });
   };
+
+  const sendComment = (taskId: string, comment: string) => {
+    vscode.postMessage({
+      command: "addComment",
+      data: { taskId: taskId, comment: comment }
+    });
+  };
+
+  React.useEffect(() => {
+    vscode.postMessage({ command: "ready", text: "React App is ready!" });
+
+    const handleMessage = async (event: MessageEvent) => {
+      const { command, data } = event.data;
+
+      if (command === "updateCommentList") {
+        setComments(data.comments);
+        console.log("updateCommentList handler", data);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
 
   const sidebarIconWidth = 24;
   const sidebarIconHeight = 24;
 
   const selectedItemBgColor = isDarkTheme ? "bg-zinc-500" : "bg-zinc-200";
-  const contentStyle: React.CSSProperties = {
-    color: "#fff"
-  };
+  const contentStyle: React.CSSProperties = { color: "#fff" };
 
   const siderStyle: React.CSSProperties = {
     textAlign: "center",
@@ -99,7 +127,11 @@ const RootComponent: React.FC = () => {
           >
             <Tooltip title="Show Comments">
               <div className="mt-3">
-                <Badge count={comments.length} size="small" color={"#AAA"}>
+                <Badge
+                  count={!comments ? 0 : comments.length}
+                  size="small"
+                  color={"#AAA"}
+                >
                   <CommentIcon
                     width={sidebarIconWidth}
                     height={sidebarIconHeight}
@@ -145,20 +177,22 @@ const RootComponent: React.FC = () => {
           <Content style={contentStyle}>
             {activeView === "comments" && (
               <Comments
+                taskId={task.id}
                 comments={comments}
                 setComments={setComments}
-                sendComment={() => {}}
+                sendComment={(taskId, comment) => sendComment(taskId, comment)}
               />
             )}
             {activeView === "subtasks" && (
               <Subtasks
                 subtasks={subtasks}
-                setSubtasks={setSubtasks}
+                // setSubtasks={setSubtasks}
                 openSubtask={(taskId) => openSubtask(taskId)}
               />
             )}
             {activeView === "taskdata" && (
               <TaskData
+                setTaskGlobal={(data) => setTask(data)}
                 isDarkTheme={isDarkTheme}
                 vscode={vscode}
                 setComments={setComments}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Dropdown, Badge } from "antd";
 
-export default function TaskId({ task, notifyMessage }) {
+export default function taskId({ task, notifyMessage }) {
   if (task === undefined) {
     return;
   }
@@ -32,7 +32,7 @@ export default function TaskId({ task, notifyMessage }) {
 
   return (
     <div>
-      <Dropdown menu={{ items }} placement="right">
+      <Dropdown menu={{ items }} placement="bottomRight">
         <Badge
           count={task.id}
           style={{ backgroundColor: "#FFF", color: "#000", cursor: "pointer" }}

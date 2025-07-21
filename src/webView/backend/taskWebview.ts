@@ -128,7 +128,7 @@ export default class TaskWebview implements TaskWebviewInterface {
      * @return {*} 
      * @memberof TaskWebview
      */
-    async sendMessage(command: string, data: Object) {
+    async sendMessage(command: string, data?: Object) {
         return await this.panel.webview.postMessage({
             command: command,
             data: data

@@ -1,15 +1,13 @@
 import * as React from "react";
-import { Task } from "vscode";
 
 import { Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
-import { Assignee, Status } from "../../types";
+import { Assignee, Status, Task } from "../../types";
+import { Callback } from "i18next";
 
-type Props = {
-  subtasks?: Task[];
-};
+type Props = { subtasks?: Task[]; openSubtask: any };
 
-const Subtasks: React.FC<Props> = ({ subtasks, openSubtask }) => {
+const subtasks: React.FC<Props> = ({ subtasks, openSubtask }) => {
   console.log("subtasks", subtasks);
   const columns: TableProps<Task>["columns"] = [
     {
@@ -26,11 +24,7 @@ const Subtasks: React.FC<Props> = ({ subtasks, openSubtask }) => {
         </a>
       )
     },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name"
-    },
+    { title: "Name", dataIndex: "name", key: "name" },
     {
       title: "Assignees",
       dataIndex: "assignees",
@@ -58,9 +52,9 @@ const Subtasks: React.FC<Props> = ({ subtasks, openSubtask }) => {
     <Table<Task>
       columns={columns}
       dataSource={subtasks}
-      rowKey={(record) => record.id || record.title} // usa un id o titolo come fallback
+      rowKey={(record) => record.id} // usa un id o titolo come fallback
     />
   );
 };
 
-export default Subtasks;
+export default subtasks;
