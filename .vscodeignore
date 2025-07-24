@@ -8,3 +8,32 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+
+# Config e build locali
+.vscode/
+*.ts
+tsconfig.json
+tslint.json
+*.map
+
+# Test e documentazione
+test/
+tests/
+*.spec.ts
+coverage/
+*.log
+
+# File Git
+.git/
+.gitignore
+
+# Build tool e script
+scripts/
+webpack.config.js
+rollup.config.js
+
+# Documenti non necessari
+README.md
+CHANGELOG.md
+.vscodeignore
+docs/
