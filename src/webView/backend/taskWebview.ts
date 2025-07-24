@@ -6,6 +6,7 @@ import { TaskListProvider } from '../../tree_view/taskListProvider';
 import { Member, Priority, Status, Tag, Comment, Task } from '../../types';
 import { isDark } from '../../utils';
 import { Configuration } from '../../lib/configuration';
+import { FORCE_DISABLING_DEV_MODE } from '../../constants';
 
 abstract class TaskWebviewInterface {
     // Metodo astratto che le classi derivate devono implementare
@@ -94,8 +95,7 @@ export default class TaskWebview implements TaskWebviewInterface {
         const appPath = vscode.Uri.file(path.join(this.context.extensionPath, 'out', 'webview.js'));
         let appUri = this.panel.webview.asWebviewUri(appPath);
 
-        // Determina se sei in modalità di debug
-        const isDevelopment = this.context.extensionMode === vscode.ExtensionMode.Development;
+        const isDevelopment = this.context.extensionMode === vscode.ExtensionMode.Development && !FORCE_DISABLING_DEV_MODE;
         if (isDevelopment) {
             if (await this.isDevServerRunning() === false) {
                 vscode.window.showErrorMessage('you are in development mode but a webpack server has not been started. Use `npm run start` to start one');
