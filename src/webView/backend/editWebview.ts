@@ -11,8 +11,11 @@ export enum CommandList { 'init', "ready", "save", "openTask", "notification", "
 
 export class EditWebview extends TaskWebview {
 	task: Task;
-	constructor(context: vscode.ExtensionContext, taskId: string, wrapper: ApiWrapper, provider: TaskListProvider) {
+	l10n: any; //TODO - fix type
+
+	constructor(context: vscode.ExtensionContext, taskId: string, wrapper: ApiWrapper, provider: TaskListProvider, globalL10n: any) {
 		super(context, wrapper, provider);
+		this.l10n = globalL10n;
 		// this.task = task;
 
 		// workaround: recall getTask function to get Task with theirs subtasks
@@ -65,11 +68,13 @@ export class EditWebview extends TaskWebview {
 					break;
 				case "addComment":
 					const response = await this.wrapper.addComment(message.data.taskId, message.data.comment);
-					console.log('addComment response', response);
 					if (response === true) {
-						this.sendMessage('updateCommentList', {
+						this.sendMessage('comment.send.success', {
 							comments: await this.wrapper.getTaskComments(message.data.taskId)
 						});
+					} else {
+						this.sendMessage('comment.send.error');
+						vscode.window.showInformationMessage(this.l10n.t("comment.sendError"));
 					}
 					break;
 			}

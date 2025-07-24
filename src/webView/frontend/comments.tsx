@@ -8,7 +8,8 @@ const commentsList = ({
   comments,
   className = "",
   setComments,
-  sendComment
+  sendComment,
+  vscode
 }) => {
   if (comments.length === undefined) {
     return "";
@@ -26,6 +27,23 @@ const commentsList = ({
       setReadyToSend(false);
     }
   }, [newComment]);
+
+  React.useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      const { command, data } = event.data;
+
+      if (command === "comment.send.success") {
+        setComments(data.comments);
+        setNewComment(null);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
 
   const sendNewComment = () => {
     sendComment(taskId, newComment);
@@ -52,15 +70,13 @@ const commentsList = ({
         <div className="flex flex-row gap-1">
           <Input
             placeholder="Write a comment"
+            value={newComment}
             onChange={(e: any) => setNewComment(e.currentTarget.value)}
           />
           <Button
             type="primary"
             disabled={!readyToSend}
-            onClick={(e) => {
-              console.log("button handler");
-              sendNewComment();
-            }}
+            onClick={sendNewComment}
           >
             send
           </Button>

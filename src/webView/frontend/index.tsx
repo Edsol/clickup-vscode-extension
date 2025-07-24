@@ -55,24 +55,24 @@ const RootComponent: React.FC = () => {
     });
   };
 
-  React.useEffect(() => {
-    vscode.postMessage({ command: "ready", text: "React App is ready!" });
+  // React.useEffect(() => {
+  //   vscode.postMessage({ command: "ready", text: "React App is ready!" });
 
-    const handleMessage = async (event: MessageEvent) => {
-      const { command, data } = event.data;
+  //   const handleMessage = async (event: MessageEvent) => {
+  //     const { command, data } = event.data;
 
-      if (command === "updateCommentList") {
-        setComments(data.comments);
-        console.log("updateCommentList handler", data);
-      }
-    };
+  //     if (command === "comment.send.success") {
+  //       setComments(data.comments);
+  //       console.log("updateCommentList handler", data);
+  //     }
+  //   };
 
-    window.addEventListener("message", handleMessage);
+  //   window.addEventListener("message", handleMessage);
 
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("message", handleMessage);
+  //   };
+  // }, []);
 
   const sidebarIconWidth = 24;
   const sidebarIconHeight = 24;
@@ -181,6 +181,7 @@ const RootComponent: React.FC = () => {
                 comments={comments}
                 setComments={setComments}
                 sendComment={(taskId, comment) => sendComment(taskId, comment)}
+                vscode={vscode}
               />
             )}
             {activeView === "subtasks" && (

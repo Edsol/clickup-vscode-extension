@@ -260,7 +260,7 @@ export class ApiWrapper {
             ]
         });
 
-        if (!body && body.id) {
+        if (body.id) {
             return true;
         }
         return false;
