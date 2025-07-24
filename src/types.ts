@@ -24,12 +24,14 @@ export type Task = {
     name: string,
     orderId: string,
     orderindex: string;
-    parent: Parent,
+    parent: string,
+    top_level_parent: string,
     permissionLevel: string,
     points: null,
     priority: Priority,
     project: Project,
     space: Space,
+    subtasks?: Task[],
     startDate: string,
     status: Status,
     tags: Tag[],
@@ -78,6 +80,19 @@ export type Assignee = {
     email: string
 };
 
+export type Comment = {
+    id: string,
+    comment: string[],
+    comment_text: string,
+    user: User,
+    resolved: boolean,
+    assignee: Assignee,
+    assigned_by: Assignee,
+    reactions?: any[],
+    date: string,
+    reply_count: string
+};
+
 export type Checklist = undefined;
 
 export type Creator = {
@@ -90,7 +105,6 @@ export type Creator = {
 
 export type CustomField = undefined;
 export type Dependecie = undefined;
-export type Parent = undefined;
 
 export type Status = {
     id: string,

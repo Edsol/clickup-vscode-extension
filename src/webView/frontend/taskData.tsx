@@ -1,10 +1,21 @@
 import * as React from "react";
-import { Task, Status, Priority, Tag, Assignee } from "../../types";
+import { Task, Status, Priority, Tag, Assignee, Comment } from "../../types";
 
-import { Skeleton, Button, Col, Divider, Row, Typography } from "antd";
+import {
+  Skeleton,
+  Button,
+  Col,
+  Divider,
+  Row,
+  Typography,
+  Dropdown,
+  Badge
+} from "antd";
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const { Text } = Typography;
 
-import { blue, lime } from "@ant-design/colors";
+import { lime } from "@ant-design/colors";
 
 import TaskId from "./components/taskId";
 import TaskName from "./components/taskName";
@@ -14,17 +25,35 @@ import TaskDescription from "./components/taskDescription";
 import TaskTags from "./components/taskTags";
 import TaskPriorities from "./components/taskPriorities";
 
-const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
+const app = ({
+  isDarkTheme,
+  vscode,
+  setTaskGlobal,
+  setComments,
+  setSubtasks,
+  openSubtask
+}) => {
   const [isReady, setIsReady] = React.useState<boolean>(false);
 
-  const [task, setTask] = React.useState<Task>({});
-  const [modifiedFields, setModifiedFields] = React.useState<Task>({});
-  const [statuses, setStatuses] = React.useState<Array<Status>>({});
-  const [priorities, setPriorities] = React.useState<Array<Priority>>({});
-  const [members, setMembers] = React.useState<Array<Assignee>>({});
-  const [tags, setTags] = React.useState<Array<Tag>>({});
+  const [task, setTask] = React.useState<Task | undefined>(undefined);
+  const [modifiedFields, setModifiedFields] = React.useState<Task | undefined>(
+    undefined
+  );
+  const [statuses, setStatuses] = React.useState<Array<Status> | undefined>(
+    undefined
+  );
+  const [priorities, setPriorities] = React.useState<
+    Array<Priority> | undefined
+  >(undefined);
+  const [members, setMembers] = React.useState<Array<Assignee> | undefined>(
+    undefined
+  );
+  const [tags, setTags] = React.useState<Array<Tag> | undefined>(undefined);
 
   const hasModifiedFields = () => {
+    if (modifiedFields === undefined) {
+      return false;
+    }
     return Object.keys(modifiedFields).length === 0 ? false : true;
   };
   const notifyMessage = (text: string, type: string = "success") => {
@@ -39,10 +68,13 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
 
       if (command === "task") {
         setTask(data.task);
+        setTaskGlobal(data.task);
         setStatuses(data.statuses);
         setPriorities(data.priorities);
         setMembers(data.members);
         setTags(data.tags);
+        setComments(data.comments);
+        setSubtasks(data.task.subtasks);
 
         // hide skeleton
         setIsReady(true);
@@ -61,12 +93,7 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   }
 
   function submit() {
-    vscode.postMessage({
-      command: "save",
-      data: {
-        task: modifiedFields
-      }
-    });
+    vscode.postMessage({ command: "save", data: { task: modifiedFields } });
   }
 
   const labelStyle: React.CSSProperties = {
@@ -74,11 +101,24 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
   };
 
   const marginTop = "20px";
+
   return (
-    <div>
+    <div className={"p-2"}>
       <Divider orientation="left">
         <TaskId task={task} notifyMessage={notifyMessage} />
       </Divider>
+      {"parent" in task && task.parent !== null && (
+        <div>
+          <span className="mr-2 mb-2">This Task was a subtask of</span>
+          <a
+            onClick={() => {
+              openSubtask(task.parent);
+            }}
+          >
+            {task.parent}
+          </a>
+        </div>
+      )}
       <Text strong style={labelStyle}>
         Name
       </Text>
@@ -144,13 +184,7 @@ const app = ({ isDarkTheme, setDarkTheme, vscode }) => {
         color="primary"
         variant="filled"
         onClick={submit}
-        style={{
-          marginTop: "10px",
-          position: "absolute",
-          right: "20px",
-          backgroundColor: lime[6],
-          color: "white"
-        }}
+        style={{ backgroundColor: lime[6], color: "white" }}
         disabled={!hasModifiedFields()}
       >
         Save

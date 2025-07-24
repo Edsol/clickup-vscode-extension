@@ -1,142 +1,186 @@
-<h1 align='center'>
-Unofficial <a href="http://clickup.com">ClickUp</a> VSCode extension
+# 🔗 Unofficial [ClickUp](https://clickup.com) Extension for VSCode
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue)](https://www.gnu.org/licenses/agpl-3.0)
+[![Visual Studio Marketplace](https://img.shields.io/visual-studio-marketplace/v/edsol.clickup)](https://marketplace.visualstudio.com/items?itemName=edsol.clickup)
 
-</h1>
+---
 
-## Requirements
+## 📋 Requirements
 
-You need to have a ClickUp token to interact with your private task, use [official guide](https://docs.clickup.com/en/articles/1367130-getting-started-with-the-clickup-api) to create one
+To interact with your private tasks, you need a **ClickUp API token**.  
+Follow the [official guide](https://docs.clickup.com/en/articles/1367130-getting-started-with-the-clickup-api) to generate one.
 
-## Install
+---
 
-Use command:
+## 🚀 Installation
 
-```
+Use the command palette:
+
+```bash
 ext install edsol.clickup
 ```
 
-or find it in [marketpace](https://marketplace.visualstudio.com/items?itemName=edsol.clickup)
+Or search for it in the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=edsol.clickup).
 
-## Inizialize
+---
 
-Use the dedicated command to manipulate API token:
+## ⚙️ Initialization
 
-### Token
+Use the following commands to manage your ClickUp API token:
 
-- `Clickup: Set token`
-- `Clickup: show token`
-- `Clickup: delete token`
+- `ClickUp: Set token`
+- `ClickUp: Show token`
+- `ClickUp: Delete token`
 
-## Features
+---
 
-### List task
+## ✨ Features
 
-View tasks within lists, folders, spaces
+### 📁 Task Explorer
+
+View your tasks organized by lists, folders, and spaces.
 
 ![list](./docs/list_task.png)
 
-### Task functions
+### 🛠️ Task Actions
 
-edit, delete, or use a task:
+Edit, delete, or work on a task directly from VSCode.
 
 ![functions](./docs/edit_task.png)
 
-### Create new task
+### ➕ Create New Task
 
-Add a new task in any list:
+Quickly add new tasks to any list.
 
 ![new-task](./docs/new_task.png)
 
-### "Working on" Mode
+### 💼 “Working on” Mode
 
-Through the menu in the Status Bar you can now select a task you are working on, once you have finished your changes you can change its status through the commit message.
+Select a task you're currently working on from the status bar. Once you're done, you can update its status automatically through a Git commit message.
 
-Usage:
+Usage preview:
 
-<img src="./docs/status.gif" height=500></img>
+<img src="./docs/status.gif" height="500" />
 
-we can also work on a specific task by selecting it from the list:
+You can also select a task manually from the list:
 
 ![work-on-task](./docs/work_on.png)
 
-### Task status changer via commit message
+### 📝 Task Status via Commit
 
-We can change the status of the task directly in the commit message.
+Update task status directly from your commit message.
 
-Select a task with the instructions above and use dedicated button in git tab:
+1. Select a task:  
+   ![select-task](./docs/select_task.png)
 
-![select-task](./docs/select_task.png)
+2. Choose a new status:  
+   ![select-status](./docs/select_status.png)
 
-select a new status from list:
+3. Write and push your commit:  
+   ![commit_message](./docs/commit_message.png)
 
-![select-status](./docs/select_status.png)
+### 😋 My Task Section
 
-complete commit message and push it:
-
-![commit_message](./docs/commit_message.png)
-
-### My Task section
-
-Implemented new "My Task" section (thanks to [@HeIIow2](https://github.com/HeIIow2) for suggesting it), All the tasks assigned to us are displayed:
+Thanks to [@HeIIow2](https://github.com/HeIIow2), a new section lists all tasks assigned to you:
 
 ![commit_message](./docs/my_task_section.png)
 
-### Time tracker
+### ⏱️ Time Tracker
 
-Added functionality to track time on tasks, you can view the list of times by user
+Track your time spent on tasks and view summaries by user.
 
-> [!IMPORTANT]  
-> Time tracker is on by default, it can be turned off in the extension setting menu.
+> **Note**: Time tracking is enabled by default and can be disabled from the extension settings.
 
 ![time_tracker](./docs/time_tracker.png)
 
-## How to configure the extension
+### 🧩 New Interface, Comments & Subtasks
 
-Go to `Settings > Extension > ClickUp` and change the parameters to configure to your liking the extension.
+A refreshed UI is now available for a more intuitive task experience.
 
-## Roadmap
+#### 💬 Comment Section
+
+Easily view and add comments to tasks directly inside VSCode. Improve your collaboration without switching contexts.
+
+![comment-section](./docs/comment_section.png)
+
+#### 🧷 Subtasks Management
+
+Visualize and manage subtasks in a clear and structured way. Create, complete or delete subtasks in just a few clicks.
+
+![subtasks](./docs/subtasks.png)
+
+#### 🎨 Updated Interface
+
+We've modernized the layout and enhanced readability, so working with your ClickUp tasks feels more native and integrated into the VSCode environment.
+
+![new-ui](./docs/new_interface.png)
+
+---
+
+## ⚙️ Configuration
+
+Go to:  
+`Settings → Extensions → ClickUp`  
+and customize the extension to your needs.
+
+---
+
+## 🗺️ Roadmap
 
 - [x] Task counter badge
-- [x] Easy way to edit status outside edit mode
-- [x] Manage via global settings
-- [ ] Increase performaces
+- [x] Status editing outside edit mode
+- [x] Global settings management
+- [ ] Improve performance
 - [ ] Add filters and groupings
-- [x] Implements time tracking
-- [x] Add and delete list insde a space
-- [x] Create and delete spaces
+- [x] Time tracking
+- [x] Add/delete lists in spaces
+- [x] Create/delete spaces
 - [x] Refresh TreeView button
 - [x] Collapse TreeView button
-- [x] Create new List
-- [x] load task informations in real time
-- [x] translation support
-- [x] "my task" section
-- [x] official icons
+- [x] Create new list
+- [x] Live task info loading
+- [x] i18n support
+- [x] “My Task” section
+- [x] Official icons
+- [x] Comments
+- [x] Subtasks
 
-## Translation
+---
 
-The extension supports English and Italian (my native language). You can help me translate it into your language, it will be very easy to do so:
+## 🌐 Translation
 
-1. Copy the `package.nls.json` file in the root of project and renaming it by adding the identifier for your language. For example for the Italian language the file will have the name `package.nls.it.json`
-2. Copy the `bundle.l10n.json` file in the `l10n` folder and renaming it by adding the identifier for your language. For example for the Italian language the file will have the name `bundle.l10n.it.json`
+Currently supports **English** and **Italian** 🇮🇹.  
+Help translate to your language — it’s easy!
 
-## Release Notes
+1. Duplicate `package.nls.json` and rename it as `package.nls.<lang>.json`
+2. Duplicate `bundle.l10n.json` from the `i18n` folder and rename it to `bundle.l10n.<lang>.json` (e.g., `bundle.l10n.es.json` for Spanish)
 
-Detailed Release Notes are available [here](CHANGELOG.md)
+---
 
-## Do you want to support my work? Buy me an espresso coffee (I'm Italian)
+## 📦 Release Notes
 
-<a href="https://www.buymeacoffee.com/edsol" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+See [CHANGELOG.md](CHANGELOG.md) for detailed release history.
 
-## Special Thanks:
+---
 
-### with the code:
+## ☕ Support My Work
 
-- [dfntlmb](https://github.com/definiteIymaybe)
-- [ILoomans](https://github.com/ILoomans)
-- [M97Chahboun](https://github.com/M97Chahboun)
+If you enjoy the extension and want to support its development:
 
-### with caffeine:
+<a href="https://www.buymeacoffee.com/edsol" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60" width="217" />
+</a>
 
-- [gute1](https://github.com/gute1)
+---
+
+## 🙏 Special Thanks
+
+### 💻 Code Contributors
+
+- [@definiteIymaybe](https://github.com/definiteIymaybe)
+- [@ILoomans](https://github.com/ILoomans)
+- [@M97Chahboun](https://github.com/M97Chahboun)
+
+### ☕ Caffeine Supporters
+
+- [@gute1](https://github.com/gute1)

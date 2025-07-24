@@ -1,5 +1,5 @@
 import path = require('path');
-import { TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
 export class TaskDetail extends TreeItem {
     constructor(
         public label: string,
@@ -15,7 +15,7 @@ export class TaskDetail extends TreeItem {
     contextValue = 'TaskDetail';
 
     iconPath = {
-        light: path.join(__filename, '..', '..', '..', '..', 'resources', 'detail_blank.svg'),
-        dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'detail_white.svg')
+        light: Uri.file(path.join(__filename, '..', '..', '..', '..', 'resources', 'detail_blank.svg')),
+        dark: Uri.file(path.join(__filename, '..', '..', '..', '..', 'resources', 'detail_white.svg'))
     };
 }

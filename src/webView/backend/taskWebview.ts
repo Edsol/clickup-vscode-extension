@@ -3,9 +3,10 @@ import * as path from 'path';
 import * as http from 'http';
 import { ApiWrapper } from '../../lib/apiWrapper';
 import { TaskListProvider } from '../../tree_view/taskListProvider';
-import { Member, Priority, Status, Tag } from '../../types';
+import { Member, Priority, Status, Tag, Comment, Task } from '../../types';
 import { isDark } from '../../utils';
 import { Configuration } from '../../lib/configuration';
+import { FORCE_DISABLING_DEV_MODE } from '../../constants';
 
 abstract class TaskWebviewInterface {
     // Metodo astratto che le classi derivate devono implementare
@@ -37,6 +38,7 @@ export default class TaskWebview implements TaskWebviewInterface {
     public listProvider: TaskListProvider;
 
     public members: Member[] | {};
+    public comments: Comment[] | {};
     public statuses: Status[] | {};
     public tags: Tag[] | {};
     public priorities: Priority[] | {};
@@ -93,8 +95,7 @@ export default class TaskWebview implements TaskWebviewInterface {
         const appPath = vscode.Uri.file(path.join(this.context.extensionPath, 'out', 'webview.js'));
         let appUri = this.panel.webview.asWebviewUri(appPath);
 
-        // Determina se sei in modalità di debug
-        const isDevelopment = this.context.extensionMode === vscode.ExtensionMode.Development;
+        const isDevelopment = this.context.extensionMode === vscode.ExtensionMode.Development && !FORCE_DISABLING_DEV_MODE;
         if (isDevelopment) {
             if (await this.isDevServerRunning() === false) {
                 vscode.window.showErrorMessage('you are in development mode but a webpack server has not been started. Use `npm run start` to start one');
@@ -127,7 +128,7 @@ export default class TaskWebview implements TaskWebviewInterface {
      * @return {*} 
      * @memberof TaskWebview
      */
-    async sendMessage(command: string, data: Object) {
+    async sendMessage(command: string, data?: Object) {
         return await this.panel.webview.postMessage({
             command: command,
             data: data
@@ -142,7 +143,7 @@ export default class TaskWebview implements TaskWebviewInterface {
      */
     public messageHandler() { }
 
-    public async fetchExtraData(listId: string, spaceId: string) {
+    public async fetchExtraData(listId: string, spaceId: string, taskId?: string) {
         const promises = [
             new Promise(async (resolve) => {
                 resolve(await this.wrapper.getMembers(listId));
@@ -156,10 +157,16 @@ export default class TaskWebview implements TaskWebviewInterface {
             new Promise(async (resolve) => {
                 resolve(await this.wrapper.getPriorities(spaceId));
             }),
+            new Promise(async (resolve) => {
+                if (!taskId) {
+                    return {};
+                }
+                resolve(await this.wrapper.getTaskComments(taskId));
+            }),
         ];
 
         await Promise.all(promises).then((values) => {
-            [this.members, this.statuses, this.tags, this.priorities] = values;
+            [this.members, this.statuses, this.tags, this.priorities, this.comments] = values;
         });
     }
 

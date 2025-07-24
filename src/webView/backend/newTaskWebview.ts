@@ -7,11 +7,13 @@ import TaskWebview from './taskWebview';
 import { isDark } from '../../utils';
 import { EditWebview } from './editWebview';
 import path from 'path';
+import { Task } from '../../types';
 
 export class NewTaskWebview extends TaskWebview {
     listId: string;
+    l10n;
 
-    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: TaskListProvider) {
+    constructor(context: vscode.ExtensionContext, listItem: ListItem, wrapper: ApiWrapper, provider: TaskListProvider, l10n: any) {
         super(context, wrapper, provider);
 
         this.panel = vscode.window.createWebviewPanel(
@@ -61,7 +63,7 @@ export class NewTaskWebview extends TaskWebview {
     }
 
     private async saveTask(data: any) {
-        const response = await this.wrapper.newTask(this.listId, data);
+        const response: Task = await this.wrapper.newTask(this.listId, data);
         if (!response) {
             vscode.window.showErrorMessage(constants.TASK_SAVE_ERROR_MESSAGE);
             return false;
@@ -71,7 +73,7 @@ export class NewTaskWebview extends TaskWebview {
         this.panel.dispose();
 
         if (this.configuration.get(constants.OPEN_TASK_AFTER_CREATED)) {
-            new EditWebview(this.context, response, this.wrapper, this.listProvider);
+            new EditWebview(this.context, response.id, this.wrapper, this.listProvider, this.l10n);
         }
     }
 }

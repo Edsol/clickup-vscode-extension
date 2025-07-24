@@ -16,11 +16,6 @@ import { Team, User, Task, Time } from './types';
 import { MyTaskListProvider } from './tree_view/mytaskListProvider';
 import Timer from './lib/timer';
 
-if (vscode.l10n.uri?.fsPath) {
-	l10n.config({
-		fsPath: vscode.l10n.uri?.fsPath
-	});
-}
 let me: User;
 const configuration: Configuration = new Configuration();
 let tokenManager: TokenManager;
@@ -215,11 +210,12 @@ vscode.commands.registerCommand('clickup.refresh', () => {
 });
 
 vscode.commands.registerCommand('clickup.addTask', (listItem) => {
-	new NewTaskWebview(context, listItem, wrapper, taskListProvider);
+	new NewTaskWebview(context, listItem, wrapper, taskListProvider, l10n);
 });
 
 vscode.commands.registerCommand('clickup.editTask', (taskItem) => {
-	new EditWebview(context, taskItem.task, wrapper, taskListProvider);
+	const taskId = typeof taskItem === 'object' ? taskItem.task.id : taskItem;
+	new EditWebview(context, taskId, wrapper, taskListProvider, l10n);
 });
 
 vscode.commands.registerCommand('clickup.deleteTask', (taskItem) => {
